@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net35</TargetFramework>
+    <LangVersion>7.3</LangVersion>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="$(References)/UnityEngine.dll" />
+    <Reference Include="$(References)/Assembly-CSharp.dll" />
+    <Reference Include="$(References)/HOOKS-Assembly-CSharp.dll" />
+    <Reference Include="$(References)/EnumExtender.dll" />
+  </ItemGroup>
+
+</Project>

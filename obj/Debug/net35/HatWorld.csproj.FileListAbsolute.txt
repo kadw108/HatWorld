@@ -1,0 +1,18 @@
+C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\HatWorld\obj\Debug\net35\HatWorld.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\HatWorld\obj\Debug\net35\HatWorld.AssemblyInfoInputs.cache
+C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\HatWorld\obj\Debug\net35\HatWorld.AssemblyInfo.cs
+C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\HatWorld\obj\Debug\net35\HatWorld.csproj.CoreCompileInputs.cache
+C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\HatWorld\bin\Debug\net35\HatWorld.dll
+C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\HatWorld\bin\Debug\net35\HatWorld.pdb
+C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\HatWorld\obj\Debug\net35\HatWorld.csproj.CopyComplete
+C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\HatWorld\obj\Debug\net35\HatWorld.dll
+C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\HatWorld\obj\Debug\net35\HatWorld.pdb
+C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\HatWorld\obj\Debug\net35\HatWorld.csproj.AssemblyReference.cache
+C:\Users\account\Apps\Steam\steamapps\common\Rain World\BepInEx\plugins\Debug\net35\HatWorld.dll
+C:\Users\account\Apps\Steam\steamapps\common\Rain World\BepInEx\plugins\Debug\net35\HatWorld.pdb
+C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\HatWorld\bin\Debug\net35\Assembly-CSharp.dll
+C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\HatWorld\bin\Debug\net35\BepInEx.dll
+C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\HatWorld\bin\Debug\net35\EnumExtender.dll
+C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\HatWorld\bin\Debug\net35\HOOKS-Assembly-CSharp.dll
+C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\HatWorld\bin\Debug\net35\Partiality.dll
+C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\HatWorld\bin\Debug\net35\UnityEngine.dll

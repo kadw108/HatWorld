@@ -1,0 +1,16 @@
+C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\BallWorld\obj\Debug\net35\BallWorld.csproj.AssemblyReference.cache
+C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\BallWorld\obj\Debug\net35\BallWorld.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\BallWorld\obj\Debug\net35\BallWorld.AssemblyInfoInputs.cache
+C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\BallWorld\obj\Debug\net35\BallWorld.AssemblyInfo.cs
+C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\BallWorld\obj\Debug\net35\BallWorld.csproj.CoreCompileInputs.cache
+C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\BallWorld\bin\Debug\net35\BallWorld.dll
+C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\BallWorld\bin\Debug\net35\BallWorld.pdb
+C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\BallWorld\bin\Debug\net35\Assembly-CSharp.dll
+C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\BallWorld\bin\Debug\net35\BepInEx.dll
+C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\BallWorld\bin\Debug\net35\EnumExtender.dll
+C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\BallWorld\bin\Debug\net35\HOOKS-Assembly-CSharp.dll
+C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\BallWorld\bin\Debug\net35\Partiality.dll
+C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\BallWorld\bin\Debug\net35\UnityEngine.dll
+C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\BallWorld\obj\Debug\net35\BallWorld.csproj.CopyComplete
+C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\BallWorld\obj\Debug\net35\BallWorld.dll
+C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\BallWorld\obj\Debug\net35\BallWorld.pdb

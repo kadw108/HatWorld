@@ -4,7 +4,7 @@ using BepInEx;
 using UnityEngine;
 
 // physical objects library
-using HatFisobs;
+using Fisobs;
 
 namespace HatWorld
 {
@@ -17,6 +17,9 @@ namespace HatWorld
     [BepInPlugin("kadw.hatworld", "HatWorld", "0.1.0")]
     public class HatWorldPlugin : BaseUnityPlugin
     {
+        // for spawning random hats
+        public static System.Random rand = new System.Random();
+
         // tracks if player is wearing hat. null if no hat
         public HatType? playerWearingHat = null;
         private WearingHat? wornHat = null;
@@ -33,7 +36,8 @@ namespace HatWorld
             On.PlayerGraphics.InitiateSprites += PlayerGraphics_InitiateSprites;
             On.PlayerGraphics.DrawSprites += PlayerGraphics_DrawSprites;
 
-            new FisobRegistry(new[] { HatFisob.Instance }).ApplyHooks();
+            // Make hat exist
+            Fisobs.Core.Content.Register(new HatFisob());
 
             // add new button response to player controls
             On.Player.checkInput += Player_checkInput;
@@ -41,7 +45,7 @@ namespace HatWorld
         }
 
         /*
-         * Adds hat to room when player enters new room, if hat is being worn
+         * Adds worn hat to player when player enters new room, if hat is being worn
          */
         private void PlayerGraphics_InitiateSprites(On.PlayerGraphics.orig_InitiateSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
         {
@@ -56,7 +60,7 @@ namespace HatWorld
         }
 
         /*
-         * Draws hat if it exists, every update
+         * Draws worn hat if it exists, every update
          */
         private void PlayerGraphics_DrawSprites(On.PlayerGraphics.orig_DrawSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
         {
@@ -131,10 +135,14 @@ namespace HatWorld
             bool hatFlag = self != null && createHatInput[0] && !createHatInput[1];
             if (hatFlag)
             {
-                HatAbstract newHat = new HatAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID(), HatType.Santa);
+                // generate random hat type out of all existing hat types
+                HatType newHatType = (HatType) (rand.Next() % Enum.GetValues(typeof(HatType)).Length);
+
+                HatAbstract newHat = new HatAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID(), newHatType);
                 self.room.abstractRoom.AddEntity(newHat);
                 newHat.RealizeInRoom();
                 self.SlugcatGrab(newHat.realizedObject, 0);
+                Debug.Log("hatworld generate new hat " + newHat.hatType);
             }
 
             // wear hat flag
@@ -156,27 +164,14 @@ namespace HatWorld
                             self.ReleaseGrasp(i);
 
                             // add worn hat
-                            Debug.Log("hatworld s wear hat");
                             wornHat = addWornHat(grabbedHatType, self.graphicsModule);
-                            /*
-                            switch (((HatPhysical) grabbed).hatType)
-                            {
-                                case HatType.Santa:
-                                    wornHat = new WearingSantaHat(self.graphicsModule, 3, -90f, 5f);
-                                    break;
-
-                                default:
-                                    wornHat = new WearingSantaHat(self.graphicsModule, 3, -90f, 5f);
-                                    break;
-                            }
-                            */
                             playerWearingHat = grabbedHatType;
+                            Debug.Log("hatworld s wear hat " + wornHat.hatType);
                             break;
                         }
                     }
                 } else {
                     // remove worn hat
-                    Debug.Log("hatworld s remove hat");
                     playerWearingHat = null;
                     HatType hatType = wornHat.hatType;
                     wornHat.Destroy();
@@ -187,6 +182,7 @@ namespace HatWorld
                     self.room.abstractRoom.AddEntity(heldHat);
                     heldHat.RealizeInRoom();
                     self.SlugcatGrab(heldHat.realizedObject, 0);
+                    Debug.Log("hatworld s remove hat " + heldHat.hatType);
                 }
             }
 
@@ -202,6 +198,9 @@ namespace HatWorld
             {
                 case HatType.Santa:
                     return new WearingSantaHat(graphicsModule, 3, -90f, 5f);
+
+                case HatType.Wizard:
+                    return new WearingWizardHat(graphicsModule, 3, -90f, 5f);
 
                 default:
                     return new WearingSantaHat(graphicsModule, 3, -90f, 5f);

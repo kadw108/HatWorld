@@ -1,6 +1,6 @@
 ﻿// Finished for now.
 
-using HatFisobs;
+using Fisobs;
 
 namespace HatWorld
 {
@@ -101,6 +101,10 @@ namespace HatWorld
                         realizedObject = new SantaHatPhysical(this, this.world);
                         break;
 
+                    case HatType.Wizard:
+                        realizedObject = new WizardHatPhysical(this, this.world);
+                        break ;
+                        
                     default:
                         realizedObject = new SantaHatPhysical(this, this.world);
                         break;

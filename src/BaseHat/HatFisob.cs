@@ -32,12 +32,30 @@ namespace HatWorld
             // taken from Centishields
             string[] p = saveData.CustomData.Split(';');
 
-            if (p.Length < 7)
+            if (p.Length < 9)
             {
-                p = new string[7];
+                p = new string[9];
             }
 
-            return new HatAbstract(world, saveData.Pos, saveData.ID, (HatType)(int.TryParse(p[6], out var h) ? h : 0));
+            // MAY CHANGE LATER - see PlacedObject.DataPearlData
+            // create a ConsumableObjectData from the information read out of the saveData
+            // define the properties manually, because they're hardcoded in by object type and we're using a custom HatAbstract type
+            PlacedObject.ConsumableObjectData consumableData = new PlacedObject.ConsumableObjectData(null);
+            consumableData.panelPos.x = int.TryParse(p[3], out var xx) ? xx : 0;
+            consumableData.panelPos.y = int.TryParse(p[3], out var yy) ? yy : 0;
+            consumableData.minRegen = 0;
+            consumableData.maxRegen = 0;
+
+            HatAbstract returned = new HatAbstract(
+                world,
+                saveData.Pos,
+                saveData.ID,
+                int.TryParse(p[6], out var originRoom) ? originRoom : 0, // originRoom
+                int.TryParse(p[7], out var placedObjectIndex) ? placedObjectIndex : 0, // placedObjectIndex
+                consumableData, // consumableData
+                (HatType)(int.TryParse(p[8], out var h) ? h : 0) // HatType
+            );
+            // world, saveData.Pos, saveData.ID, 
             /* I don't even know how to use {} with object constructors
             {
                 // ID = p[0],
@@ -49,6 +67,8 @@ namespace HatWorld
                 // abstractNode = p[7]??
             };
             */
+
+            return returned;
 
             /*
              * Add sandbox later

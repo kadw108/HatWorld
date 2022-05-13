@@ -5,24 +5,26 @@ using Fisobs;
 namespace HatWorld
 {
     // based on abstractdatapearl
-    sealed class HatAbstract : AbstractPhysicalObject
+    sealed class HatAbstract : AbstractConsumable
     {
         public HatType hatType;
         
+        /*
+         * AbstractPhysicalObject constructor
         public HatAbstract(World world, WorldCoordinate pos, EntityID ID, HatType hatType) : base(world, HatFisob.Instance.Type, null, pos, ID) {
             this.hatType = hatType;
         }
+        */
 
         /*
-        AbstractDataPearl inherits from AbstractConsumable so I'll probably have to make that change eventually
-        For now stick with AbstractPhysicalObject
-
+         * AbstractConsumable constructor
+        */
         public HatAbstract(World world, WorldCoordinate pos, EntityID ID, int originRoom,
             int placedObjectIndex, PlacedObject.ConsumableObjectData consumableData, HatType hatType) :
             base(world, HatFisob.Instance.Type, null, pos, ID, originRoom, placedObjectIndex, consumableData) {
 
             this.hatType = hatType;
-        } */
+        }
 
         public override string ToString()
         {
@@ -51,8 +53,7 @@ namespace HatWorld
             return string.Concat(array);
             */
 
-            /* 
-             * Version with AbstractConsumable
+            // Version with AbstractConsumable
             object[] array = new object[17];
             array[0] = this.ID.ToString();
             array[1] = ";";
@@ -64,16 +65,16 @@ namespace HatWorld
             array[7] = ";";
             array[8] = this.pos.y;
             array[9] = ";";
-            array[10] = ((int) this.hatType).ToString();
+            array[10] = this.pos.abstractNode;
             array[11] = ";";
             array[12] = this.originRoom;
             array[13] = ";";
             array[14] = this.placedObjectIndex;
             array[15] = ";";
-            array[16] = this.pos.abstractNode;
+            array[16] = ((int) this.hatType).ToString();
             return string.Concat(array);
-            */
 
+           /*
            object[] array = new object[13];
             array[0] = this.ID.ToString();
             array[1] = ";";
@@ -89,6 +90,7 @@ namespace HatWorld
             array[11] = ";";
             array[12] = this.pos.abstractNode;
             return string.Concat(array);
+            */
         }
 
         public override void Realize()

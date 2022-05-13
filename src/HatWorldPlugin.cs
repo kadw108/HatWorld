@@ -17,11 +17,6 @@ namespace HatWorld
     [BepInPlugin("kadw.hatworld", "HatWorld", "0.1.0")]
     public class HatWorldPlugin : BaseUnityPlugin
     {
-        // MAY CHANGE LATER - see PlacedObject.DataPearlData
-        // create a ConsumableObjectData from the information read out of the saveData
-        // define the properties manually, because they're hardcoded in by object type and we're using a custom HatAbstract type
-        public static PlacedObject.ConsumableObjectData consumableData = new PlacedObject.ConsumableObjectData(null);
-
         // for spawning random hats
         public static System.Random rand = new System.Random();
 
@@ -37,11 +32,6 @@ namespace HatWorld
 
         public void OnEnable()
         {
-            consumableData.panelPos.x = 0;
-            consumableData.panelPos.y = 0;
-            consumableData.minRegen = 0;
-            consumableData.maxRegen = 0;
-
             // Ensure hat appears when worn
             On.PlayerGraphics.InitiateSprites += PlayerGraphics_InitiateSprites;
             On.PlayerGraphics.DrawSprites += PlayerGraphics_DrawSprites;
@@ -148,7 +138,7 @@ namespace HatWorld
                 // generate random hat type out of all existing hat types
                 HatType newHatType = (HatType) (rand.Next() % Enum.GetValues(typeof(HatType)).Length);
 
-                HatAbstract newHat = new HatAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID(), 0, 0, consumableData, newHatType);
+                HatAbstract newHat = new HatAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID(), newHatType);
                 self.room.abstractRoom.AddEntity(newHat);
                 newHat.RealizeInRoom();
                 self.SlugcatGrab(newHat.realizedObject, 0);
@@ -188,7 +178,7 @@ namespace HatWorld
                     self.room.RemoveObject(wornHat);
 
                     // add held hat
-                    HatAbstract heldHat = new HatAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID(), 0, 0, consumableData, hatType);
+                    HatAbstract heldHat = new HatAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID(), hatType);
                     self.room.abstractRoom.AddEntity(heldHat);
                     heldHat.RealizeInRoom();
                     self.SlugcatGrab(heldHat.realizedObject, 0);

@@ -14,7 +14,7 @@ namespace HatWorld
         Wizard
     }
 
-    [BepInPlugin("kadw.hatworld", "HatWorld", "0.1.0")]
+    [BepInPlugin("kadw.hatworld", "HatWorld", "1.0.0")]
     public class HatWorldPlugin : BaseUnityPlugin
     {
         // for spawning random hats
@@ -121,13 +121,16 @@ namespace HatWorld
          */
         private void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
         {
-            if (playerWearingHat != null)
+            /*
+            // hat effects (not used for now)
+            if (playerWearingHat == HatType.Wizard)
             {
                 self.gravity = 0.4f;
-            } else
+            } else if (playerWearingHat != HatType.Wizard)
             {
                 self.gravity = 0.9f;
             }
+            */
 
             orig.Invoke(self, eu);
 

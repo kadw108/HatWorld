@@ -30,15 +30,10 @@ namespace HatWorld
         public override AbstractPhysicalObject Parse(World world, Fisobs.Core.EntitySaveData saveData, Fisobs.Sandbox.SandboxUnlock? unlock)
         {
             // taken from Centishields
-            string[] p = saveData.CustomData.Split(';');
+            int hatTypeNum = int.TryParse(saveData.CustomData, out var h) ? h : 0;
+            return new HatAbstract(world, saveData.Pos, saveData.ID, (HatType) hatTypeNum);
 
-            if (p.Length < 7)
-            {
-                p = new string[7];
-            }
-
-            return new HatAbstract(world, saveData.Pos, saveData.ID, (HatType)(int.TryParse(p[6], out var h) ? h : 0));
-            /* I don't even know how to use {} with object constructors
+            /* use {} with object constructors?
             {
                 // ID = p[0],
                 // type = p[1],
@@ -52,7 +47,7 @@ namespace HatWorld
 
             /*
              * Add sandbox later
-            // If this is coming from a sandbox unlock, the hue and size should depend on the data value (see CentiShieldIcon below).
+            // If this is coming from a sandbox unlock, the hue and size should depend on the data value (see CentiShieldIcon).
             if (unlock is SandboxUnlock u)
             {
                 result.hue = u.Data / 1000f;

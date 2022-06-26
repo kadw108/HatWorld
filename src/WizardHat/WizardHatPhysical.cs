@@ -23,10 +23,11 @@ namespace HatWorld
         // etc...
         // To spawn a CustomPO in the world, use `new CustomAPO(world, pos, world.game.GetNewID()).Spawn()`.
 
-        // Constants for sLeaser sprite index
-        public int triIndex = 0;
+        // Constants for sLeaser sprite index (higher index appears over lower)
+        public int coneIndex = 0;
         public int tuftIndex = 1;
-        public int botIndex = 2;
+        public int beltIndex = 2;
+        public int botIndex = 3;
 
 		public override HatType hatType => HatType.Wizard;
 
@@ -70,7 +71,7 @@ namespace HatWorld
         public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
         {
             // Taken from FestiveWorld SantaHat
-            sLeaser.sprites = new FSprite[3];
+            sLeaser.sprites = new FSprite[4];
             TriangleMesh.Triangle[] array = new TriangleMesh.Triangle[]
             {
                 new TriangleMesh.Triangle(0, 1, 2),
@@ -81,10 +82,13 @@ namespace HatWorld
                 new TriangleMesh.Triangle(5, 6, 7),
                 new TriangleMesh.Triangle(6, 7, 8)
             };
-            TriangleMesh triangleMesh = new TriangleMesh("Futile_White", array, false, false);
-            sLeaser.sprites[triIndex] = triangleMesh;
-            sLeaser.sprites[tuftIndex] = new FSprite("JetFishEyeA", true);
-            sLeaser.sprites[botIndex] = new FSprite("LizardScaleA6", true);
+            TriangleMesh cone = new TriangleMesh("Futile_White", array, false, false);
+            sLeaser.sprites[coneIndex] = cone;
+            sLeaser.sprites[tuftIndex] = new FSprite("mouseEyeA5", true);
+            sLeaser.sprites[beltIndex] = new FSprite("LizardScaleA6", true);
+            sLeaser.sprites[beltIndex].scaleY = 0.8f;
+			sLeaser.sprites[botIndex] = new FSprite("SpearFragment2", true);
+			sLeaser.sprites[botIndex].scaleY = 1.4f;
             this.AddToContainer(sLeaser, rCam, null);
         }
 
@@ -97,7 +101,7 @@ namespace HatWorld
             pos.y -= 20f * Mathf.Pow(temp, 3f);
             for (int j = 0; j < sLeaser.sprites.Length; j++)
             {
-                if (j != triIndex) // the triangle vertices are set later on in this method, moving them twice puts them in the wrong place
+                if (j != coneIndex) // the triangle vertices are set later on in this method, moving them twice puts them in the wrong place
                 {
                     sLeaser.sprites[j].x = pos.x - camPos.x;
                     sLeaser.sprites[j].y = pos.y - camPos.y;
@@ -108,41 +112,52 @@ namespace HatWorld
             Vector2 v = Vector3.Slerp(this.lastRotation, this.rotation, timeStacker);
             float hatRotation = Custom.VecToDeg(v);
             sLeaser.sprites[tuftIndex].rotation = hatRotation;
+            sLeaser.sprites[beltIndex].rotation = hatRotation;
             sLeaser.sprites[botIndex].rotation = hatRotation;
 
-            /* white ball (tuft) code */
-            Vector2 basePosVector = new Vector2(sLeaser.sprites[botIndex].x, sLeaser.sprites[botIndex].y);
-            Vector2 tuftBobble = new Vector2(Mathf.Cos((hatRotation) * -0.017453292f), Mathf.Sin((hatRotation) * -0.017453292f));
-            Vector2 vector3 = -Custom.PerpendicularVector(tuftBobble);
-            // basePosVector += tuftBobble * this.headRadius; doesn't work with held item, if included puts gap between tri and bottom
-            Vector2 vector4 = basePosVector + tuftBobble * 20f;
-            if (!Custom.DistLess(this.tuftPos, vector4, 20f))
-            {
-                this.tuftPos = vector4 + (this.tuftPos - vector4).normalized * 20f;
-                if (!Custom.DistLess(this.lastTuftPos, this.tuftPos, 20f))
-                {
-                    this.lastTuftPos = this.tuftPos + (this.lastTuftPos - this.tuftPos).normalized * 20f;
-                }
-            }
-            Vector2 tuftLocation = Vector2.Lerp(this.lastTuftPos, this.tuftPos, timeStacker);
-            sLeaser.sprites[tuftIndex].SetPosition(tuftLocation);
+            // setup
+            Vector2 drawPos = new Vector2(sLeaser.sprites[botIndex].x, sLeaser.sprites[botIndex].y);
+            Vector2 upDir = new Vector2(Mathf.Cos((hatRotation) * -0.017453292f), Mathf.Sin((hatRotation) * -0.017453292f));
+            Vector2 rightDir = -Custom.PerpendicularVector(upDir);
+            // drawPos += upDir * this.headRadius; doesn't work with held item, if included puts gap between tri and bottom
 
-            /* Triangle code */
-            TriangleMesh triangleMesh = (TriangleMesh)sLeaser.sprites[triIndex];
-            Vector2 triWidth1 = basePosVector - vector3 * 7f;
-            Vector2 triWidth2 = basePosVector + vector3 * 7f;
-            Vector2 triHeight1 = Vector2.Lerp(triWidth1, vector4, 0.5f);
-            Vector2 triHeight2 = Vector2.Lerp(triWidth2, vector4, 0.5f);
-            int i = 0;
-            int num = triangleMesh.vertices.Length;
-            while (i < num)
+			/* Tuft */
+			const float TUFTNUM = 25f; // some combination of height and stretch, changing it too much ruins the tuft bobble
+			Vector2 targetTuftPos = drawPos + upDir * (TUFTNUM + 5);
+			if (!Custom.DistLess(this.tuftPos, targetTuftPos, TUFTNUM))
+			{
+				this.tuftPos = targetTuftPos + (this.tuftPos - targetTuftPos).normalized * TUFTNUM;
+				if (!Custom.DistLess(this.lastTuftPos, this.tuftPos, TUFTNUM))
+				{
+					this.lastTuftPos = this.tuftPos + (this.lastTuftPos - this.tuftPos).normalized * TUFTNUM;
+				}
+			}
+			Vector2 tuftLocation = Vector2.Lerp(this.lastTuftPos, this.tuftPos, timeStacker);
+			sLeaser.sprites[tuftIndex].SetPosition(tuftLocation);
+
+            /* Belt */
+            Vector2 beltLocation = new Vector2(sLeaser.sprites[botIndex].x, sLeaser.sprites[botIndex].y) + upDir * 3;
+            sLeaser.sprites[beltIndex].SetPosition(beltLocation);
+
+            /* Cone */
+            TriangleMesh cone = (TriangleMesh)sLeaser.sprites[0];
+            Vector2 coneTip = Vector2.Lerp(lastTuftPos, tuftPos, timeStacker);
+            for (int i = 0, len = cone.vertices.Length; i < len; i++)
             {
-                bool flag = i % 2 == 1;
-                float num2 = (float)(i / 2) / (float)(num - 1) * 2f;
-                Vector2 vector10 = Vector2.Lerp(Vector2.Lerp(flag ? triWidth2 : triWidth1, flag ? triHeight2 : triHeight1, num2), Vector2.Lerp(flag ? triHeight2 : triHeight1, tuftLocation, num2), num2);
-                triangleMesh.MoveVertice(i, vector10);
-                i++;
+                bool r = i % 2 == 1;
+                float h = i / 2 / (float)(len - 1) * 2f;
+
+                Vector2 coneBase;
+                if (r)
+                    coneBase = drawPos - rightDir * 7f;
+                else
+                    coneBase = drawPos + rightDir * 7f;
+                Vector2 coneMid = Vector2.Lerp(coneBase, targetTuftPos, 0.5f);
+
+                Vector2 verticePos = Vector2.Lerp(Vector2.Lerp(coneBase, coneMid, h), Vector2.Lerp(coneMid, coneTip, h), h);
+                cone.MoveVertice(i, verticePos);
             }
+
 
             if (slatedForDeletetion || room != rCam.room)
             {
@@ -154,9 +169,15 @@ namespace HatWorld
         {
             //blackColor = palette.blackColor;
             //earthColor = Color.Lerp(palette.fogColor, palette.blackColor, 0.5f);
-            sLeaser.sprites[triIndex].color = Color.blue;
-            sLeaser.sprites[tuftIndex].color = Color.yellow;
-            sLeaser.sprites[botIndex].color = Color.yellow;
+
+			sLeaser.sprites[coneIndex].color = new Color(0.35f, 0.4f, 0.8f); // blue
+
+			sLeaser.sprites[tuftIndex].color = new Color(1f, 0.80f, 0.49f); // orange yellow
+            // sLeaser.sprites[tuftIndex].color = new Color(0.8f, 0.8f, 0.9f); // silver blue
+			// sLeaser.sprites[tuftIndex].color = new Color(1f, 0.96f, 0.55f); // light yellow
+
+            sLeaser.sprites[beltIndex].color = sLeaser.sprites[tuftIndex].color;
+            sLeaser.sprites[botIndex].color = sLeaser.sprites[coneIndex].color;
         }
     }
 }

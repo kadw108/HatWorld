@@ -1,6 +1,7 @@
 ﻿// Finished for now.
 
 using Fisobs;
+using Fisobs.Core;
 
 namespace HatWorld
 {
@@ -26,6 +27,9 @@ namespace HatWorld
 
         public override string ToString()
         {
+            string hatTypeString = ((int) this.hatType).ToString();
+            return this.SaveToString(hatTypeString);
+
             // see CentiShields and DataPearl.AbstractDataPearl for reference
             /*
             object[] array = new object[17];
@@ -51,6 +55,25 @@ namespace HatWorld
             return string.Concat(array);
             */
 
+
+            /*
+           object[] array = new object[13];
+            array[0] = this.ID.ToString();
+            array[1] = ";";
+            array[2] = this.type.ToString();
+            array[3] = ";";
+            array[4] = this.pos.room;
+            array[5] = ";";
+            array[6] = this.pos.x;
+            array[7] = ";";
+            array[8] = this.pos.y;
+            array[9] = ";";
+            array[10] = ((int) this.hatType).ToString();
+            array[11] = ";";
+            array[12] = this.pos.abstractNode;
+            return string.Concat(array);
+            */
+
             /* 
              * Version with AbstractConsumable
             object[] array = new object[17];
@@ -73,22 +96,6 @@ namespace HatWorld
             array[16] = this.pos.abstractNode;
             return string.Concat(array);
             */
-
-           object[] array = new object[13];
-            array[0] = this.ID.ToString();
-            array[1] = ";";
-            array[2] = this.type.ToString();
-            array[3] = ";";
-            array[4] = this.pos.room;
-            array[5] = ";";
-            array[6] = this.pos.x;
-            array[7] = ";";
-            array[8] = this.pos.y;
-            array[9] = ";";
-            array[10] = ((int) this.hatType).ToString();
-            array[11] = ";";
-            array[12] = this.pos.abstractNode;
-            return string.Concat(array);
         }
 
         public override void Realize()

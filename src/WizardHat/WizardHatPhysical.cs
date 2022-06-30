@@ -11,8 +11,9 @@ namespace HatWorld
         // public HatAbstract Abstr { get; }
 
         // taken from FestiveWorld SantaHat
-        public Vector2 tuftPos = Vector2.zero;
-        public Vector2 lastTuftPos = Vector2.zero;
+        public Vector2 tuftPos;
+        public Vector2 lastTuftPos;
+		public Vector2 tuftVel;
         // -- set in constructor, hardcoded to slugcat values
         public float headRadius = 5f;
 
@@ -64,8 +65,31 @@ namespace HatWorld
                 this.rotation.y = Mathf.Abs(this.rotation.y);
             }
 
-            // taken from FestiveWorld SantaHat
+            // taken from FestiveWorld SantaHat (with changes)
             this.lastTuftPos = this.tuftPos;
+
+            if (this.room != null)
+            {
+                /*
+                float rotationFloat = Custom.VecToDeg(this.rotation);
+                Vector2 upDir = new Vector2(Mathf.Cos((rotationFloat) * -0.017453292f), Mathf.Sin((rotationFloat) * -0.017453292f));
+                Vector2 rightDir = -Custom.PerpendicularVector(upDir);
+                */
+                Vector2 upDir = new Vector2(0, 1);
+                Vector2 rightDir = new Vector2(1, 0);
+
+                Vector2 tipPos = this.tuftPos;
+                tipPos += upDir * 2f;
+				this.tuftVel.y -= this.gravity;
+				this.tuftVel += rightDir * ((Vector2.Dot(rightDir, this.tuftPos - tipPos) > 0f) ? 1f : -1f);
+				this.tuftVel += (tipPos - this.tuftPos) * 0.2f;
+				this.tuftVel *= 0.8f;
+				this.tuftPos += this.tuftVel;
+				if (!Custom.DistLess(this.tuftPos, tipPos, 6f))
+				{
+					this.tuftPos = tipPos + (this.tuftPos - tipPos).normalized * 6f;
+				}
+			}
         }
 
         public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
@@ -88,7 +112,8 @@ namespace HatWorld
             sLeaser.sprites[beltIndex] = new FSprite("LizardScaleA6", true);
             sLeaser.sprites[beltIndex].scaleY = 0.8f;
 			sLeaser.sprites[botIndex] = new FSprite("SpearFragment2", true);
-			sLeaser.sprites[botIndex].scaleY = 1.4f;
+			sLeaser.sprites[botIndex].scaleY = 1.6f;
+			sLeaser.sprites[botIndex].scaleX = 1.7f;
             this.AddToContainer(sLeaser, rCam, null);
         }
 
@@ -116,14 +141,15 @@ namespace HatWorld
             sLeaser.sprites[botIndex].rotation = hatRotation;
 
             // setup
-            Vector2 drawPos = new Vector2(sLeaser.sprites[botIndex].x, sLeaser.sprites[botIndex].y);
+            Vector2 drawPos = sLeaser.sprites[botIndex].GetPosition();
             Vector2 upDir = new Vector2(Mathf.Cos((hatRotation) * -0.017453292f), Mathf.Sin((hatRotation) * -0.017453292f));
             Vector2 rightDir = -Custom.PerpendicularVector(upDir);
             // drawPos += upDir * this.headRadius; doesn't work with held item, if included puts gap between tri and bottom
 
 			/* Tuft */
-			const float TUFTNUM = 25f; // some combination of height and stretch, changing it too much ruins the tuft bobble
-			Vector2 targetTuftPos = drawPos + upDir * (TUFTNUM + 5);
+			const float TUFTNUM = 20f; // some combination of height and stretch, changing it too much ruins the tuft bobble
+			Vector2 targetTuftPos = drawPos + upDir * (TUFTNUM + 4);
+            targetTuftPos += new Vector2(2, 0);
 			if (!Custom.DistLess(this.tuftPos, targetTuftPos, TUFTNUM))
 			{
 				this.tuftPos = targetTuftPos + (this.tuftPos - targetTuftPos).normalized * TUFTNUM;

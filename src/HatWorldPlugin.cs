@@ -121,16 +121,7 @@ namespace HatWorld
          */
         private void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
         {
-            /*
-            // hat effects (not used for now)
-            if (playerWearingHat == HatType.Wizard)
-            {
-                self.gravity = 0.4f;
-            } else if (playerWearingHat != HatType.Wizard)
-            {
-                self.gravity = 0.9f;
-            }
-            */
+            // addHatEffects(self);
 
             orig.Invoke(self, eu);
 
@@ -190,7 +181,21 @@ namespace HatWorld
             }
 
         }
-   
+ 
+        /*
+         * Add/remove special effects of hat being worn.
+         */
+        private void addHatEffects(Player self)
+        {
+            if (playerWearingHat == HatType.Wizard)
+            {
+                self.gravity = 0.8f;
+            } else if (playerWearingHat != HatType.Wizard)
+            {
+                self.gravity = 0.9f;
+            }
+        }        
+
         /*
          * Given what the hat type should be, creates a WearingHat for when the player needs one
          * Always called with playerWearingHat as hatType

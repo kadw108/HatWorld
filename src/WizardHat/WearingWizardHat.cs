@@ -60,7 +60,8 @@ namespace HatWorld
 			sLeaser.sprites[beltIndex] = new FSprite("LizardScaleA6", true);
 			sLeaser.sprites[beltIndex].scaleY = 0.8f;
 			sLeaser.sprites[botIndex] = new FSprite("SpearFragment2", true);
-			sLeaser.sprites[botIndex].scaleY = 1.4f;
+			sLeaser.sprites[botIndex].scaleY = 1.6f;
+			sLeaser.sprites[botIndex].scaleX = 1.7f;
 			this.AddToContainer(sLeaser, rCam, null);
 		}
 
@@ -89,11 +90,11 @@ namespace HatWorld
 			/* Brim */
 			sLeaser.sprites[botIndex].SetPosition(drawPos);
 			sLeaser.sprites[botIndex].rotation = this.rotation + this.baseRot;
-			sLeaser.sprites[botIndex].scaleY = (this.flipX ? -1.4f : 1.4f);
+			sLeaser.sprites[botIndex].scaleY = (this.flipX ? -1.6f : 1.6f);
 
 			/* Tuft */
 			const float TUFTNUM = 25f; // some combination of height and stretch, changing it too much ruins the tuft bobble
-			Vector2 targetTuftPos = drawPos + upDir * (TUFTNUM + 5);
+			Vector2 targetTuftPos = drawPos + upDir * (TUFTNUM + 10);
 			if (!Custom.DistLess(this.tuftPos, targetTuftPos, TUFTNUM))
 			{
 				this.tuftPos = targetTuftPos + (this.tuftPos - targetTuftPos).normalized * TUFTNUM;

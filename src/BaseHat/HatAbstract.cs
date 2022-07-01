@@ -6,7 +6,7 @@ using Fisobs.Core;
 namespace HatWorld
 {
     // based on abstractdatapearl
-    sealed class HatAbstract : AbstractPhysicalObject
+    public class HatAbstract : AbstractPhysicalObject
     {
         public HatType hatType;
         

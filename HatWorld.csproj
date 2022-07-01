@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="src\HatPlacer\spawns.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="src\HatPlacer\spawns.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Assembly-CSharp">
       <HintPath>..\referencefolder\Assembly-CSharp.dll</HintPath>
     </Reference>

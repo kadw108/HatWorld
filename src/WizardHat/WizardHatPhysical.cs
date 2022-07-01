@@ -17,10 +17,6 @@ namespace HatWorld
         // -- set in constructor, hardcoded to slugcat values
         public float headRadius = 5f;
 
-        // rotation (initial value from SantaHat)
-        public Vector2 rotation;
-        public Vector2 lastRotation;
-
         // etc...
         // To spawn a CustomPO in the world, use `new CustomAPO(world, pos, world.game.GetNewID()).Spawn()`.
 
@@ -32,24 +28,7 @@ namespace HatWorld
 
 		public override HatType hatType => HatType.Wizard;
 
-        public WizardHatPhysical(HatAbstract abstr, World world) : base(abstr, world)
-        {
-            /*
-            Abstr = abstr;
-
-            bodyChunks = new BodyChunk[1];
-            bodyChunks[0] = new BodyChunk(this, 0, new Vector2(0f, 0f), 5f, 0.07f);
-            bodyChunkConnections = new PhysicalObject.BodyChunkConnection[0];
-            airFriction = 0.999f;
-            gravity = 0.8f;
-            bounce = 0.3f;
-            surfaceFriction = 0.45f;
-            collisionLayer = 1;
-            waterFriction = 0.92f;
-            buoyancy = 0.75f;
-            firstChunk.loudness = 3f;
-            */
-        }
+        public WizardHatPhysical(HatAbstract abstr, World world) : base(abstr, world) { }
 
         public override void Update(bool eu)
         {

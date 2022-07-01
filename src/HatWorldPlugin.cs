@@ -42,7 +42,12 @@ namespace HatWorld
             // add new button response to player controls
             On.Player.checkInput += Player_checkInput;
             On.Player.Update += Player_Update;
+
+            // Put hats in their respective rooms where they can be found
+            HatPlacer.OnEnable();
         }
+
+        /* ---------- Player worn hat methods ------------ */
 
         /*
          * Adds worn hat to player when player enters new room, if hat is being worn
@@ -71,7 +76,7 @@ namespace HatWorld
             }
         }
 
-        /* ---------------------- */
+        /* ----------- Player general hat methods ----------- */
 
         /*
          * Adds custom button check for wearHat to controls (required for good buttonpress response)
@@ -136,7 +141,6 @@ namespace HatWorld
                 self.room.abstractRoom.AddEntity(newHat);
                 newHat.RealizeInRoom();
                 self.SlugcatGrab(newHat.realizedObject, 0);
-                Debug.Log("hatworld generate new hat " + newHat.hatType);
             }
 
             // wear hat flag
@@ -160,7 +164,6 @@ namespace HatWorld
                             // add worn hat
                             wornHat = addWornHat(grabbedHatType, self.graphicsModule);
                             playerWearingHat = grabbedHatType;
-                            Debug.Log("hatworld s wear hat " + wornHat.hatType);
                             break;
                         }
                     }
@@ -176,7 +179,6 @@ namespace HatWorld
                     self.room.abstractRoom.AddEntity(heldHat);
                     heldHat.RealizeInRoom();
                     self.SlugcatGrab(heldHat.realizedObject, 0);
-                    Debug.Log("hatworld s remove hat " + heldHat.hatType);
                 }
             }
 
@@ -214,5 +216,8 @@ namespace HatWorld
                     return new WearingSantaHat(graphicsModule, 3, -90f, 5f);
             }
         } 
+    
+        /* ----------- Place hat in world methods ----------- */
+
     }
 }

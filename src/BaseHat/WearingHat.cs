@@ -5,7 +5,7 @@ namespace HatWorld
 {
 	// Hat that is being worn by slugcat
 	// Uses code from FestiveWorld mod
-	abstract class WearingHat : UpdatableAndDeletable, IDrawable
+	public abstract class WearingHat : UpdatableAndDeletable, IDrawable
 	{
 		// method to get type of hat, required so HatWorldPlugin knows which type of hat to give back when worn hat is removed
 		public abstract HatType hatType { get; }

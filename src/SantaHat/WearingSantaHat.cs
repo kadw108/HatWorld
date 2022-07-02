@@ -114,13 +114,10 @@ namespace HatWorld
                 cone.MoveVertice(i, pos);
             }
 
-
+			// TODO: delete?
 			if (this.parent.culled && !this.parent.lastCulled)
 			{
-				for (int j = 0; j < 3; j++)
-				{
-					sLeaser.sprites[0].isVisible = !this.parent.culled;
-				}
+				foreach (var sprite in sLeaser.sprites) sprite.isVisible = !parent.culled;
 			}
 			if (base.slatedForDeletetion || rCam.room != this.room || this.room != this.parent.owner.room)
 			{
@@ -166,24 +163,6 @@ namespace HatWorld
 				base.RemoveFromRoom();
 			}
 		}
-
-		/*
-		public void AddToContainer(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
-		{
-			if (newContatiner == null)
-			{
-				newContatiner = rCam.ReturnFContainer("Items");
-			}
-			for (int i = 0; i < sLeaser.sprites.Length; i++)
-			{
-				sLeaser.sprites[i].RemoveFromContainer();
-			}
-			for (int j = 0; j < sLeaser.sprites.Length; j++)
-			{
-				newContatiner.AddChild(sLeaser.sprites[j]);
-			}
-		}
-		*/
 
 		public override void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
 		{

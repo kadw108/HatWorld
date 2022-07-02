@@ -132,13 +132,12 @@ namespace HatWorld
             }
 
 
+			// TODO: delete?
 			if (this.parent.culled && !this.parent.lastCulled)
 			{
-				for (int j = 0; j < 3; j++)
-				{
-					sLeaser.sprites[coneIndex].isVisible = !this.parent.culled;
-				}
+				foreach (var sprite in sLeaser.sprites) sprite.isVisible = !parent.culled;
 			}
+
 			if (base.slatedForDeletetion || rCam.room != this.room || this.room != this.parent.owner.room)
 			{
 				sLeaser.CleanSpritesAndRemove();

@@ -11,7 +11,8 @@ namespace HatWorld
     public enum HatType
     {
         Santa,
-        Wizard
+        Wizard,
+        Torch
     }
 
     [BepInPlugin("kadw.hatworld", "HatWorld", "1.0.0")]
@@ -135,7 +136,11 @@ namespace HatWorld
             if (hatFlag)
             {
                 // generate random hat type out of all existing hat types
+                /*
                 HatType newHatType = (HatType) (rand.Next() % Enum.GetValues(typeof(HatType)).Length);
+                Debug.Log("hatworld new hat generated " + newHatType);
+                */
+                HatType newHatType = HatType.Torch;
 
                 HatAbstract newHat = new HatAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID(), newHatType);
                 self.room.abstractRoom.AddEntity(newHat);
@@ -212,12 +217,13 @@ namespace HatWorld
                 case HatType.Wizard:
                     return new WearingWizardHat(graphicsModule, 3, -90f, 5f);
 
+                case HatType.Torch:
+                    return new WearingTorchHat(graphicsModule, 3, -90f, 5f);
+
                 default:
                     return new WearingSantaHat(graphicsModule, 3, -90f, 5f);
             }
         } 
     
-        /* ----------- Place hat in world methods ----------- */
-
     }
 }

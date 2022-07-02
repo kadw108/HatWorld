@@ -110,7 +110,11 @@ namespace HatWorld
 
                     case HatType.Wizard:
                         realizedObject = new WizardHatPhysical(this, this.world);
-                        break ;
+                        break;
+
+                    case HatType.Torch:
+                        realizedObject = new TorchHatPhysical(this, this.world);
+                        break;
                         
                     default:
                         realizedObject = new SantaHatPhysical(this, this.world);

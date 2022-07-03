@@ -12,7 +12,8 @@ namespace HatWorld
     {
         Santa,
         Wizard,
-        Torch
+        Torch,
+        Flower
     }
 
     [BepInPlugin("kadw.hatworld", "HatWorld", "1.0.0")]
@@ -28,8 +29,8 @@ namespace HatWorld
         // tracks buttonpresses for custom wear-hat button
         bool[] createHatInput = new bool[10];
         bool[] wearHatInput = new bool[10];
-        KeyCode createHatKey = KeyCode.O;
-        KeyCode wearHatKey = KeyCode.P;
+        KeyCode createHatKey = KeyCode.T;
+        KeyCode wearHatKey = KeyCode.Y;
 
         public void OnEnable()
         {
@@ -138,7 +139,7 @@ namespace HatWorld
                 // generate random hat type out of all existing hat types
                 HatType newHatType = (HatType) (rand.Next() % Enum.GetValues(typeof(HatType)).Length);
                 Debug.Log("hatworld new hat generated " + newHatType);
-                // HatType newHatType = HatType.Torch;
+                // HatType newHatType = HatType.Flower;
 
                 HatAbstract newHat = new HatAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID(), newHatType);
                 self.room.abstractRoom.AddEntity(newHat);
@@ -217,6 +218,9 @@ namespace HatWorld
 
                 case HatType.Torch:
                     return new WearingTorchHat(graphicsModule, 3, -90f, 5f);
+
+                case HatType.Flower:
+                    return new WearingFlowerHat(graphicsModule, 3, -90f, 5f);
 
                 default:
                     return new WearingSantaHat(graphicsModule, 3, -90f, 5f);

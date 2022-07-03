@@ -18,9 +18,9 @@ namespace HatWorld
         AbstractDataPearl inherits from AbstractConsumable so I'll probably have to make that change eventually
         For now stick with AbstractPhysicalObject
 
-        public HatAbstract(World world, WorldCoordinate pos, EntityID ID, int originRoom,
+        public HatAbstract(World world, WorldCoordinate drawPos, EntityID ID, int originRoom,
             int placedObjectIndex, PlacedObject.ConsumableObjectData consumableData, HatType hatType) :
-            base(world, HatFisob.Instance.Type, null, pos, ID, originRoom, placedObjectIndex, consumableData) {
+            base(world, HatFisob.Instance.Type, null, drawPos, ID, originRoom, placedObjectIndex, consumableData) {
 
             this.hatType = hatType;
         } */
@@ -37,13 +37,13 @@ namespace HatWorld
             array[1] = "<oA>";
             array[2] = this.type.ToString();
             array[3] = "<oA>";
-            array[4] = this.pos.room;
+            array[4] = this.drawPos.room;
             array[5] = ".";
-            array[6] = this.pos.x;
+            array[6] = this.drawPos.x;
             array[7] = ".";
-            array[8] = this.pos.y;
+            array[8] = this.drawPos.y;
             array[9] = ".";
-            array[10] = this.pos.abstractNode;
+            array[10] = this.drawPos.abstractNode;
             array[11] = "<oA>";
             array[12] = this.originRoom;
             array[13] = "<oA>";
@@ -62,15 +62,15 @@ namespace HatWorld
             array[1] = ";";
             array[2] = this.type.ToString();
             array[3] = ";";
-            array[4] = this.pos.room;
+            array[4] = this.drawPos.room;
             array[5] = ";";
-            array[6] = this.pos.x;
+            array[6] = this.drawPos.x;
             array[7] = ";";
-            array[8] = this.pos.y;
+            array[8] = this.drawPos.y;
             array[9] = ";";
             array[10] = ((int) this.hatType).ToString();
             array[11] = ";";
-            array[12] = this.pos.abstractNode;
+            array[12] = this.drawPos.abstractNode;
             return string.Concat(array);
             */
 
@@ -81,11 +81,11 @@ namespace HatWorld
             array[1] = ";";
             array[2] = this.type.ToString();
             array[3] = ";";
-            array[4] = this.pos.room;
+            array[4] = this.drawPos.room;
             array[5] = ";";
-            array[6] = this.pos.x;
+            array[6] = this.drawPos.x;
             array[7] = ";";
-            array[8] = this.pos.y;
+            array[8] = this.drawPos.y;
             array[9] = ";";
             array[10] = ((int) this.hatType).ToString();
             array[11] = ";";
@@ -93,7 +93,7 @@ namespace HatWorld
             array[13] = ";";
             array[14] = this.placedObjectIndex;
             array[15] = ";";
-            array[16] = this.pos.abstractNode;
+            array[16] = this.drawPos.abstractNode;
             return string.Concat(array);
             */
         }
@@ -115,7 +115,11 @@ namespace HatWorld
                     case HatType.Torch:
                         realizedObject = new TorchHatPhysical(this, this.world);
                         break;
-                        
+
+                    case HatType.Flower:
+                        realizedObject = new FlowerHatPhysical(this, this.world);
+                        break;
+
                     default:
                         realizedObject = new SantaHatPhysical(this, this.world);
                         break;

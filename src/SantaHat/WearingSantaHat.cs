@@ -10,7 +10,6 @@ namespace HatWorld
 		public Vector2 tuftPos;
 		public Vector2 lastTuftPos;
 		public Vector2 tuftVel;
-
 		public override HatType hatType => HatType.Santa;
 
 		public WearingSantaHat(GraphicsModule parent, int anchorSprite, float rotation, float headRadius)
@@ -38,13 +37,7 @@ namespace HatWorld
 
 		public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
 		{
-			Vector2 drawPos = base.basePos;
-
-			Vector2 upDir = new Vector2(Mathf.Cos((this.rotation + this.baseRot) * -0.017453292f), Mathf.Sin((this.rotation + this.baseRot) * -0.017453292f));
-			Vector2 rightDir = -Custom.PerpendicularVector(upDir);
-            if (flipY) upDir *= -1;
-            if (flipX) rightDir *= -1;
-			drawPos += upDir * this.headRadius;
+			base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
 			Vector2 targetTuftPos = drawPos + upDir * 20f;
 
 			// Rim
@@ -82,34 +75,33 @@ namespace HatWorld
                 Vector2 pos = Vector2.Lerp(Vector2.Lerp(coneBase, coneMid, h), Vector2.Lerp(coneMid, coneTip, h), h);
                 cone.MoveVertice(i, pos);
             }
-
-			base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
 		}
 
 		public override void ChildUpdate(bool eu)
 		{
 			this.lastTuftPos = this.tuftPos;
 
-            Vector2 vector = this.basePos;
-            Vector2 vector2 = new Vector2(Mathf.Cos((this.rotation + this.baseRot) * -0.017453292f), Mathf.Sin((this.rotation + this.baseRot) * -0.017453292f));
-            Vector2 rightDir = -Custom.PerpendicularVector(vector2);
+            Vector2 drawPos = this.basePos;
+            Vector2 upDir = new Vector2(Mathf.Cos((this.rotation + this.baseRot) * -0.017453292f), Mathf.Sin((this.rotation + this.baseRot) * -0.017453292f));
+            Vector2 rightDir = -Custom.PerpendicularVector(upDir);
             if (this.flipY)
             {
-                vector2 *= -1f;
+                upDir *= -1f;
             }
             if (this.flipX)
             {
                 rightDir *= -1f;
             }
-            vector += vector2 * 20f;
+            drawPos += upDir * 20f;
+
             this.tuftVel.y = this.tuftVel.y - this.parent.owner.gravity;
-            this.tuftVel += rightDir * ((Vector2.Dot(rightDir, this.tuftPos - vector) > 0f) ? 1.5f : -1.5f);
-            this.tuftVel += (vector - this.tuftPos) * 0.2f;
+            this.tuftVel += rightDir * ((Vector2.Dot(rightDir, this.tuftPos - drawPos) > 0f) ? 1.5f : -1.5f);
+            this.tuftVel += (drawPos - this.tuftPos) * 0.2f;
             this.tuftVel *= 0.6f;
             this.tuftPos += this.tuftVel;
-            if (!Custom.DistLess(this.tuftPos, vector, 13f))
+            if (!Custom.DistLess(this.tuftPos, drawPos, 13f))
             {
-                this.tuftPos = vector + (this.tuftPos - vector).normalized * 13f;
+                this.tuftPos = drawPos + (this.tuftPos - drawPos).normalized * 13f;
             }
 		}
 

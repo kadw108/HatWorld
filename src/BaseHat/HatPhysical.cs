@@ -6,14 +6,22 @@ namespace HatWorld
 {
     abstract class HatPhysical : PlayerCarryableItem, IDrawable
     {
-        // rotation (initial value from SantaHat)
-        public Vector2 rotation;
-        public Vector2 lastRotation;
-        
         public HatAbstract Abstr { get; }
         public abstract HatType hatType { get; }
 
-        // To spawn a CustomPO in the world, use `new CustomAPO(world, pos, world.game.GetNewID()).Spawn()`.
+        // rotation (initial value from SantaHat)
+        public Vector2 rotation;
+        public Vector2 lastRotation;
+
+        // darkness (from Centishields)
+        public float lastDarkness = -1f;
+        public float darkness;
+
+        // for DrawSprites
+        public Vector2 drawPos;
+        public float hatRotation;
+        public Vector2 upDir;
+        public Vector2 rightDir;
 
         public HatPhysical(HatAbstract abstr, World world) : base(abstr)
         {
@@ -40,14 +48,13 @@ namespace HatWorld
             }
         }
 
-        // from datapearl not sure if needed
         public override void PlaceInRoom(Room placeRoom)
         {
             base.PlaceInRoom(placeRoom);
             base.firstChunk.HardSetPosition(placeRoom.MiddleOfTile(this.abstractPhysicalObject.pos));
             this.NewRoom(placeRoom);
 
-            this.rotation = new Vector2(-1, 0); // points hats up (270 deg rotation)
+            this.rotation = new Vector2(-1, 0); // points hat up (270 deg rotation)
         }
 
         public override void Update(bool eu)
@@ -69,11 +76,42 @@ namespace HatWorld
                 }
                 HatPlacer.infos.Remove(this.Abstr);
             }
+
+            // From Mushroom.Update
+            this.lastDarkness = this.darkness;
+            this.darkness = this.room.Darkness(base.firstChunk.pos);
+            this.lastRotation = this.rotation;
+            if (this.grabbedBy.Count > 0)
+            {
+                this.rotation = Custom.PerpendicularVector(Custom.DirVec(base.firstChunk.pos, this.grabbedBy[0].grabber.mainBodyChunk.pos));
+                this.rotation.y = Mathf.Abs(this.rotation.y);
+            }
         }
 
         public abstract void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam);
 
-        public abstract void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos);
+        public virtual void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+        {
+            if (slatedForDeletetion || room != rCam.room)
+            {
+                sLeaser.CleanSpritesAndRemove();
+            }
+
+            // From CentiShields
+            /* Default DrawSprites code, gets basic values */
+            drawPos = Vector2.Lerp(firstChunk.lastPos, firstChunk.pos, timeStacker);
+            float temp = Mathf.InverseLerp(305f, 380f, timeStacker);
+            drawPos -= new Vector2(0, 20f * Mathf.Pow(temp, 3f));
+            drawPos -= camPos;
+
+            // rotate bottom + tuft
+            Vector2 v = Vector3.Slerp(this.lastRotation, this.rotation, timeStacker);
+            hatRotation = Custom.VecToDeg(v);
+
+            // setup
+            upDir = new Vector2(Mathf.Cos((hatRotation) * -0.017453292f), Mathf.Sin((hatRotation) * -0.017453292f));
+            rightDir = -Custom.PerpendicularVector(upDir);
+        }
 
         public abstract void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette);
 

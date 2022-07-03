@@ -5,20 +5,10 @@ namespace HatWorld
 {
     sealed class WizardHatPhysical : HatPhysical
     {
-        public float lastDarkness = -1f;
-        public float darkness;
-
-        // public HatAbstract Abstr { get; }
-
         // taken from FestiveWorld SantaHat
         public Vector2 tuftPos;
         public Vector2 lastTuftPos;
 		public Vector2 tuftVel;
-        // -- set in constructor, hardcoded to slugcat values
-        public float headRadius = 5f;
-
-        // etc...
-        // To spawn a CustomPO in the world, use `new CustomAPO(world, pos, world.game.GetNewID()).Spawn()`.
 
         // Constants for sLeaser sprite index (higher index appears over lower)
         public int coneIndex = 0;
@@ -33,16 +23,6 @@ namespace HatWorld
         public override void Update(bool eu)
         {
             base.Update(eu);
-
-            // taken from Mushroom Update
-            this.lastDarkness = this.darkness;
-            this.darkness = this.room.Darkness(base.firstChunk.pos);
-            this.lastRotation = this.rotation;
-            if (this.grabbedBy.Count > 0)
-            {
-                this.rotation = Custom.PerpendicularVector(Custom.DirVec(base.firstChunk.pos, this.grabbedBy[0].grabber.mainBodyChunk.pos));
-                this.rotation.y = Mathf.Abs(this.rotation.y);
-            }
 
             // taken from FestiveWorld SantaHat (with changes)
             this.lastTuftPos = this.tuftPos;
@@ -93,37 +73,22 @@ namespace HatWorld
 			sLeaser.sprites[botIndex] = new FSprite("SpearFragment2", true);
 			sLeaser.sprites[botIndex].scaleY = 1.6f;
 			sLeaser.sprites[botIndex].scaleX = 1.7f;
+
             this.AddToContainer(sLeaser, rCam, null);
         }
 
         public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
         {
-            // Taken from CentiShields
-            /* Default DrawSprites code, gets basic values */
-            Vector2 pos = Vector2.Lerp(firstChunk.lastPos, firstChunk.pos, timeStacker);
-            float temp = Mathf.InverseLerp(305f, 380f, timeStacker);
-            pos.y -= 20f * Mathf.Pow(temp, 3f);
+            // Setup
+            base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
             for (int j = 0; j < sLeaser.sprites.Length; j++)
             {
                 if (j != coneIndex) // the triangle vertices are set later on in this method, moving them twice puts them in the wrong place
                 {
-                    sLeaser.sprites[j].x = pos.x - camPos.x;
-                    sLeaser.sprites[j].y = pos.y - camPos.y;
+                    sLeaser.sprites[j].SetPosition(drawPos);
+                    sLeaser.sprites[j].rotation = hatRotation;
                 }
             }
-
-            // rotate bottom + tuft
-            Vector2 v = Vector3.Slerp(this.lastRotation, this.rotation, timeStacker);
-            float hatRotation = Custom.VecToDeg(v);
-            sLeaser.sprites[tuftIndex].rotation = hatRotation;
-            sLeaser.sprites[beltIndex].rotation = hatRotation;
-            sLeaser.sprites[botIndex].rotation = hatRotation;
-
-            // setup
-            Vector2 drawPos = sLeaser.sprites[botIndex].GetPosition();
-            Vector2 upDir = new Vector2(Mathf.Cos((hatRotation) * -0.017453292f), Mathf.Sin((hatRotation) * -0.017453292f));
-            Vector2 rightDir = -Custom.PerpendicularVector(upDir);
-            // drawPos += upDir * this.headRadius; doesn't work with held item, if included puts gap between tri and bottom
 
 			/* Tuft */
 			const float TUFTNUM = 20f; // some combination of height and stretch, changing it too much ruins the tuft bobble
@@ -141,7 +106,7 @@ namespace HatWorld
 			sLeaser.sprites[tuftIndex].SetPosition(tuftLocation);
 
             /* Belt */
-            Vector2 beltLocation = new Vector2(sLeaser.sprites[botIndex].x, sLeaser.sprites[botIndex].y) + upDir * 3;
+            Vector2 beltLocation = drawPos + upDir * 3;
             sLeaser.sprites[beltIndex].SetPosition(beltLocation);
 
             /* Cone */
@@ -163,11 +128,6 @@ namespace HatWorld
                 cone.MoveVertice(i, verticePos);
             }
 
-
-            if (slatedForDeletetion || room != rCam.room)
-            {
-                sLeaser.CleanSpritesAndRemove();
-            }
         }
 
         public override void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)

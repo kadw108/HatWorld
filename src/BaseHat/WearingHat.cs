@@ -7,16 +7,21 @@ namespace HatWorld
 	// Uses code from FestiveWorld mod
 	public abstract class WearingHat : UpdatableAndDeletable, IDrawable
 	{
-		public GraphicsModule parent { get; set; }
-		public int anchorSprite { get; set; }
-		public float rotation { get; set; }
-		public float headRadius { get; set; }
+		public GraphicsModule parent { get; }
+		public int anchorSprite { get; }
+		public float rotation { get; }
+		public float headRadius { get; }
 
-		public bool flipX { get; set; }
-		public bool flipY { get; set; }
+		// for ParentDrawSprites
+		public Vector2 basePos;
+		public float baseRot;
+		public bool flipX;
+		public bool flipY;
 
-		public Vector2 basePos { get; set; }
-		public float baseRot { get; set; }
+		// for DrawSprites
+		public Vector2 drawPos;
+		public Vector2 upDir;
+		public Vector2 rightDir;
 
 		public WearingHat(GraphicsModule parent, int anchorSprite, float rotation, float headRadius)
 		{
@@ -46,6 +51,14 @@ namespace HatWorld
 
 		public virtual void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
         {
+			drawPos = this.basePos;
+
+			upDir = new Vector2(Mathf.Cos((this.rotation + this.baseRot) * -0.017453292f), Mathf.Sin((this.rotation + this.baseRot) * -0.017453292f));
+			rightDir = -Custom.PerpendicularVector(upDir);
+            if (flipY) upDir *= -1;
+            if (flipX) rightDir *= -1;
+			drawPos += upDir * this.headRadius;
+
 			if (base.slatedForDeletetion || rCam.room != this.room || this.room != this.parent.owner.room)
 			{
 				sLeaser.CleanSpritesAndRemove();
@@ -61,7 +74,7 @@ namespace HatWorld
 			{
 				this.Destroy();
 			}
-			if (this.parent.owner.room != null)
+			else if (this.parent.owner.room != null)
             {
 				ChildUpdate(eu);
             }

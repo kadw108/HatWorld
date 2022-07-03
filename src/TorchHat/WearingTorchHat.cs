@@ -41,13 +41,7 @@ namespace HatWorld
 
 		public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
 		{
-			Vector2 drawPos = basePos;
-
-			Vector2 upDir = new Vector2(Mathf.Cos((this.rotation + this.baseRot) * -0.017453292f), Mathf.Sin((this.rotation + this.baseRot) * -0.017453292f));
-			Vector2 rightDir = -Custom.PerpendicularVector(upDir);
-            if (flipY) upDir *= -1;
-            if (flipX) rightDir *= -1;
-			drawPos += upDir * this.headRadius;
+			base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
 
 			/* Crown */
             sLeaser.sprites[crownIndex].SetPosition(drawPos);
@@ -62,10 +56,15 @@ namespace HatWorld
 			{
 				for (int i = 0; i < this.lightSources.Length; i++)
                 {
-					// this.lightSources[i].RemoveFromRoom();
+					Debug.Log("hatworld remove lightsource " + i + this.lightSources[i] == null);
+					try
+					{
+						this.lightSources[i].RemoveFromRoom(); // causes NullReferenceException
+					} catch {
+						Debug.Log("hatworld removefromroom didn't work " + i);
+                    }
 					this.lightSources[i] = null;
                 }
-				sLeaser.CleanSpritesAndRemove();
 			}
 			else
             {
@@ -82,18 +81,18 @@ namespace HatWorld
 
                     this.lightSources[0] = new LightSource(camAdjustedFirePos, false, new Color(0.7f, 0.4f, 0f), this);
                     this.lightSources[0].affectedByPaletteDarkness = 0.5f;
-                    this.lightSources[0].setAlpha = new float?(0.3f);
+                    this.lightSources[0].setAlpha = new float?(0.4f);
                     this.room.AddObject(this.lightSources[0]);
 
                     this.lightSources[1] = new LightSource(camAdjustedFirePos, false, new Color(1f, 0.8f, 0.4f), this);
                     this.lightSources[1].affectedByPaletteDarkness = 0.9f;
 					this.lightSources[1].setRad = new float?(35f);
-					this.lightSources[1].setAlpha = new float?(1.8f);
+					this.lightSources[1].setAlpha = new float?(1.9f);
                     this.room.AddObject(this.lightSources[1]);
                 }
                 else
                 {
-					this.lightSources[0].setRad = new float?(150f * this.flicker[0]);
+					this.lightSources[0].setRad = new float?(160f * this.flicker[0]);
 
                     for (int i = 0; i < this.lightSources.Length; i++)
                     {
@@ -122,8 +121,6 @@ namespace HatWorld
 			// sLeaser.sprites[crownIndex].color = new Color(0.86f, 0.55f, 0.11f); // gold
             sLeaser.sprites[crownIndex].color = new Color(0.82f, 0.62f, 0f); // gold 2
 			// sLeaser.sprites[crownIndex].color = new Color(0.68f, 0.54f, 0.13f); // burnished gold
-
-            // sLeaser.sprites[gemIndex].color = new Color(0.95f, 0.34f, 0.25f); // red
 		}
 	}
 }

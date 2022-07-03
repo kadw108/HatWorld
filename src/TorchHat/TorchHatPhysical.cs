@@ -5,20 +5,8 @@ namespace HatWorld
 {
     sealed class TorchHatPhysical : HatPhysical
     {
-        public float lastDarkness = -1f;
-        public float darkness;
-
-        // public HatAbstract Abstr { get; }
-
-        // taken from FestiveWorld SantaHat
-        // -- set in constructor, hardcoded to slugcat values
-        public float headRadius = 5f;
-
         // For glow
         public LightSource lightSource;
-
-        // etc...
-        // To spawn a CustomPO in the world, use `new CustomAPO(world, pos, world.game.GetNewID()).Spawn()`.
 
         // Constants for sLeaser sprite index (higher index appears over lower)
         public int crownIndex = 0;
@@ -57,35 +45,23 @@ namespace HatWorld
 
         public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
         {
-            // Taken from CentiShields
-            /* Default DrawSprites code, gets basic values */
-            Vector2 pos = Vector2.Lerp(firstChunk.lastPos, firstChunk.pos, timeStacker);
-            float temp = Mathf.InverseLerp(305f, 380f, timeStacker);
-            pos.y -= 20f * Mathf.Pow(temp, 3f);
+            // Setup
+            base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
             for (int j = 0; j < sLeaser.sprites.Length; j++)
             {
-                sLeaser.sprites[j].x = pos.x - camPos.x;
-                sLeaser.sprites[j].y = pos.y - camPos.y;
+                sLeaser.sprites[j].SetPosition(drawPos);
+                sLeaser.sprites[j].rotation = hatRotation;
             }
-
-            // Rotate hat
-            Vector2 v = Vector3.Slerp(this.lastRotation, this.rotation, timeStacker);
-            float hatRotation = Custom.VecToDeg(v);
-            foreach (var sprite in sLeaser.sprites) sprite.rotation = hatRotation;
-
-            // Setup
-            Vector2 drawPos = sLeaser.sprites[crownIndex].GetPosition();
-            Vector2 upDir = new Vector2(Mathf.Cos((hatRotation) * -0.017453292f), Mathf.Sin((hatRotation) * -0.017453292f));
-            Vector2 rightDir = -Custom.PerpendicularVector(upDir);
 
             /* Set positions */
             sLeaser.sprites[gemIndex].SetPosition(drawPos + upDir * 2f);
 
             /* Add glow */
+            Vector2 firePos = drawPos + camPos;
             // From Lantern in game code
             if (this.lightSource == null)
             {
-                this.lightSource = new LightSource(pos, false, new Color(1f, 0.8f, 0.4f), this);
+                this.lightSource = new LightSource(firePos, false, new Color(1f, 0.8f, 0.4f), this);
                 this.lightSource.affectedByPaletteDarkness = 0.9f;
                 float flicker = 1 + Mathf.Pow(Random.value, 3f) * 0.1f * ((Random.value >= 0.5f) ? 1f : -1f);
                 this.lightSource.setRad = new float?(35f * flicker);
@@ -94,14 +70,10 @@ namespace HatWorld
             }
             else
             {
-                this.lightSource.setPos = new Vector2?(pos);
+                this.lightSource.setPos = new Vector2?(firePos);
             }
 
-            if (slatedForDeletetion || room != rCam.room)
-            {
-                sLeaser.CleanSpritesAndRemove();
-            }
-            else
+            if (!(slatedForDeletetion || room != rCam.room))
             {
                 /* Fire particles */
                 this.room.AddObject(new FlameParticle(drawPos, 10f));
@@ -111,12 +83,6 @@ namespace HatWorld
         public override void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
         {
             sLeaser.sprites[crownIndex].color = new Color(0.82f, 0.62f, 0f); // gold 2
-
-            // sLeaser.sprites[gemIndex].color = new Color(1f, 0.86f, 0.40f); // orange
-            // sLeaser.sprites[gemIndex].color = new Color(1f, 0.91f, 0.73f); // very light orange
-            sLeaser.sprites[gemIndex].color = new Color(1f, 0.65f, 0.49f); // light red orange
-            // sLeaser.sprites[gemIndex].color = new Color(1f, 0.95f, 0.36f); // bright yellow
-            // sLeaser.sprites[gemIndex].color = new Color(0.95f, 0.34f, 0.25f); // red
         }
     }
 }

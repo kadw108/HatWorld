@@ -34,7 +34,7 @@ namespace HatWorld
             sLeaser.sprites[crownIndex].scaleX = 1.4f;
             sLeaser.sprites[crownIndex].scaleY = 0.9f;
 			sLeaser.sprites[gemIndex] = new FSprite("deerEyeA", true);
-            sLeaser.sprites[gemIndex].scale = 0.6f;
+            sLeaser.sprites[gemIndex].scale = 0.5f;
 
 			this.AddToContainer(sLeaser, rCam, null);
 		}
@@ -87,8 +87,8 @@ namespace HatWorld
 
                     this.lightSources[1] = new LightSource(camAdjustedFirePos, false, new Color(1f, 0.8f, 0.4f), this);
                     this.lightSources[1].affectedByPaletteDarkness = 0.9f;
-					this.lightSources[1].setRad = new float?(40f);
-					this.lightSources[1].setAlpha = new float?(2f);
+					this.lightSources[1].setRad = new float?(35f);
+					this.lightSources[1].setAlpha = new float?(1.8f);
                     this.room.AddObject(this.lightSources[1]);
                 }
                 else
@@ -124,7 +124,6 @@ namespace HatWorld
 			// sLeaser.sprites[crownIndex].color = new Color(0.68f, 0.54f, 0.13f); // burnished gold
 
             // sLeaser.sprites[gemIndex].color = new Color(0.95f, 0.34f, 0.25f); // red
-            sLeaser.sprites[gemIndex].color = new Color(1f, 0.94f, 0.85f); // light red
 		}
 	}
 }

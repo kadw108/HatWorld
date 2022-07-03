@@ -9,7 +9,6 @@ namespace HatWorld {
         public float lifeTime;
         public float life;
         public float lastLife;
-
         public FlameParticle(Vector2 pos)
         {
             this.pos = pos;
@@ -18,6 +17,10 @@ namespace HatWorld {
             this.vel.y += 2; // Prevent fire from covering face when you travel up (eg. pole climbing)
             this.life = 1f;
             this.lifeTime = Mathf.Lerp(7f, 15f, Random.value);
+        }
+        public FlameParticle(Vector2 pos, float size) : this(pos)
+        {
+            this.lifeTime = Mathf.Lerp(size/2, size, Random.value);
         }
 
         public override void Update(bool eu)

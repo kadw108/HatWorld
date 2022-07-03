@@ -28,8 +28,8 @@ namespace HatWorld
         // tracks buttonpresses for custom wear-hat button
         bool[] createHatInput = new bool[10];
         bool[] wearHatInput = new bool[10];
-        KeyCode createHatKey = KeyCode.A;
-        KeyCode wearHatKey = KeyCode.S;
+        KeyCode createHatKey = KeyCode.O;
+        KeyCode wearHatKey = KeyCode.P;
 
         public void OnEnable()
         {

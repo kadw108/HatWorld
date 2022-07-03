@@ -46,12 +46,11 @@ namespace HatWorld
 
         public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
         {
-			sLeaser.sprites = new FSprite[3];
+			sLeaser.sprites = new FSprite[2];
 			sLeaser.sprites[crownIndex] = new FSprite("SpiderLeg3B", true);
             sLeaser.sprites[crownIndex].scaleX = 1.5f;
 			sLeaser.sprites[gemIndex] = new FSprite("deerEyeA", true);
-            sLeaser.sprites[gemIndex].scale = 0.6f;
-            sLeaser.sprites[gleamIndex] = new FSprite("tinyStar", true);
+            sLeaser.sprites[gemIndex].scale = 0.4f;
 
             this.AddToContainer(sLeaser, rCam, null);
         }
@@ -80,8 +79,7 @@ namespace HatWorld
             Vector2 rightDir = -Custom.PerpendicularVector(upDir);
 
             /* Set positions */
-            sLeaser.sprites[gemIndex].SetPosition(drawPos + upDir * 3f);
-            sLeaser.sprites[gleamIndex].SetPosition((sLeaser.sprites[gemIndex].GetPosition())+ new Vector2(-0.5f, 1.5f));
+            sLeaser.sprites[gemIndex].SetPosition(drawPos + upDir * 2f);
 
             /* Add glow */
             // From Lantern in game code
@@ -103,16 +101,22 @@ namespace HatWorld
             {
                 sLeaser.CleanSpritesAndRemove();
             }
+            else
+            {
+                /* Fire particles */
+                this.room.AddObject(new FlameParticle(drawPos, 10f));
+            }
         }
 
         public override void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
         {
             sLeaser.sprites[crownIndex].color = new Color(0.82f, 0.62f, 0f); // gold 2
+
             // sLeaser.sprites[gemIndex].color = new Color(1f, 0.86f, 0.40f); // orange
             // sLeaser.sprites[gemIndex].color = new Color(1f, 0.91f, 0.73f); // very light orange
-            // sLeaser.sprites[gemIndex].color = new Color(1f, 0.65f, 0.49f); // light red orange
+            sLeaser.sprites[gemIndex].color = new Color(1f, 0.65f, 0.49f); // light red orange
             // sLeaser.sprites[gemIndex].color = new Color(1f, 0.95f, 0.36f); // bright yellow
-            sLeaser.sprites[gemIndex].color = new Color(0.95f, 0.34f, 0.25f); // red
+            // sLeaser.sprites[gemIndex].color = new Color(0.95f, 0.34f, 0.25f); // red
         }
     }
 }

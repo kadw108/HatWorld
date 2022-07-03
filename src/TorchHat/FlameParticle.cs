@@ -15,8 +15,9 @@ namespace HatWorld {
             this.pos = pos;
             this.lastPos = pos;
             this.vel = Custom.RNV() * 1.5f * Random.value;
+            this.vel.y += 2; // Prevent fire from covering face when you travel up (eg. pole climbing)
             this.life = 1f;
-            this.lifeTime = Mathf.Lerp(10f, 30f, Random.value);
+            this.lifeTime = Mathf.Lerp(7f, 15f, Random.value);
         }
 
         public override void Update(bool eu)
@@ -46,8 +47,9 @@ namespace HatWorld {
             sLeaser.sprites[0].x = Mathf.Lerp(this.lastPos.x, this.pos.x, timeStacker);
             sLeaser.sprites[0].y = Mathf.Lerp(this.lastPos.y, this.pos.y, timeStacker);
             float num = Mathf.Lerp(this.lastLife, this.life, timeStacker);
-            sLeaser.sprites[0].scale = num;
-            sLeaser.sprites[0].color = Custom.HSL2RGB(Mathf.Lerp(0.01f, 0.08f, num), 1f, Mathf.Lerp(0.5f, 1f, Mathf.Pow(num, 3f)));
+            sLeaser.sprites[0].scale = num * 0.9f;
+            // sLeaser.sprites[0].color = Custom.HSL2RGB(Mathf.Lerp(0.01f, 0.08f, num), 1f, Mathf.Lerp(0.5f, 1f, Mathf.Pow(num, 3f)));
+            sLeaser.sprites[0].color = Custom.HSL2RGB(Mathf.Lerp(0.06f, 0.14f, num), 1f, Mathf.Lerp(0.5f, 0.9f, Mathf.Pow(num, 3f)));
 
             base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
         }

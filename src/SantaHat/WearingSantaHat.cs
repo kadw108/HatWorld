@@ -7,19 +7,6 @@ namespace HatWorld
 	// Uses code from FestiveWorld mod
 	sealed class WearingSantaHat : WearingHat
 	{
-		public GraphicsModule parent;
-
-		public int anchorSprite;
-
-		public float rotation;
-		public float headRadius;
-
-		public bool flipX;
-		public bool flipY;
-
-		public Vector2 basePos;
-		public float baseRot;
-
 		public Vector2 tuftPos;
 		public Vector2 lastTuftPos;
 		public Vector2 tuftVel;
@@ -27,13 +14,7 @@ namespace HatWorld
 		public override HatType hatType => HatType.Santa;
 
 		public WearingSantaHat(GraphicsModule parent, int anchorSprite, float rotation, float headRadius)
-		{
-			this.parent = parent;
-			this.anchorSprite = anchorSprite;
-			this.rotation = rotation;
-			this.headRadius = headRadius;
-			parent.owner.room.AddObject(this);
-		}
+			: base(parent, anchorSprite, rotation, headRadius) {}
 
 		public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
 		{
@@ -55,21 +36,9 @@ namespace HatWorld
 			this.AddToContainer(sLeaser, rCam, null);
 		}
 
-		public override void ParentDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
-		{
-			if (sLeaser.sprites.Length > this.anchorSprite)
-			{
-				this.basePos.Set(sLeaser.sprites[this.anchorSprite].x, sLeaser.sprites[this.anchorSprite].y);
-				this.baseRot = sLeaser.sprites[this.anchorSprite].rotation;
-
-				this.flipX = (sLeaser.sprites[this.anchorSprite].scaleX > 0f);
-				this.flipY = (sLeaser.sprites[this.anchorSprite].scaleY < 0f);
-			}
-		}
-
 		public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
 		{
-			Vector2 drawPos = this.basePos;
+			Vector2 drawPos = base.basePos;
 
 			Vector2 upDir = new Vector2(Mathf.Cos((this.rotation + this.baseRot) * -0.017453292f), Mathf.Sin((this.rotation + this.baseRot) * -0.017453292f));
 			Vector2 rightDir = -Custom.PerpendicularVector(upDir);
@@ -114,54 +83,34 @@ namespace HatWorld
                 cone.MoveVertice(i, pos);
             }
 
-			// TODO: delete?
-			if (this.parent.culled && !this.parent.lastCulled)
-			{
-				foreach (var sprite in sLeaser.sprites) sprite.isVisible = !parent.culled;
-			}
-			if (base.slatedForDeletetion || rCam.room != this.room || this.room != this.parent.owner.room)
-			{
-				sLeaser.CleanSpritesAndRemove();
-			}
+			base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
 		}
 
-		public override void Update(bool eu)
+		public override void ChildUpdate(bool eu)
 		{
-			base.Update(eu);
 			this.lastTuftPos = this.tuftPos;
-			GraphicsModule graphicsModule = this.parent;
-			if (((graphicsModule != null) ? graphicsModule.owner : null) == null || this.parent.owner.slatedForDeletetion || base.slatedForDeletetion)
-			{
-				this.Destroy();
-			}
-			else if (this.parent.owner.room != null)
-			{
-				Vector2 vector = this.basePos;
-				Vector2 vector2 = new Vector2(Mathf.Cos((this.rotation + this.baseRot) * -0.017453292f), Mathf.Sin((this.rotation + this.baseRot) * -0.017453292f));
-				Vector2 rightDir = -Custom.PerpendicularVector(vector2);
-				if (this.flipY)
-				{
-					vector2 *= -1f;
-				}
-				if (this.flipX)
-				{
-					rightDir *= -1f;
-				}
-				vector += vector2 * 20f;
-				this.tuftVel.y = this.tuftVel.y - this.parent.owner.gravity;
-				this.tuftVel += rightDir * ((Vector2.Dot(rightDir, this.tuftPos - vector) > 0f) ? 1.5f : -1.5f);
-				this.tuftVel += (vector - this.tuftPos) * 0.2f;
-				this.tuftVel *= 0.6f;
-				this.tuftPos += this.tuftVel;
-				if (!Custom.DistLess(this.tuftPos, vector, 13f))
-				{
-					this.tuftPos = vector + (this.tuftPos - vector).normalized * 13f;
-				}
-			}
-			if (base.slatedForDeletetion)
-			{
-				base.RemoveFromRoom();
-			}
+
+            Vector2 vector = this.basePos;
+            Vector2 vector2 = new Vector2(Mathf.Cos((this.rotation + this.baseRot) * -0.017453292f), Mathf.Sin((this.rotation + this.baseRot) * -0.017453292f));
+            Vector2 rightDir = -Custom.PerpendicularVector(vector2);
+            if (this.flipY)
+            {
+                vector2 *= -1f;
+            }
+            if (this.flipX)
+            {
+                rightDir *= -1f;
+            }
+            vector += vector2 * 20f;
+            this.tuftVel.y = this.tuftVel.y - this.parent.owner.gravity;
+            this.tuftVel += rightDir * ((Vector2.Dot(rightDir, this.tuftPos - vector) > 0f) ? 1.5f : -1.5f);
+            this.tuftVel += (vector - this.tuftPos) * 0.2f;
+            this.tuftVel *= 0.6f;
+            this.tuftPos += this.tuftVel;
+            if (!Custom.DistLess(this.tuftPos, vector, 13f))
+            {
+                this.tuftPos = vector + (this.tuftPos - vector).normalized * 13f;
+            }
 		}
 
 		public override void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)

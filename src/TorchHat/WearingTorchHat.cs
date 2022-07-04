@@ -39,10 +39,8 @@ namespace HatWorld
 			this.AddToContainer(sLeaser, rCam, null);
 		}
 
-		public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+		public override void ChildDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
 		{
-			base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
-
 			/* Crown */
             sLeaser.sprites[crownIndex].SetPosition(drawPos);
 			sLeaser.sprites[crownIndex].rotation = this.rotation + this.baseRot;
@@ -56,13 +54,6 @@ namespace HatWorld
 			{
 				for (int i = 0; i < this.lightSources.Length; i++)
                 {
-					Debug.Log("hatworld remove lightsource " + i + this.lightSources[i] == null);
-					try
-					{
-						this.lightSources[i].RemoveFromRoom(); // can cause NullReferenceException
-					} catch {
-						Debug.Log("hatworld removefromroom didn't work " + i);
-                    }
 					this.lightSources[i] = null;
                 }
 			}

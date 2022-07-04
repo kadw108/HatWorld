@@ -46,9 +46,8 @@ namespace HatWorld
 			this.AddToContainer(sLeaser, rCam, null);
 		}
 
-		public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+		public override void ChildDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
 		{
-			base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
 			drawPos += new Vector2(0, 1); // increase y so hat doesn't go over eyes
 
 			/* Brim */

@@ -26,20 +26,29 @@ namespace HatWorld
 
             for (int i = 0; i < this.vines.Length; i++)
             {
-                this.vines[i] = new Vector2[5, 3];
+                if (i % 2 == 0)
+                {
+                    this.vines[i] = new Vector2[5, 3];
+                }
+                else
+                {
+                    this.vines[i] = new Vector2[4, 3];
+                }
             }
         }
 
         public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
         {
             sLeaser.sprites = new FSprite[this.vines.Length + 6];
-            sLeaser.sprites[leaf1] = new FSprite("haloGlyph4", true);
-            sLeaser.sprites[leaf2] = new FSprite("haloGlyph5", true);
 
-            sLeaser.sprites[petal1] = new FSprite("Cicada7eyes1", true);
-            sLeaser.sprites[petal2] = new FSprite("Pebble5", true) { scale = 0.7f };
-            sLeaser.sprites[petal3] = new FSprite("Cicada7eyes1", true);
-            sLeaser.sprites[petal4] = new FSprite("Cicada7eyes1", true);
+            sLeaser.sprites[leaf1] = new FSprite("haloGlyph4", true) { scale = 0.8f };
+            sLeaser.sprites[leaf2] = new FSprite("haloGlyph5", true) { scale = 0.8f };
+
+            sLeaser.sprites[petal1] = new FSprite("Cicada7eyes1", true) { scale = 0.8f };
+            sLeaser.sprites[petal2] = new FSprite("Pebble5", true) { scale = 0.6f };
+            sLeaser.sprites[petal3] = new FSprite("Cicada7eyes1", true) { scale = 0.8f };
+            sLeaser.sprites[petal4] = new FSprite("Cicada7eyes1", true) { scale = 0.8f };
+
 
             // vines
             for (int i = 0; i < this.vines.Length; i++)
@@ -111,26 +120,29 @@ namespace HatWorld
 
         public override void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
         {
-            // sLeaser.sprites[leaf1].color = new Color(0.42f, 0.85f, 0.5f); // lighter green
             sLeaser.sprites[leaf1].color = new Color(0.40f, 0.71f, 0.3f); // darker olive
-            // sLeaser.sprites[leaf1].color = new Color(0.24f, 0.89f, 0.60f); // seafoam green
 
             sLeaser.sprites[leaf2].color = sLeaser.sprites[leaf1].color;
 
-            // sLeaser.sprites[petal1].color = new Color(0.92f, 0.5f, 0.84f); // pink
-            // sLeaser.sprites[petal1].color = new Color(1f, 0.69f, 0.80f); // light pink
-            // sLeaser.sprites[petal1].color = new Color(0.96f, 0.33f, 0.57f); // darker pink
             sLeaser.sprites[petal1].color = new Color(1f, 0.8f, 0.38f); // yellow-orange
 
             sLeaser.sprites[petal2].color = new Color(1f, 0.97f, 0.57f); // light yellow
-            // sLeaser.sprites[petal2].color = sLeaser.sprites[petal1].color;
 
             sLeaser.sprites[petal3].color = new Color(1f, 0.41f, 0.65f); // lighter pink
             sLeaser.sprites[petal4].color = sLeaser.sprites[petal3].color;
 
-            Color vineColor = new Color(0.85f, 1f, 0.73f); // very light green
             for (int i = 0; i < this.vines.Length; i++)
             {
+                Color vineColor;
+                if (i % 2 == 0)
+                {
+                    vineColor = new Color(0.50f, 0.84f, 0.22f); // green
+                }
+                else
+                {
+                    vineColor = new Color(0.85f, 1f, 0.73f); // very light green
+                }
+
                 for (int j = 0; j < (sLeaser.sprites[vineIndex + i] as TriangleMesh).verticeColors.Length; j++)
                 {
                     (sLeaser.sprites[vineIndex + i] as TriangleMesh).verticeColors[j] = vineColor;
@@ -153,10 +165,10 @@ namespace HatWorld
         public override void PlaceInRoom(Room placeRoom)
         {
             base.PlaceInRoom(placeRoom);
-            this.ResetTentacles();
+            this.ResetVines();
         }
 
-        public void ResetTentacles()
+        public void ResetVines()
         {
             for (int i = 0; i < this.vines.Length; i++)
             {
@@ -172,7 +184,7 @@ namespace HatWorld
         public override void NewRoom(Room newRoom)
         {
             base.NewRoom(newRoom);
-            this.ResetTentacles();
+            this.ResetVines();
         }
 
         public override void Update(bool eu)
@@ -225,7 +237,6 @@ namespace HatWorld
                 }
             }
         }
-
     }
 }
 

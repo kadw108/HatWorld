@@ -15,60 +15,89 @@ namespace HatWorld
 		public const int petal2 = vineIndex + vineNumber + 4;
 		public const int petal4 = vineIndex + vineNumber + 5;
 
-		// Vines from Jellyfish.vines
+		/* Vines from Jellyfish.tentacles
+		 * Array of 2D arrays of vectors
+		 * Each 2D array is one vine, each row is 1 vertice
+		 * columns are start pos [j, 0] / end pos [j, 1] / length [j, 2]
+		 * vines[j][i, 0] is jth vine, ith vertice, start pos
+		 */
 		public Vector2[][,] vines;
+
 		public float vinesWithdrawn;
+        public Vector2 lastCamPos; // for AttachPos and ResetVines
+
+        public bool initializeVines;
 
 		public override HatType hatType => HatType.Flower;
 
 		public WearingFlowerHat(GraphicsModule parent, int anchorSprite, float rotation, float headRadius)
 			: base(parent, anchorSprite, rotation, headRadius) {
+            initializeVines = false;
 		}
 
 		public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
 		{
             // initialization
+            this.lastCamPos = rCam.pos;
             this.vines = new Vector2[vineNumber][,];
-
             for (int i = 0; i < this.vines.Length; i++)
             {
-                this.vines[i] = new Vector2[5, 3];
+                if (i % 2 == 0)
+                {
+                    this.vines[i] = new Vector2[5, 3];
+                }
+                else
+                {
+                    this.vines[i] = new Vector2[4, 3];
+                }
             }
 
             // define sprites
             sLeaser.sprites = new FSprite[this.vines.Length + 6];
-            sLeaser.sprites[leaf1] = new FSprite("haloGlyph4", true);
-            sLeaser.sprites[leaf2] = new FSprite("haloGlyph5", true);
+            sLeaser.sprites[leaf1] = new FSprite("haloGlyph4", true) { scale = 0.8f };
+            sLeaser.sprites[leaf2] = new FSprite("haloGlyph5", true) { scale = 0.8f };
 
-            sLeaser.sprites[petal1] = new FSprite("Cicada7eyes1", true);
-            sLeaser.sprites[petal2] = new FSprite("Pebble5", true) { scale = 0.7f };
-            sLeaser.sprites[petal3] = new FSprite("Cicada7eyes1", true);
-            sLeaser.sprites[petal4] = new FSprite("Cicada7eyes1", true);
+            sLeaser.sprites[petal1] = new FSprite("Cicada7eyes1", true) { scale = 0.8f };
+            sLeaser.sprites[petal2] = new FSprite("Pebble5", true) { scale = 0.6f };
+            sLeaser.sprites[petal3] = new FSprite("Cicada7eyes1", true) { scale = 0.8f };
+            sLeaser.sprites[petal4] = new FSprite("Cicada7eyes1", true) { scale = 0.8f };
 
             // vines
             for (int i = 0; i < this.vines.Length; i++)
             {
                 sLeaser.sprites[vineIndex + i] = TriangleMesh.MakeLongMesh(this.vines[i].GetLength(0), false, true);
+                sLeaser.sprites[vineIndex + i].isVisible = false;
             }
 
             this.AddToContainer(sLeaser, rCam, null);
 		}
 
-		public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+		public override void ChildDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
 		{
-			base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
+            lastCamPos = camPos;
+
+            if (this.initialized && !this.initializeVines)
+            {
+                // Vine positions must be initialized/reset after basePos is set in ParentDrawSprites (this.initialized == true)
+                this.ResetVines();
+                this.initializeVines = true;
+            }
 
             for (int j = 0; j < sLeaser.sprites.Length; j++)
             {
-                if (j < vineIndex || j >= vineIndex + vineNumber) // don't change vines, it messes up position code
+                if (j < vineIndex || j >= vineIndex + vineNumber) // don't change vines, it ruins vine position code
                 {
-                    sLeaser.sprites[j].rotation = this.rotation + this.baseRot;
+                    sLeaser.sprites[j].rotation = this.rotation; // + this.baseRot not needed
                 }
             }
 
+            Vector2 upDir = new(0, 1);
+            Vector2 rightDir = new(1, 0);
+            drawPos += upDir * 3;
+
             /* leaves */
-            sLeaser.sprites[leaf1].SetPosition(drawPos - rightDir * 4);
-            sLeaser.sprites[leaf2].SetPosition(drawPos + rightDir * 4);
+            sLeaser.sprites[leaf1].SetPosition(drawPos - rightDir * 3);
+            sLeaser.sprites[leaf2].SetPosition(drawPos + rightDir * 3);
             sLeaser.sprites[petal2].SetPosition(drawPos - rightDir * 3);
 
             sLeaser.sprites[leaf1].rotation += 90f;
@@ -91,7 +120,10 @@ namespace HatWorld
                 // j is index for this.vines, vineIndex + j is index for sLeaser.sprites
                 float num = 0f;
 
-                Vector2 a = this.AttachPos(j, timeStacker);
+                Vector2 a = this.AttachPos(j, timeStacker, camPos);
+
+                // Debug.Log("hatworld wearingvines camera " + camPos + " " + lastCamPos + " pos " + a + " " + drawPos + " " + (a - camPos) + " " + basePos);
+                // Debug.Log("hatworld wearingvines vines " + vines[0][0, 0] + " " + vines[0][0, 1] + vines[0][0, 2]);
 
                 for (int k = 0; k < this.vines[j].GetLength(0); k++)
                 {
@@ -101,20 +133,16 @@ namespace HatWorld
                     Vector2 a2 = Custom.PerpendicularVector(normalized);
                     float d = Vector2.Distance(a, vector3) / 5f;
 
-                    (sLeaser.sprites[vineIndex + j] as TriangleMesh).MoveVertice(k * 4, a - normalized * d - a2 * (num2 + num) * 0.5f);
-                    (sLeaser.sprites[vineIndex + j] as TriangleMesh).MoveVertice(k * 4 + 1, a - normalized * d + a2 * (num2 + num) * 0.5f);
-                    (sLeaser.sprites[vineIndex + j] as TriangleMesh).MoveVertice(k * 4 + 2, vector3 + normalized * d - a2 * num2);
-                    (sLeaser.sprites[vineIndex + j] as TriangleMesh).MoveVertice(k * 4 + 3, vector3 + normalized * d + a2 * num2);
+                    (sLeaser.sprites[vineIndex + j] as TriangleMesh).MoveVertice(k * 4, a - normalized * d - a2 * (num2 + num) * 0.5f - camPos);
+                    (sLeaser.sprites[vineIndex + j] as TriangleMesh).MoveVertice(k * 4 + 1, a - normalized * d + a2 * (num2 + num) * 0.5f - camPos);
+                    (sLeaser.sprites[vineIndex + j] as TriangleMesh).MoveVertice(k * 4 + 2, vector3 + normalized * d - a2 * num2 - camPos);
+                    (sLeaser.sprites[vineIndex + j] as TriangleMesh).MoveVertice(k * 4 + 3, vector3 + normalized * d + a2 * num2 - camPos);
+                    sLeaser.sprites[vineIndex + j].isVisible = true;
 
                     a = vector3;
                     num = num2;
                 }
             }
-
-			if (base.slatedForDeletetion || rCam.room != this.room || this.room != this.parent.owner.room)
-			{
-                // this.ResetTentacles();
-			}
 		}
 
 		public override void ChildUpdate(bool eu)
@@ -128,17 +156,23 @@ namespace HatWorld
                     float t = (float)j / (float)(this.vines[i].GetLength(0) - 1);
                     this.vines[i][j, 1] = this.vines[i][j, 0];
                     this.vines[i][j, 0] += this.vines[i][j, 2];
-                    // this.vines[i][j, 2] -= this.rotation * Mathf.InverseLerp(4f, 0f, (float)j) * 0.8f; // TODO
+
+                    // this.vines[i][j, 2] -= this.rotation * Mathf.InverseLerp(4f, 0f, (float)j) * 0.8f;
+                   // Cannot do since WearingHat stores rotation as float, not Vector2
+
                     this.vines[i][j, 2] *= Custom.LerpMap(this.vines[i][j, 2].magnitude, 1f, 10f, 1f, 0.5f, Mathf.Lerp(1.4f, 0.4f, t));
                     this.vines[i][j, 2] += Custom.RNV() * 0.2f;
                     this.vines[i][j, 2] *= 0.999f;
                     this.vines[i][j, 2].y -= this.room.gravity * 0.6f;
+
+                    /* Physics collision causes odd vine behavior
                     SharedPhysics.TerrainCollisionData terrainCollisionData = new SharedPhysics.TerrainCollisionData(this.vines[i][j, 0], this.vines[i][j, 1], this.vines[i][j, 2], 1f, new IntVector2(0, 0), false);
                     terrainCollisionData = SharedPhysics.HorizontalCollision(this.room, terrainCollisionData);
                     terrainCollisionData = SharedPhysics.VerticalCollision(this.room, terrainCollisionData);
                     terrainCollisionData = SharedPhysics.SlopesVertically(this.room, terrainCollisionData);
                     this.vines[i][j, 0] = terrainCollisionData.pos;
                     this.vines[i][j, 2] = terrainCollisionData.vel;
+                    */
             }
                 for (int k = 0; k < this.vines[i].GetLength(0); k++)
                 {
@@ -159,7 +193,7 @@ namespace HatWorld
                     }
                     else
                     {
-                        this.vines[i][k, 0] = this.AttachPos(i, 1f);
+                        this.vines[i][k, 0] = this.AttachPos(i, 1f, lastCamPos);
                         this.vines[i][k, 2] *= 0f;
                     }
                 }
@@ -168,7 +202,7 @@ namespace HatWorld
 
 		public override void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
 		{
-            sLeaser.sprites[leaf1].color = new Color(0.40f, 0.71f, 0.3f); // darker olive
+            sLeaser.sprites[leaf1].color = new Color(0.53f, 0.81f, 0.4f); // lighter olive
             sLeaser.sprites[leaf2].color = sLeaser.sprites[leaf1].color;
 
             sLeaser.sprites[petal1].color = new Color(1f, 0.8f, 0.38f); // yellow-orange
@@ -176,9 +210,18 @@ namespace HatWorld
             sLeaser.sprites[petal3].color = new Color(1f, 0.41f, 0.65f); // lighter pink
             sLeaser.sprites[petal4].color = sLeaser.sprites[petal3].color;
 
-            Color vineColor = new Color(0.85f, 1f, 0.73f); // very light green
             for (int i = 0; i < this.vines.Length; i++)
             {
+                Color vineColor;
+                if (i % 2 == 0)
+                {
+                    vineColor = new Color(0.50f, 0.84f, 0.22f); // green
+                }
+                else
+                {
+                    vineColor = new Color(0.85f, 1f, 0.73f); // very light green
+                }
+
                 for (int j = 0; j < (sLeaser.sprites[vineIndex + i] as TriangleMesh).verticeColors.Length; j++)
                 {
                     (sLeaser.sprites[vineIndex + i] as TriangleMesh).verticeColors[j] = vineColor;
@@ -188,46 +231,50 @@ namespace HatWorld
 
         /* Methods from JellyFish */
 
-        public Vector2 AttachPos(int j, float timeStacker)
+        public Vector2 AttachPos(int j, float timeStacker, Vector2 camPos)
         {
-            Debug.Log(basePos);
-            // Vector2 a = basePos - (Vector2) Vector3.Slerp(this.lastRotation, this.rotation, timeStacker) * 7f; // TODO
-            Vector2 a = basePos;
-            if (j >= 2) // 0, 1 - right side of hat, 2, 3 - left side of hat
+            // Requires camPos since the vine/tentacle code relies on this method returning "real" position, not camera-adjusted
+            // However basePos always returns the camera-adjusted (camPos has been subtracted) position of slugcat's head
+            // Thus re-add camPos to a, to subtract it later in DrawSprites
+            Vector2 a = (basePos + camPos) - new Vector2(0, 3);
+            a += upDir * this.headRadius;
+
+            switch (j) // 0, 1 - right side of hat, 2, 3 - left side of hat
             {
-                a -= rightDir * 16f;
+                case 0:
+                    a += new Vector2(-6, 0);
+                    break;
+
+                case 1:
+                    a += new Vector2(-5, 0);
+                    break;
+
+                case 2:
+                    a += new Vector2(6, 0);
+                    break;
+
+                case 3:
+                    a += new Vector2(5, 0);
+                    break;
             }
             return a;
         }
 
-        /* 
-        public override void PlaceInRoom(Room placeRoom)
+        public void ResetVines() // from JellyFish.ResetTentacles
         {
-            base.PlaceInRoom(placeRoom);
-            this.ResetTentacles();
-        }
-        */
-
-        public void ResetTentacles()
-        {
+            // Debug.Log("hatworld reset vines " + basePos + " " + (basePos + lastCamPos) + " " + drawPos);
             for (int i = 0; i < this.vines.Length; i++)
             {
                 for (int j = 0; j < this.vines[i].GetLength(0); j++)
                 {
-                    this.vines[i][j, 0] = basePos + Custom.RNV();
+                    this.vines[i][j, 0] = (basePos + lastCamPos) + Custom.RNV();
+                    // add lastCamPos to account for basePos being cam-adjusted
+
                     this.vines[i][j, 1] = this.vines[i][j, 0];
                     this.vines[i][j, 2] *= 0f;
                 }
             }
         }
-
-        /*
-        public override void NewRoom(Room newRoom)
-        {
-            base.NewRoom(newRoom);
-            this.ResetTentacles();
-        }
-        */
-	}
+    }
 }
 

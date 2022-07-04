@@ -23,12 +23,15 @@ namespace HatWorld
 		public Vector2 upDir;
 		public Vector2 rightDir;
 
+		public bool initialized;
+
 		public WearingHat(GraphicsModule parent, int anchorSprite, float rotation, float headRadius)
 		{
 			this.parent = parent;
 			this.anchorSprite = anchorSprite;
 			this.rotation = rotation;
 			this.headRadius = headRadius;
+			this.initialized = false; // ParentDrawSprites must run to set basePos and drawPos
 			parent.owner.room.AddObject(this);
 		}
 
@@ -41,19 +44,25 @@ namespace HatWorld
 
 		public virtual void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
         {
-			drawPos = this.basePos;
+			if (this.initialized)
+            {
+                drawPos = this.basePos;
 
-			upDir = new Vector2(Mathf.Cos((this.rotation + this.baseRot) * -0.017453292f), Mathf.Sin((this.rotation + this.baseRot) * -0.017453292f));
-			rightDir = -Custom.PerpendicularVector(upDir);
-            if (flipY) upDir *= -1;
-            if (flipX) rightDir *= -1;
-			drawPos += upDir * this.headRadius;
+                upDir = new Vector2(Mathf.Cos((this.rotation + this.baseRot) * -0.017453292f), Mathf.Sin((this.rotation + this.baseRot) * -0.017453292f));
+                rightDir = -Custom.PerpendicularVector(upDir);
+                if (flipY) upDir *= -1;
+                if (flipX) rightDir *= -1;
+                drawPos += upDir * this.headRadius;
 
-			if (base.slatedForDeletetion || rCam.room != this.room || this.room != this.parent.owner.room)
-			{
-				sLeaser.CleanSpritesAndRemove();
-			}
+                if (base.slatedForDeletetion || rCam.room != this.room || this.room != this.parent.owner.room)
+                {
+                    sLeaser.CleanSpritesAndRemove();
+                }
+
+				ChildDrawSprites(sLeaser, rCam, timeStacker, camPos);
+            }
         }
+		public abstract void ChildDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos);
 
 		public override void Update(bool eu)
         {
@@ -64,16 +73,10 @@ namespace HatWorld
 			{
 				this.Destroy();
 			}
-			else if (this.parent.owner.room != null)
+			else if (this.parent.owner.room != null && this.initialized)
             {
 				ChildUpdate(eu);
             }
-			/*
-			if (base.slatedForDeletetion)
-			{
-				base.RemoveFromRoom();
-			}
-			*/
 		}
 		public virtual void ChildUpdate(bool eu) { }
 
@@ -101,6 +104,8 @@ namespace HatWorld
 
 				this.flipX = (sLeaser.sprites[this.anchorSprite].scaleX > 0f);
 				this.flipY = (sLeaser.sprites[this.anchorSprite].scaleY < 0f);
+
+				this.initialized = true; // basePos and baseRot have been set, program can now update/draw as normal
 			}
 		}
 

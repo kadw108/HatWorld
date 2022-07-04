@@ -9,28 +9,12 @@ namespace HatWorld
         public LightSource lightSource;
 
         // Constants for sLeaser sprite index (higher index appears over lower)
-        public int crownIndex = 0;
-        public int gemIndex = 1;
-        public int gleamIndex = 2;
+        public const int crownIndex = 0;
+        public const int gemIndex = 1;
 
 		public override HatType hatType => HatType.Torch;
 
         public TorchHatPhysical(HatAbstract abstr, World world) : base(abstr, world) {}
-
-        public override void Update(bool eu)
-        {
-            base.Update(eu);
-
-            // taken from Mushroom Update
-            this.lastDarkness = this.darkness;
-            this.darkness = this.room.Darkness(base.firstChunk.pos);
-            this.lastRotation = this.rotation;
-            if (this.grabbedBy.Count > 0)
-            {
-                this.rotation = Custom.PerpendicularVector(Custom.DirVec(base.firstChunk.pos, this.grabbedBy[0].grabber.mainBodyChunk.pos));
-                this.rotation.y = Mathf.Abs(this.rotation.y);
-            }
-        }
 
         public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
         {
@@ -64,8 +48,8 @@ namespace HatWorld
                 this.lightSource = new LightSource(firePos, false, new Color(1f, 0.8f, 0.4f), this);
                 this.lightSource.affectedByPaletteDarkness = 0.9f;
                 float flicker = 1 + Mathf.Pow(Random.value, 3f) * 0.1f * ((Random.value >= 0.5f) ? 1f : -1f);
-                this.lightSource.setRad = new float?(35f * flicker);
-                this.lightSource.setAlpha = new float?(0.9f);
+                this.lightSource.setRad = new float?(20f * flicker);
+                this.lightSource.setAlpha = new float?(0.3f);
                 this.room.AddObject(this.lightSource);
             }
             else

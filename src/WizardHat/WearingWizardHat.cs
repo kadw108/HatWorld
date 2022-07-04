@@ -12,10 +12,10 @@ namespace HatWorld
 		public Vector2 tuftVel;
 
         // Constants for sLeaser sprite index (higher index appears over lower)
-        public int coneIndex = 0;
-        public int tuftIndex = 1;
-        public int beltIndex = 2;
-        public int botIndex = 3;
+        public const int coneIndex = 0;
+        public const int tuftIndex = 1;
+        public const int beltIndex = 2;
+        public const int botIndex = 3;
 
 		public override HatType hatType => HatType.Wizard;
 

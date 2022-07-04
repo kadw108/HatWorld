@@ -37,17 +37,7 @@ namespace HatWorld
 
 		public abstract void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam);
 
-		public void ParentDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
-		{
-			if (sLeaser.sprites.Length > this.anchorSprite)
-			{
-				this.basePos = sLeaser.sprites[this.anchorSprite].GetPosition();
-				this.baseRot = sLeaser.sprites[this.anchorSprite].rotation;
-
-				this.flipX = (sLeaser.sprites[this.anchorSprite].scaleX > 0f);
-				this.flipY = (sLeaser.sprites[this.anchorSprite].scaleY < 0f);
-			}
-		}
+		public abstract void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette);
 
 		public virtual void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
         {
@@ -85,7 +75,7 @@ namespace HatWorld
 			}
 			*/
 		}
-		public abstract void ChildUpdate(bool eu);
+		public virtual void ChildUpdate(bool eu) { }
 
 		public void AddToContainer(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
 		{
@@ -102,7 +92,17 @@ namespace HatWorld
 				newContatiner.AddChild(sLeaser.sprites[j]);
 			}
 		}
+		public void ParentDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+		{
+			if (sLeaser.sprites.Length > this.anchorSprite)
+			{
+				this.basePos = sLeaser.sprites[this.anchorSprite].GetPosition();
+				this.baseRot = sLeaser.sprites[this.anchorSprite].rotation;
 
-		public abstract void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette);
+				this.flipX = (sLeaser.sprites[this.anchorSprite].scaleX > 0f);
+				this.flipY = (sLeaser.sprites[this.anchorSprite].scaleY < 0f);
+			}
+		}
+
 	}
 }

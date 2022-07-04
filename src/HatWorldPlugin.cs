@@ -137,9 +137,9 @@ namespace HatWorld
             if (hatFlag)
             {
                 // generate random hat type out of all existing hat types
-                HatType newHatType = (HatType) (rand.Next() % Enum.GetValues(typeof(HatType)).Length);
-                Debug.Log("hatworld new hat generated " + newHatType);
-                // HatType newHatType = HatType.Flower;
+                // HatType newHatType = (HatType) (rand.Next() % Enum.GetValues(typeof(HatType)).Length);
+                // Debug.Log("hatworld new hat generated " + newHatType);
+                HatType newHatType = HatType.Flower;
 
                 HatAbstract newHat = new HatAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID(), newHatType);
                 self.room.abstractRoom.AddEntity(newHat);

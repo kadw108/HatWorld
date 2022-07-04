@@ -59,7 +59,7 @@ namespace HatWorld
 					Debug.Log("hatworld remove lightsource " + i + this.lightSources[i] == null);
 					try
 					{
-						this.lightSources[i].RemoveFromRoom(); // causes NullReferenceException
+						this.lightSources[i].RemoveFromRoom(); // can cause NullReferenceException
 					} catch {
 						Debug.Log("hatworld removefromroom didn't work " + i);
                     }

@@ -13,7 +13,8 @@ namespace HatWorld
         Santa,
         Wizard,
         Torch,
-        Flower
+        Flower,
+        Bubble
     }
 
     [BepInPlugin("kadw.hatworld", "HatWorld", "1.0.0")]
@@ -139,7 +140,7 @@ namespace HatWorld
                 // generate random hat type out of all existing hat types
                 // HatType newHatType = (HatType) (rand.Next() % Enum.GetValues(typeof(HatType)).Length);
                 // Debug.Log("hatworld new hat generated " + newHatType);
-                HatType newHatType = HatType.Torch;
+                HatType newHatType = HatType.Bubble;
 
                 HatAbstract newHat = new HatAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID(), newHatType);
                 self.room.abstractRoom.AddEntity(newHat);
@@ -221,6 +222,9 @@ namespace HatWorld
 
                 case HatType.Flower:
                     return new WearingFlowerHat(graphicsModule, 3, -90f, 5f);
+
+                case HatType.Bubble:
+                    return new WearingBubbleHat(graphicsModule, 3, -90f, 5f);
 
                 default:
                     return new WearingSantaHat(graphicsModule, 3, -90f, 5f);

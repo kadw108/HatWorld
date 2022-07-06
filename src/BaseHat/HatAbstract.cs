@@ -120,6 +120,10 @@ namespace HatWorld
                         realizedObject = new FlowerHatPhysical(this, this.world);
                         break;
 
+                    case HatType.Bubble:
+                        realizedObject = new BubbleHatPhysical(this, this.world);
+                        break;
+
                     default:
                         realizedObject = new SantaHatPhysical(this, this.world);
                         break;

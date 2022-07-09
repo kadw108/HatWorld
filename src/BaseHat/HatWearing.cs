@@ -5,12 +5,13 @@ namespace HatWorld
 {
 	// Hat that is being worn by slugcat
 	// Uses code from FestiveWorld mod
-	public abstract class WearingHat : UpdatableAndDeletable, IDrawable
+	public abstract class HatWearing : UpdatableAndDeletable, IDrawable
 	{
 		public GraphicsModule parent { get; }
-		public int anchorSprite { get; }
-		public float rotation { get; }
-		public float headRadius { get; }
+
+		public int anchorSprite = 3;
+		public float rotation;
+		public float headRadius = 5f;
 
 		// for ParentDrawSprites
 		public Vector2 basePos;
@@ -25,18 +26,13 @@ namespace HatWorld
 
 		public bool initialized;
 
-		public WearingHat(GraphicsModule parent, int anchorSprite, float rotation, float headRadius)
+		public HatWearing(GraphicsModule parent)
 		{
 			this.parent = parent;
-			this.anchorSprite = anchorSprite;
-			this.rotation = rotation;
-			this.headRadius = headRadius;
+			this.rotation = -90f;
 			this.initialized = false; // ParentDrawSprites must run to set basePos and drawPos
 			parent.owner.room.AddObject(this);
 		}
-
-		// method to get type of hat, required so HatWorldPlugin knows which type of hat to give back when worn hat is removed
-		public abstract HatType hatType { get; }
 
 		public abstract void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam);
 
@@ -48,11 +44,11 @@ namespace HatWorld
             {
                 drawPos = this.basePos;
 
-                upDir = new Vector2(Mathf.Cos((this.rotation + this.baseRot) * -0.017453292f), Mathf.Sin((this.rotation + this.baseRot) * -0.017453292f));
+                upDir = new Vector2(Mathf.Cos((rotation + this.baseRot) * -0.017453292f), Mathf.Sin((rotation + this.baseRot) * -0.017453292f));
                 rightDir = -Custom.PerpendicularVector(upDir);
                 if (flipY) upDir *= -1;
                 if (flipX) rightDir *= -1;
-                drawPos += upDir * this.headRadius;
+                drawPos += upDir * headRadius;
 
                 if (base.slatedForDeletetion || rCam.room != this.room || this.room != this.parent.owner.room)
                 {
@@ -97,13 +93,13 @@ namespace HatWorld
 		}
 		public void ParentDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
 		{
-			if (sLeaser.sprites.Length > this.anchorSprite)
+			if (sLeaser.sprites.Length > anchorSprite)
 			{
-				this.basePos = sLeaser.sprites[this.anchorSprite].GetPosition();
-				this.baseRot = sLeaser.sprites[this.anchorSprite].rotation;
+				this.basePos = sLeaser.sprites[anchorSprite].GetPosition();
+				this.baseRot = sLeaser.sprites[anchorSprite].rotation;
 
-				this.flipX = (sLeaser.sprites[this.anchorSprite].scaleX > 0f);
-				this.flipY = (sLeaser.sprites[this.anchorSprite].scaleY < 0f);
+				this.flipX = (sLeaser.sprites[anchorSprite].scaleX > 0f);
+				this.flipY = (sLeaser.sprites[anchorSprite].scaleY < 0f);
 
 				this.initialized = true; // basePos and baseRot have been set, program can now update/draw as normal
 			}

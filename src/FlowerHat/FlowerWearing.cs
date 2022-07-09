@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace HatWorld
 {
-	sealed class WearingFlowerHat : WearingHat
+	sealed class FlowerWearing : HatWearing
 	{
 		// Constants for sLeaser sprite index (higher index appears over lower)
 		public const int vineIndex = 0;
@@ -28,10 +28,7 @@ namespace HatWorld
 
         public bool initializeVines;
 
-		public override HatType hatType => HatType.Flower;
-
-		public WearingFlowerHat(GraphicsModule parent, int anchorSprite, float rotation, float headRadius)
-			: base(parent, anchorSprite, rotation, headRadius) {
+		public FlowerWearing(GraphicsModule parent) : base(parent) {
             initializeVines = false;
 		}
 
@@ -39,7 +36,7 @@ namespace HatWorld
 		{
             // initialization
             this.lastCamPos = rCam.pos;
-            this.vines = new Vector2[vineNumber][,];
+            this.vines = new Vector2[vineNumber][,]; // must be in InitiateSprites, not constructor, or FlowerWearing doesn't appear
             for (int i = 0; i < this.vines.Length; i++)
             {
                 if (i % 2 == 0)

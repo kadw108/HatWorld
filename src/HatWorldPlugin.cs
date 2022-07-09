@@ -5,27 +5,25 @@ using UnityEngine;
 
 // physical objects library
 using Fisobs;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace HatWorld
 {
-    public enum HatType
-    {
-        Santa,
-        Wizard,
-        Torch,
-        Flower,
-        Bubble
-    }
-
     [BepInPlugin("kadw.hatworld", "HatWorld", "1.0.0")]
     public class HatWorldPlugin : BaseUnityPlugin
     {
+        public static List<Type> hatTypes = new List<Type>() {
+            typeof(SantaPhysical), typeof(WizardPhysical), typeof(BubblePhysical), typeof(FlowerPhysical),
+            typeof(TorchPhysical)
+        };
+
         // for spawning random hats
         public static System.Random rand = new System.Random();
 
         // tracks if player is wearing hat. null if no hat
-        public HatType? playerWearingHat = null;
-        private WearingHat? wornHat = null;
+        private HatWearing? wornHat = null;
+        private HatPhysical? physicalWornHat = null; // physical object version of currently worn hat
 
         // tracks buttonpresses for custom wear-hat button
         bool[] createHatInput = new bool[10];
@@ -48,6 +46,7 @@ namespace HatWorld
 
             // Put hats in their respective rooms where they can be found
             HatPlacer.OnEnable();
+            HatPlacer.AddSpawns(Assembly.GetExecutingAssembly().GetManifestResourceStream("HatWorld.src.HatPlacer.spawns.txt"));
         }
 
         /* ---------- Player worn hat methods ------------ */
@@ -59,9 +58,9 @@ namespace HatWorld
         {
             orig.Invoke(self, sLeaser, rCam);
 
-            if (self != null && playerWearingHat != null)
+            if (self != null && physicalWornHat != null)
             {
-                wornHat = addWornHat((HatType) playerWearingHat, self);
+                wornHat = physicalWornHat.getWornHat(self);
                 self.owner.room.AddObject(wornHat);
                 return;
             }
@@ -73,7 +72,7 @@ namespace HatWorld
         private void PlayerGraphics_DrawSprites(On.PlayerGraphics.orig_DrawSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
         {
             orig.Invoke(self, sLeaser, rCam, timeStacker, camPos);
-            if (playerWearingHat != null && wornHat != null)
+            if (physicalWornHat != null && wornHat != null)
             {
                 wornHat.ParentDrawSprites(sLeaser, rCam, timeStacker, camPos);
             }
@@ -129,7 +128,7 @@ namespace HatWorld
          */
         private void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
         {
-            // addHatEffects(self);
+            addHatEffects(self);
 
             orig.Invoke(self, eu);
 
@@ -138,9 +137,9 @@ namespace HatWorld
             if (hatFlag)
             {
                 // generate random hat type out of all existing hat types
-                // HatType newHatType = (HatType) (rand.Next() % Enum.GetValues(typeof(HatType)).Length);
-                // Debug.Log("hatworld new hat generated " + newHatType);
-                HatType newHatType = HatType.Bubble;
+                Type newHatType = hatTypes[rand.Next() % hatTypes.Count];
+                Debug.Log("hatworld new hat generated " + newHatType);
+                // string newHatType = "HatWorld.BubblePhysical";
 
                 HatAbstract newHat = new HatAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID(), newHatType);
                 self.room.abstractRoom.AddEntity(newHat);
@@ -152,35 +151,34 @@ namespace HatWorld
             bool wearFlag = self != null && wearHatInput[0] && !wearHatInput[1];
             if (wearFlag)
             {
-                if (playerWearingHat == null)
+                if (physicalWornHat == null)
                 {
                     // if holding hat, remove held hat and add wear hat
                     for (int i = 0; i < 2; i++)
                     {
                         if (self.grasps[i] != null && self.grasps[i].grabbed is HatPhysical)
                         {
-                            PhysicalObject grabbed = self.grasps[i].grabbed;
-                            HatType grabbedHatType = ((HatPhysical) grabbed).hatType;
-                            grabbed.Destroy();
-                            self.room.RemoveObject(grabbed);
-                            self.room.abstractRoom.RemoveEntity(grabbed.abstractPhysicalObject);
-                            self.ReleaseGrasp(i);
+                            physicalWornHat = (HatPhysical) self.grasps[i].grabbed;
 
                             // add worn hat
-                            wornHat = addWornHat(grabbedHatType, self.graphicsModule);
-                            playerWearingHat = grabbedHatType;
+                            wornHat = physicalWornHat.getWornHat(self.graphicsModule);
+
+                            // remove held hat
+                            physicalWornHat.Destroy();
+                            self.room.RemoveObject(physicalWornHat);
+                            self.room.abstractRoom.RemoveEntity(physicalWornHat.abstractPhysicalObject);
+                            self.ReleaseGrasp(i);
                             break;
                         }
                     }
                 } else {
                     // remove worn hat
-                    playerWearingHat = null;
-                    HatType hatType = wornHat.hatType;
+                    HatAbstract heldHat = new HatAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID(), physicalWornHat.GetType());
+                    physicalWornHat = null;
                     wornHat.Destroy();
                     self.room.RemoveObject(wornHat);
 
                     // add held hat
-                    HatAbstract heldHat = new HatAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID(), hatType);
                     self.room.abstractRoom.AddEntity(heldHat);
                     heldHat.RealizeInRoom();
                     self.SlugcatGrab(heldHat.realizedObject, 0);
@@ -194,42 +192,34 @@ namespace HatWorld
          */
         private void addHatEffects(Player self)
         {
-            if (playerWearingHat == HatType.Wizard)
+            if (wornHat != null)
             {
-                self.gravity = 0.8f;
-            } else if (playerWearingHat != HatType.Wizard)
-            {
-                self.gravity = 0.9f;
-            }
-        }        
+                Type hatType = wornHat.GetType();
+                if (hatType.Equals(typeof(WizardPhysical)))
+                {
+                    self.gravity = 0.4f;
+                } else
+                {
+                    self.gravity = 0.9f;
+                }
+            }        
+        }
 
-        /*
-         * Given what the hat type should be, creates a WearingHat for when the player needs one
-         * Always called with playerWearingHat as hatType
-         */
-        private WearingHat addWornHat(HatType hatType, GraphicsModule graphicsModule)
+        public static Type GetType(string typeName)
         {
-            switch (hatType)
+            foreach(Type t in hatTypes)
             {
-                case HatType.Santa:
-                    return new WearingSantaHat(graphicsModule, 3, -90f, 5f);
-
-                case HatType.Wizard:
-                    return new WearingWizardHat(graphicsModule, 3, -90f, 5f);
-
-                case HatType.Torch:
-                    return new WearingTorchHat(graphicsModule, 3, -90f, 5f);
-
-                case HatType.Flower:
-                    return new WearingFlowerHat(graphicsModule, 3, -90f, 5f);
-
-                case HatType.Bubble:
-                    return new WearingBubbleHat(graphicsModule, 3, -90f, 5f);
-
-                default:
-                    return new WearingSantaHat(graphicsModule, 3, -90f, 5f);
+                if (t.ToString().Equals(typeName))
+                {
+                    return t;
+                }
             }
-        } 
-    
+            return null;
+        }
+
+        public static void addType(Type type)
+        {
+            hatTypes.Add(type); 
+        }
     }
 }

@@ -40,6 +40,7 @@
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
 		<Copy SourceFiles="$(TargetDir)$(TargetName)$(TargetExt)" DestinationFolder="C:\Users\account\Apps\Steam\steamapps\common\Rain World\BepInEx\plugins" />
+		<Copy SourceFiles="$(TargetDir)$(TargetName)$(TargetExt)" DestinationFolder="C:\Users\account\Documents\rainworld_backups\0rwmods\visualstudio\referencefolder" />
 	</Target>
 
 </Project>

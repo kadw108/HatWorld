@@ -4,7 +4,7 @@ using UnityEngine;
 namespace HatWorld
 {
 	// Based on HolyFire
-	public class WearingTorchHat : WearingHat
+	public class TorchWearing : HatWearing
 	{
 		// from HolyFire
 		public LightSource[] lightSources;
@@ -16,10 +16,7 @@ namespace HatWorld
 		public const int crownIndex = 0;
 		public const int gemIndex = 1;
 
-		public override HatType hatType => HatType.Torch;
-
-		public WearingTorchHat(GraphicsModule parent, int anchorSprite, float rotation, float headRadius)
-			: base(parent, anchorSprite, rotation, headRadius)
+		public TorchWearing(GraphicsModule parent) : base(parent)
 		{
 			lightSources = new LightSource[2];
 			this.flicker = new float[3] {1f, 1f, 1f};

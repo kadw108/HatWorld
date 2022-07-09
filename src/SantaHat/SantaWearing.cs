@@ -5,15 +5,13 @@ namespace HatWorld
 {
 	// Hat that is being worn by slugcat
 	// Uses code from FestiveWorld mod
-	sealed class WearingSantaHat : WearingHat
+	sealed class SantaWearing : HatWearing
 	{
 		public Vector2 tuftPos;
 		public Vector2 lastTuftPos;
 		public Vector2 tuftVel;
-		public override HatType hatType => HatType.Santa;
 
-		public WearingSantaHat(GraphicsModule parent, int anchorSprite, float rotation, float headRadius)
-			: base(parent, anchorSprite, rotation, headRadius) {}
+		public SantaWearing(GraphicsModule parent) : base(parent) {}
 
 		public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
 		{

@@ -29,21 +29,7 @@ namespace HatWorld
 
         public override AbstractPhysicalObject Parse(World world, Fisobs.Core.EntitySaveData saveData, Fisobs.Sandbox.SandboxUnlock? unlock)
         {
-            // taken from Centishields
-            int hatTypeNum = int.TryParse(saveData.CustomData, out var h) ? h : 0;
-            return new HatAbstract(world, saveData.Pos, saveData.ID, (HatType) hatTypeNum);
-
-            /* use {} with object constructors?
-            {
-                // ID = p[0],
-                // type = p[1],
-                // room = p[3],
-                // x = int.TryParse(p[0], out var a) ? a : 0,
-                // y = int.TryParse(p[0], out var a) ? a : 0,
-                hatType = (HatAbstract.HatType) (int.TryParse(p[6], out var h) ? h : 0),
-                // abstractNode = p[7]??
-            };
-            */
+            return new HatAbstract(world, saveData.Pos, saveData.ID, saveData.CustomData);
 
             /*
              * Add sandbox later

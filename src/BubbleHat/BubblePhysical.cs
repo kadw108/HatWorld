@@ -3,16 +3,19 @@ using RWCustom;
 
 namespace HatWorld
 {
-    sealed class BubbleHatPhysical : HatPhysical
+    sealed class BubblePhysical : HatPhysical
     {
         // Constants for sLeaser sprite index (higher index appears over lower)
 		public const int glassIndex = 0;
         public const int neckIndex = 1;
         public const int edgeIndex = 2;
 
-		public override HatType hatType => HatType.Bubble;
+        public override HatWearing getWornHat(GraphicsModule graphicsModule)
+        {
+            return new BubbleWearing(graphicsModule);
+        }
 
-        public BubbleHatPhysical(HatAbstract abstr, World world) : base(abstr, world) {}
+        public BubblePhysical(HatAbstract abstr, World world) : base(abstr, world) {}
 
         public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
         {

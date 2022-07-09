@@ -3,7 +3,7 @@ using RWCustom;
 
 namespace HatWorld
 {
-    sealed class TorchHatPhysical : HatPhysical
+    sealed class TorchPhysical : HatPhysical
     {
         // For glow
         public LightSource lightSource;
@@ -12,9 +12,12 @@ namespace HatWorld
         public const int crownIndex = 0;
         public const int gemIndex = 1;
 
-		public override HatType hatType => HatType.Torch;
+        public override HatWearing getWornHat(GraphicsModule graphicsModule)
+        {
+            return new TorchWearing(graphicsModule);
+        }
 
-        public TorchHatPhysical(HatAbstract abstr, World world) : base(abstr, world) {}
+        public TorchPhysical(HatAbstract abstr, World world) : base(abstr, world) {}
 
         public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
         {

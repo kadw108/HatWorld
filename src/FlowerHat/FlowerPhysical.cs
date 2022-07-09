@@ -3,7 +3,7 @@ using RWCustom;
 
 namespace HatWorld
 {
-    sealed class FlowerHatPhysical : HatPhysical
+    sealed class FlowerPhysical : HatPhysical
     {
         // Constants for sLeaser sprite index (higher index appears over lower)
         public const int vineIndex = 0;
@@ -19,9 +19,12 @@ namespace HatWorld
         public Vector2[][,] vines;
         public float vinesWithdrawn;
 
-		public override HatType hatType => HatType.Flower;
+        public override HatWearing getWornHat(GraphicsModule graphicsModule)
+        {
+            return new FlowerWearing(graphicsModule);
+        }
 
-        public FlowerHatPhysical(HatAbstract abstr, World world) : base(abstr, world) {
+        public FlowerPhysical(HatAbstract abstr, World world) : base(abstr, world) {
             this.vines = new Vector2[vineNumber][,];
 
             for (int i = 0; i < this.vines.Length; i++)

@@ -3,17 +3,14 @@ using UnityEngine;
 
 namespace HatWorld
 {
-	public class WearingBubbleHat : WearingHat
+	public class BubbleWearing : HatWearing
 	{
         // Constants for sLeaser sprite index (higher index appears over lower)
 		public const int glassIndex = 0;
         public const int neckIndex = 1;
         public const int edgeIndex = 2;
 
-		public override HatType hatType => HatType.Bubble;
-
-		public WearingBubbleHat(GraphicsModule parent, int anchorSprite, float rotation, float headRadius)
-			: base(parent, anchorSprite, rotation, headRadius) { }
+		public BubbleWearing(GraphicsModule parent) : base(parent) { }
 
 		public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
 		{

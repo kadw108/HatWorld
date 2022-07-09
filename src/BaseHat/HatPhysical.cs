@@ -4,10 +4,9 @@ using System.Linq;
 
 namespace HatWorld
 {
-    abstract class HatPhysical : PlayerCarryableItem, IDrawable
+    public abstract class HatPhysical : PlayerCarryableItem, IDrawable
     {
         public HatAbstract Abstr { get; }
-        public abstract HatType hatType { get; }
 
         // rotation (initial value from SantaHat)
         public Vector2 rotation;
@@ -22,6 +21,8 @@ namespace HatWorld
         public float hatRotation;
         public Vector2 upDir;
         public Vector2 rightDir;
+
+        public string hatType;
 
         public HatPhysical(HatAbstract abstr, World world) : base(abstr)
         {
@@ -38,6 +39,8 @@ namespace HatWorld
             this.waterFriction = 0.92f;
             this.buoyancy = 0.75f;
             this.firstChunk.loudness = 3f;
+
+            this.hatType = this.GetType().Namespace + "." + this.GetType().Name;
         }
 
         public override float ThrowPowerFactor
@@ -126,5 +129,7 @@ namespace HatWorld
                 newContatiner.AddChild(fsprite);
             }
         }
+
+        public abstract HatWearing getWornHat(GraphicsModule graphicsModule);
     }
 }

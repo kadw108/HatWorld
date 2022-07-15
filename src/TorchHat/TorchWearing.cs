@@ -51,6 +51,11 @@ namespace HatWorld
 			{
 				for (int i = 0; i < this.lightSources.Length; i++)
                 {
+					if (this.lightSources[i] != null)
+                    {
+						// Remove LightSource objects when changing rooms
+						this.room.RemoveObject(this.lightSources[i]);
+                    }
 					this.lightSources[i] = null;
                 }
 			}
@@ -69,18 +74,18 @@ namespace HatWorld
 
                     this.lightSources[0] = new LightSource(camAdjustedFirePos, false, new Color(0.7f, 0.4f, 0f), this);
                     this.lightSources[0].affectedByPaletteDarkness = 0.5f;
-                    this.lightSources[0].setAlpha = new float?(0.4f);
+                    this.lightSources[0].setAlpha = new float?(0.8f);
                     this.room.AddObject(this.lightSources[0]);
 
                     this.lightSources[1] = new LightSource(camAdjustedFirePos, false, new Color(1f, 0.8f, 0.4f), this);
                     this.lightSources[1].affectedByPaletteDarkness = 0.9f;
-					this.lightSources[1].setRad = new float?(35f);
+					this.lightSources[1].setRad = new float?(40f);
 					this.lightSources[1].setAlpha = new float?(1.9f);
                     this.room.AddObject(this.lightSources[1]);
                 }
                 else
                 {
-					this.lightSources[0].setRad = new float?(160f * this.flicker[0]);
+					this.lightSources[0].setRad = new float?(170f * this.flicker[0]);
 
                     for (int i = 0; i < this.lightSources.Length; i++)
                     {

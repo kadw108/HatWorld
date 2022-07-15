@@ -15,7 +15,7 @@ namespace HatWorld
     {
         public static List<Type> hatTypes = new List<Type>() {
             typeof(SantaPhysical), typeof(WizardPhysical), typeof(BubblePhysical), typeof(FlowerPhysical),
-            typeof(TorchPhysical)
+            typeof(TorchPhysical), typeof(WingPhysical)
         };
 
         // for spawning random hats
@@ -137,9 +137,11 @@ namespace HatWorld
             if (hatFlag)
             {
                 // generate random hat type out of all existing hat types
+                /*
                 Type newHatType = hatTypes[rand.Next() % hatTypes.Count];
                 Debug.Log("hatworld new hat generated " + newHatType);
-                // string newHatType = "HatWorld.BubblePhysical";
+                */
+                string newHatType = "HatWorld.WingPhysical";
 
                 HatAbstract newHat = new HatAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID(), newHatType);
                 self.room.abstractRoom.AddEntity(newHat);

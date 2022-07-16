@@ -5,49 +5,92 @@ namespace HatWorld
 {
     sealed class WingPhysical : HatPhysical
     {
+		public float wingFlapCycle;
+        public float wingFlapShift;
+
         // Constants for sLeaser sprite index (higher index appears over lower)
-		public const int glassIndex = 0;
-        public const int neckIndex = 1;
-        public const int edgeIndex = 2;
+		public const int wingLeft1 = 1;
+		public const int wingRight1 = 0;
+        public const int circleLeft = 2;
+        public const int circleRight = 3;
 
         public override HatWearing getWornHat(GraphicsModule graphicsModule)
         {
             return new WingWearing(graphicsModule);
         }
 
-        public WingPhysical(HatAbstract abstr, World world) : base(abstr, world) {}
+		public float[] wingLengths;
+
+        public WingPhysical(HatAbstract abstr, World world) : base(abstr, world) {
+            base.gravity = 0.8f;
+            base.buoyancy = 1.8f;
+            base.bounce = 0.3f;
+			this.wingLengths = new float[2] { 23f, 23f };
+        }
 
         public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
         {
-            sLeaser.sprites = new FSprite[3];
-            sLeaser.sprites[neckIndex] = new FSprite("SpearFragment2", true) { scale = 1.1f }; // neck collar
-            sLeaser.sprites[edgeIndex] = new FSprite("LizardBubble7", true) { scale = 1.3f }; // edge of bubble
-            sLeaser.sprites[glassIndex] = new FSprite("Circle20", true) { scale = 1.1f }; // inside of bubble
-
-            this.AddToContainer(sLeaser, rCam, null);
+			sLeaser.sprites = new FSprite[4];
+            sLeaser.sprites[wingLeft1] = new CustomFSprite("CentipedeWing");
+            sLeaser.sprites[wingLeft1].shader = rCam.room.game.rainWorld.Shaders["CicadaWing"];
+            sLeaser.sprites[wingRight1] = new CustomFSprite("CentipedeWing");
+            sLeaser.sprites[wingRight1].shader = rCam.room.game.rainWorld.Shaders["CicadaWing"];
+            sLeaser.sprites[circleLeft] = new FSprite("Circle4");
+            sLeaser.sprites[circleRight] = new FSprite("Circle4");
+            
+			this.AddToContainer(sLeaser, rCam, null);
         }
 
         public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
         {
             // Setup
             base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
-            for (int j = 0; j < sLeaser.sprites.Length; j++)
+            for (int j = 2; j < sLeaser.sprites.Length; j++)
             {
                 sLeaser.sprites[j].rotation = hatRotation;
             }
-			drawPos -= upDir * 4;
+            sLeaser.sprites[circleLeft].SetPosition(drawPos - rightDir * 2);
+            sLeaser.sprites[circleRight].SetPosition(drawPos + rightDir * 2);
 
-			sLeaser.sprites[neckIndex].SetPosition(drawPos + upDir * -10);
+			for (int k = 0; k < 2; k++)
+			{
+				int num10 = 0;
+				Vector2 wingWidth = new Vector2(0, 1); // wing width and orientation, originally for direction of centipede travel, (1, 0) flips wings 90 deg (bad)
 
-			sLeaser.sprites[edgeIndex].SetPosition(drawPos);
-			sLeaser.sprites[glassIndex].SetPosition(drawPos);
+                Vector2 shift = (k == wingLeft1) ?
+                    new Vector2(-2, 2 + this.wingFlapShift).normalized * this.wingLengths[k] :
+                    new Vector2(2, 2 + this.wingFlapShift).normalized * this.wingLengths[k];
+                Vector2 vector13 = drawPos + shift;
+
+                Vector2 vector14 = drawPos;
+				(sLeaser.sprites[k] as CustomFSprite).MoveVertice(1, vector13 + wingWidth * 2f);
+				(sLeaser.sprites[k] as CustomFSprite).MoveVertice(0, vector13 - wingWidth * 2f);
+				(sLeaser.sprites[k] as CustomFSprite).MoveVertice(2, vector14 + wingWidth * 2f);
+				(sLeaser.sprites[k] as CustomFSprite).MoveVertice(3, vector14 - wingWidth * 2f);
+			}
         }
 
         public override void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
         {
-			sLeaser.sprites[neckIndex].color = new Color(0.74f, 0.83f, 0.90f);
-			sLeaser.sprites[edgeIndex].color = new Color(0.57f, 0.79f, 0.94f);
-			sLeaser.sprites[glassIndex].color = new Color(0f, 1f, 0f, 0.5f);
+			for (int k = 0; k < 2; k++) {
+                for (int i = 0; i < 4; i++)
+                {
+					(sLeaser.sprites[k] as CustomFSprite).verticeColors[0] = new Color(1f, 0.7f, 0.53f); // lighter red-orange
+					(sLeaser.sprites[k] as CustomFSprite).verticeColors[1] = new Color(1f, 0.7f, 0.53f); 
+					(sLeaser.sprites[k] as CustomFSprite).verticeColors[2] = Color.white;
+					(sLeaser.sprites[k] as CustomFSprite).verticeColors[3] = Color.white; 
+                }
+            }
+            sLeaser.sprites[circleLeft].color = new Color(0.92f, 0.43f, 0.36f);
+            sLeaser.sprites[circleRight].color = sLeaser.sprites[circleLeft].color;
+        }
+
+        public override void Update(bool eu)
+        {
+            base.Update(eu);
+
+            this.wingFlapCycle += 0.4f + 0.5f * Random.value;
+            this.wingFlapShift = Mathf.Sin(this.wingFlapCycle);
         }
     }
 }

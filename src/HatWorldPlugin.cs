@@ -15,15 +15,11 @@ namespace HatWorld
     {
         public static List<Type> hatTypes = new List<Type>() {
             typeof(SantaPhysical), typeof(WizardPhysical), typeof(BubblePhysical), typeof(FlowerPhysical),
-            typeof(TorchPhysical), typeof(WingPhysical)
+            typeof(TorchPhysical), typeof(WingPhysical), typeof(FountainPhysical)
         };
 
-        // for spawning random hats
-        public static System.Random rand = new System.Random();
-
-        // tracks if player is wearing hat. null if no hat
-        private HatWearing? wornHat = null;
-        private HatPhysical? physicalWornHat = null; // physical object version of currently worn hat
+        private HatWearing? wornHat = null; // actually worn hat - destroyed and recreated when the sprite disappears/appears (eg. between rooms)
+        private HatPhysical? physicalWornHat = null; // physical object version of currently worn hat, persists between rooms
 
         // tracks buttonpresses for custom wear-hat button
         bool[] createHatInput = new bool[10];
@@ -136,12 +132,12 @@ namespace HatWorld
             bool hatFlag = self != null && createHatInput[0] && !createHatInput[1];
             if (hatFlag)
             {
-                // generate random hat type out of all existing hat types
                 /*
-                Type newHatType = hatTypes[rand.Next() % hatTypes.Count];
+                // generate random hat type out of all existing hat types
+                Type newHatType = hatTypes[(int) (UnityEngine.Random.value * hatTypes.Count)];
                 Debug.Log("hatworld new hat generated " + newHatType);
                 */
-                string newHatType = "HatWorld.WingPhysical";
+                string newHatType = "HatWorld.FountainPhysical";
 
                 HatAbstract newHat = new HatAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID(), newHatType);
                 self.room.abstractRoom.AddEntity(newHat);
@@ -192,17 +188,22 @@ namespace HatWorld
         /*
          * Add/remove special effects of hat being worn.
          */
-        private void addHatEffects(Player self)
+        public void addHatEffects(Player self)
         {
-            if (wornHat != null)
+            if (physicalWornHat != null)
             {
-                Type hatType = wornHat.GetType();
-                if (hatType.Equals(typeof(WizardPhysical)))
+                Type hatType = physicalWornHat.GetType();
+                if (hatType.Equals(typeof(WingPhysical)))
                 {
-                    self.gravity = 0.4f;
+                    self.gravity = 0.7f;
                 } else
                 {
                     self.gravity = 0.9f;
+                }
+
+                if (hatType.Equals(typeof(FountainPhysical)))
+                {
+                    self.swimForce = 0.7f;
                 }
             }        
         }

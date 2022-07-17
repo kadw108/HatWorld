@@ -36,7 +36,11 @@ namespace HatWorld
 				this.bodyRotations[i, 1] = Custom.DegToVec(this.defaultRotat);
 			}
 			this.wingLengths = new float[2] { 25f, 25f };
+
 			this.soundLoop = new ChunkDynamicSoundLoop(parent.owner.firstChunk);
+			this.soundLoop.sound = SoundID.Centiwing_Fly_LOOP;
+			this.soundLoop.Volume = 0.5f;
+			this.soundLoop.Pitch = 0.9f;
 		}
 
 		public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
@@ -46,18 +50,15 @@ namespace HatWorld
             sLeaser.sprites[wingLeft1].shader = rCam.room.game.rainWorld.Shaders["CicadaWing"];
             sLeaser.sprites[wingRight1] = new CustomFSprite("CentipedeWing");
             sLeaser.sprites[wingRight1].shader = rCam.room.game.rainWorld.Shaders["CicadaWing"];
-            sLeaser.sprites[circleLeft] = new FSprite("Circle4");
-            sLeaser.sprites[circleRight] = new FSprite("Circle4");
+			sLeaser.sprites[circleLeft] = new FSprite("Circle4") { scale = 0.7f };
+			sLeaser.sprites[circleRight] = new FSprite("Circle4") { scale = 0.7f };
 
 			this.AddToContainer(sLeaser, rCam, null);
 		}
 
 		public override void ChildDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
 		{
-			Debug.Log("hatworld wing " + rightDir);
-			this.drawPos += upDir;
-
-            this.drawPos.y += 4f * rightDir.y; // increase hat height based on direction slugcat is facing, needed for different head sprites
+            this.drawPos.y += 2f * rightDir.y; // increase hat height based on direction slugcat is facing, needed for different head sprites
 
 			sLeaser.sprites[circleLeft].SetPosition(drawPos - new Vector2(1, 0) * 2);
 			sLeaser.sprites[circleRight].SetPosition(drawPos + new Vector2(1, 0) * 2);
@@ -81,7 +82,10 @@ namespace HatWorld
 			if (base.slatedForDeletetion || rCam.room != this.room || this.room != this.parent.owner.room)
 			{
 				this.soundLoop.Volume = 0f;
-			}
+			} else
+            {
+                this.soundLoop.Volume = 0.5f;
+            }
 		}
 
 		public override void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
@@ -118,10 +122,11 @@ namespace HatWorld
 				this.wingsStartedUp = 0f;
             }
 			*/
-			this.soundLoop.Update();
-			this.soundLoop.sound = SoundID.Centiwing_Fly_LOOP;
-			this.soundLoop.Volume = 0.5f;
-			this.soundLoop.Pitch = 0.9f;
+
+			if (this.soundLoop.Volume > 0)
+            {
+                this.soundLoop.Update();
+            }
 		}
 
 		public Vector2 WingPos(int side, int wing, Vector2 dr, Vector2 prp, Vector2 chunkRotat, float timeStacker)

@@ -1,4 +1,4 @@
-﻿SU_C04, 604, 154, HatWorld.WizardPhysical
-SI_A07, 305, 174, HatWorld.SantaPhysical
+﻿SU_C04, 604, 154, HatWorld.FountainPhysical
+SI_A07, 305, 174, HatWorld.WingPhysical
 SH_A10, 185, 415, HatWorld.TorchPhysical
 GW_A24, 365, 593, HatWorld.FlowerPhysical

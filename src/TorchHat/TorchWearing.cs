@@ -7,7 +7,7 @@ namespace HatWorld
 	public class TorchWearing : HatWearing
 	{
 		// from HolyFire
-		public LightSource[] lightSources;
+		public LightSource?[] lightSources;
 
 		// from Lantern
 		public float[] flicker;
@@ -16,10 +16,13 @@ namespace HatWorld
 		public const int crownIndex = 0;
 		public const int gemIndex = 1;
 
+		public bool inWater;
+
 		public TorchWearing(GraphicsModule parent) : base(parent)
 		{
 			lightSources = new LightSource[2];
 			this.flicker = new float[3] {1f, 1f, 1f};
+			this.inWater = false;
 		}
 
 		public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
@@ -47,11 +50,11 @@ namespace HatWorld
 			Vector2 firePosition = drawPos + upDir * 3;
 			sLeaser.sprites[gemIndex].SetPosition(firePosition);
 
-			if (base.slatedForDeletetion || rCam.room != this.room || this.room != this.parent.owner.room)
+			if (base.slatedForDeletetion || rCam.room != this.room || this.room != this.parent.owner.room || this.inWater)
 			{
 				for (int i = 0; i < this.lightSources.Length; i++)
                 {
-					if (this.lightSources[i] != null)
+					if (this.lightSources[i] != null && this.room != null)
                     {
 						// Remove LightSource objects when changing rooms
 						this.room.RemoveObject(this.lightSources[i]);
@@ -59,10 +62,10 @@ namespace HatWorld
 					this.lightSources[i] = null;
                 }
 			}
-			else
+			else if (!this.inWater)
             {
 				/* Fire particles */
-				this.room.AddObject(new FlameParticle(firePosition));
+				this.room.AddObject(new FlameParticle(firePosition, parent.owner.firstChunk.vel));
 
                 /* Light */
                 Vector2 camAdjustedFirePos = firePosition + camPos;
@@ -106,6 +109,15 @@ namespace HatWorld
                 this.flicker[2] = 1f + Mathf.Pow(Random.value, 3f) * 0.2f * ((Random.value >= 0.5f) ? 1f : -1f);
             }
             this.flicker[2] = Mathf.Lerp(this.flicker[2], 1f, 0.01f);
+
+			if (parent.owner.firstChunk.submersion > 0.9f || parent.owner.room.roomRain.intensity > 0.4)
+            {
+				this.inWater = true;	
+            }
+			else
+            {
+				this.inWater = false;
+            }
 		}
 
 		public override void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)

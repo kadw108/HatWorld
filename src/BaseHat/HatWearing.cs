@@ -60,7 +60,7 @@ namespace HatWorld
         }
 		public abstract void ChildDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos);
 
-		public override void Update(bool eu)
+		public override sealed void Update(bool eu)
         {
 			base.Update(eu);
 

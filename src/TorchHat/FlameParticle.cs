@@ -9,16 +9,16 @@ namespace HatWorld {
         public float lifeTime;
         public float life;
         public float lastLife;
-        public FlameParticle(Vector2 pos)
+        public FlameParticle(Vector2 pos, Vector2 vel)
         {
             this.pos = pos;
             this.lastPos = pos;
-            this.vel = Custom.RNV() * 1.5f * Random.value;
-            this.vel.y += 2; // Prevent fire from covering face when you travel up (eg. pole climbing)
+            this.vel = vel + Custom.RNV() * 1.5f * Random.value;
+            this.vel.y++;
             this.life = 1f;
             this.lifeTime = Mathf.Lerp(7f, 15f, Random.value);
         }
-        public FlameParticle(Vector2 pos, float size) : this(pos)
+        public FlameParticle(Vector2 pos, float size, Vector2 vel) : this(pos, vel)
         {
             this.lifeTime = Mathf.Lerp(size/2, size, Random.value);
         }

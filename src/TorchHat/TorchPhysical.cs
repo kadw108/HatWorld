@@ -6,7 +6,7 @@ namespace HatWorld
     sealed class TorchPhysical : HatPhysical
     {
         // For glow
-        public LightSource lightSource;
+        public LightSource? lightSource;
 
         // Constants for sLeaser sprite index (higher index appears over lower)
         public const int crownIndex = 0;
@@ -43,27 +43,37 @@ namespace HatWorld
             /* Set positions */
             sLeaser.sprites[gemIndex].SetPosition(drawPos + upDir * 2f);
 
-            /* Add glow */
-            Vector2 firePos = drawPos + camPos;
-            // From Lantern in game code
-            if (this.lightSource == null)
+            bool inWater = (this.firstChunk.submersion > 0.9 || (this.room != null && this.room.roomRain.intensity > 0.4));
+            if (slatedForDeletetion || room != rCam.room || inWater)
             {
-                this.lightSource = new LightSource(firePos, false, new Color(1f, 0.8f, 0.4f), this);
-                this.lightSource.affectedByPaletteDarkness = 0.9f;
-                float flicker = 1 + Mathf.Pow(Random.value, 3f) * 0.1f * ((Random.value >= 0.5f) ? 1f : -1f);
-                this.lightSource.setRad = new float?(20f * flicker);
-                this.lightSource.setAlpha = new float?(0.3f);
-                this.room.AddObject(this.lightSource);
+                if (this.lightSource != null && this.room != null)
+                {
+                    // Remove LightSource objects when changing rooms
+                    this.room.RemoveObject(this.lightSource);
+                }
+                this.lightSource = null;
             }
-            else
-            {
-                this.lightSource.setPos = new Vector2?(firePos);
-            }
-
-            if (!(slatedForDeletetion || room != rCam.room))
+            else if (!inWater)
             {
                 /* Fire particles */
-                this.room.AddObject(new FlameParticle(drawPos, 10f));
+                this.room.AddObject(new FlameParticle(drawPos, 10f, new Vector2(0, 0)));
+
+                /* Add glow */
+                Vector2 firePos = drawPos + camPos;
+                // From Lantern in game code
+                if (this.lightSource == null)
+                {
+                    this.lightSource = new LightSource(firePos, false, new Color(1f, 0.8f, 0.4f), this);
+                    this.lightSource.affectedByPaletteDarkness = 0.5f;
+                    float flicker = 1 + Mathf.Pow(Random.value, 3f) * 0.1f * ((Random.value >= 0.5f) ? 1f : -1f);
+                    this.lightSource.setRad = new float?(40f * flicker);
+                    this.lightSource.setAlpha = new float?(0.8f);
+                    this.room.AddObject(this.lightSource);
+                }
+                else
+                {
+                    this.lightSource.setPos = new Vector2?(firePos);
+                }
             }
         }
 

@@ -35,8 +35,8 @@ namespace HatWorld
             sLeaser.sprites[wingLeft1].shader = rCam.room.game.rainWorld.Shaders["CicadaWing"];
             sLeaser.sprites[wingRight1] = new CustomFSprite("CentipedeWing");
             sLeaser.sprites[wingRight1].shader = rCam.room.game.rainWorld.Shaders["CicadaWing"];
-            sLeaser.sprites[circleLeft] = new FSprite("Circle4");
-            sLeaser.sprites[circleRight] = new FSprite("Circle4");
+            sLeaser.sprites[circleLeft] = new FSprite("Circle4") { scale = 0.7f };
+            sLeaser.sprites[circleRight] = new FSprite("Circle4") { scale = 0.7f };
             
 			this.AddToContainer(sLeaser, rCam, null);
         }

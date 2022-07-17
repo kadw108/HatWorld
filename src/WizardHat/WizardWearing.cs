@@ -35,11 +35,8 @@ namespace HatWorld
 			TriangleMesh cone = new TriangleMesh("Futile_White", array, false, false);
 			sLeaser.sprites[coneIndex] = cone;
 			sLeaser.sprites[tuftIndex] = new FSprite("mouseEyeA5", true);
-			sLeaser.sprites[beltIndex] = new FSprite("LizardScaleA6", true);
-			sLeaser.sprites[beltIndex].scaleY = 0.8f;
-			sLeaser.sprites[botIndex] = new FSprite("SpearFragment2", true);
-			sLeaser.sprites[botIndex].scaleY = 1.6f;
-			sLeaser.sprites[botIndex].scaleX = 1.7f;
+			sLeaser.sprites[beltIndex] = new FSprite("LizardScaleA6", true) { scaleY = 0.8f };
+			sLeaser.sprites[botIndex] = new FSprite("SpearFragment2", true) { scaleY = 1.6f, scaleX = 1.7f };
 			this.AddToContainer(sLeaser, rCam, null);
 		}
 

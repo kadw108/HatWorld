@@ -39,7 +39,6 @@ namespace HatWorld
 
 			this.soundLoop = new ChunkDynamicSoundLoop(parent.owner.firstChunk);
 			this.soundLoop.sound = SoundID.Centiwing_Fly_LOOP;
-			this.soundLoop.Volume = 0.5f;
 			this.soundLoop.Pitch = 0.9f;
 		}
 
@@ -58,10 +57,11 @@ namespace HatWorld
 
 		public override void ChildDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
 		{
-            this.drawPos.y += 2f * rightDir.y; // increase hat height based on direction slugcat is facing, needed for different head sprites
+            this.drawPos.y += 2 * Math.Abs(rightDir.y); // increase hat height based on direction slugcat is facing, needed for different head sprites
+			this.drawPos += 2 * upDir;
 
-			sLeaser.sprites[circleLeft].SetPosition(drawPos - new Vector2(1, 0) * 2);
-			sLeaser.sprites[circleRight].SetPosition(drawPos + new Vector2(1, 0) * 2);
+			sLeaser.sprites[circleLeft].SetPosition(drawPos - 2 * rightDir);
+			sLeaser.sprites[circleRight].SetPosition(drawPos + 2 * rightDir);
 
 			for (int k = 0; k < 2; k++)
 			{

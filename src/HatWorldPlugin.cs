@@ -15,7 +15,7 @@ namespace HatWorld
     {
         public static List<Type> hatTypes = new List<Type>() {
             typeof(SantaPhysical), typeof(WizardPhysical), typeof(BubblePhysical), typeof(FlowerPhysical),
-            typeof(TorchPhysical), typeof(WingPhysical), typeof(FountainPhysical)
+            typeof(TorchPhysical), typeof(WingPhysical), typeof(FountainPhysical), typeof(AntennaPhysical)
         };
 
         private HatWearing? wornHat = null; // actually worn hat - destroyed and recreated when the sprite disappears/appears (eg. between rooms)
@@ -132,12 +132,10 @@ namespace HatWorld
             bool hatFlag = self != null && createHatInput[0] && !createHatInput[1];
             if (hatFlag)
             {
-                /*
                 // generate random hat type out of all existing hat types
                 Type newHatType = hatTypes[(int) (UnityEngine.Random.value * hatTypes.Count)];
                 Debug.Log("hatworld new hat generated " + newHatType);
-                */
-                string newHatType = "HatWorld.FountainPhysical";
+                // string newHatType = "HatWorld.FountainPhysical";
 
                 HatAbstract newHat = new HatAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID(), newHatType);
                 self.room.abstractRoom.AddEntity(newHat);

@@ -43,6 +43,10 @@ namespace HatWorld
             // Put hats in their respective rooms where they can be found
             HatPlacer.OnEnable();
             HatPlacer.AddSpawns(Assembly.GetExecutingAssembly().GetManifestResourceStream("HatWorld.src.HatPlacer.spawns.txt"));
+
+            // Remove worn hats when player dies/quits game
+            On.RainWorldGame.ExitGame += RainWorldGame_ExitGame;
+            On.RainWorldGame.GoToDeathScreen += RainWorldGame_GoToDeathScreen;
         }
 
         /* ---------- Player worn hat methods ------------ */
@@ -56,7 +60,7 @@ namespace HatWorld
 
             if (self != null && physicalWornHat != null)
             {
-                wornHat = physicalWornHat.getWornHat(self);
+                wornHat = physicalWornHat.GetWornHat(self);
                 self.owner.room.AddObject(wornHat);
                 return;
             }
@@ -124,88 +128,81 @@ namespace HatWorld
          */
         private void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
         {
-            addHatEffects(self);
-
             orig.Invoke(self, eu);
 
-            // create hat flag
-            bool hatFlag = self != null && createHatInput[0] && !createHatInput[1];
-            if (hatFlag)
+            // Remove hats when player sleeps in shelter, so hats can be saved as shelter items
+            if (self.sleepCounter <= -6 && physicalWornHat != null) // (self.sleepCounter <= -6) // self.readyForWin
             {
-                // generate random hat type out of all existing hat types
-                Type newHatType = hatTypes[(int) (UnityEngine.Random.value * hatTypes.Count)];
-                Debug.Log("hatworld new hat generated " + newHatType);
-                // string newHatType = "HatWorld.FountainPhysical";
-
-                HatAbstract newHat = new HatAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID(), newHatType);
-                self.room.abstractRoom.AddEntity(newHat);
-                newHat.RealizeInRoom();
-                self.SlugcatGrab(newHat.realizedObject, 0);
+                TakeOffHat(self);
             }
-
-            // wear hat flag
-            bool wearFlag = self != null && wearHatInput[0] && !wearHatInput[1];
-            if (wearFlag)
+            else
             {
-                if (physicalWornHat == null)
+                // create hat flag
+                bool hatFlag = self != null && createHatInput[0] && !createHatInput[1];
+                if (hatFlag)
                 {
-                    // if holding hat, remove held hat and add wear hat
-                    for (int i = 0; i < 2; i++)
+                    // generate random hat type out of all existing hat types
+                    Type newHatType = hatTypes[(int) (UnityEngine.Random.value * hatTypes.Count)];
+                    Debug.Log("hatworld new hat generated " + newHatType);
+                    // string newHatType = "HatWorld.FountainPhysical";
+
+                    HatAbstract newHat = new HatAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID(), newHatType);
+                    self.room.abstractRoom.AddEntity(newHat);
+                    newHat.RealizeInRoom();
+                    self.SlugcatGrab(newHat.realizedObject, 0);
+                }
+
+                // wear hat flag
+                bool wearFlag = self != null && wearHatInput[0] && !wearHatInput[1];
+                if (wearFlag)
+                {
+                    if (physicalWornHat == null)
                     {
-                        if (self.grasps[i] != null && self.grasps[i].grabbed is HatPhysical)
+                        // if holding hat, remove held hat and add wear hat
+                        for (int i = 0; i < 2; i++)
                         {
-                            physicalWornHat = (HatPhysical) self.grasps[i].grabbed;
+                            if (self.grasps[i] != null && self.grasps[i].grabbed is HatPhysical)
+                            {
+                                physicalWornHat = (HatPhysical) self.grasps[i].grabbed;
 
-                            // add worn hat
-                            wornHat = physicalWornHat.getWornHat(self.graphicsModule);
+                                // add worn hat
+                                wornHat = physicalWornHat.GetWornHat(self.graphicsModule);
 
-                            // remove held hat
-                            physicalWornHat.Destroy();
-                            self.room.RemoveObject(physicalWornHat);
-                            self.room.abstractRoom.RemoveEntity(physicalWornHat.abstractPhysicalObject);
-                            self.ReleaseGrasp(i);
-                            break;
+                                // hat effects
+                                wornHat.AddHatEffects(self);
+
+                                // remove held hat
+                                physicalWornHat.Destroy();
+                                self.room.RemoveObject(physicalWornHat);
+                                self.room.abstractRoom.RemoveEntity(physicalWornHat.abstractPhysicalObject);
+                                self.ReleaseGrasp(i);
+                                break;
+                            }
                         }
+                    } else {
+                        TakeOffHat(self);
                     }
-                } else {
-                    // remove worn hat
-                    HatAbstract heldHat = new HatAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID(), physicalWornHat.GetType());
-                    physicalWornHat = null;
-                    wornHat.Destroy();
-                    self.room.RemoveObject(wornHat);
-
-                    // add held hat
-                    self.room.abstractRoom.AddEntity(heldHat);
-                    heldHat.RealizeInRoom();
-                    self.SlugcatGrab(heldHat.realizedObject, 0);
                 }
             }
+        }
 
+        public void TakeOffHat(Player self)
+        {
+            // remove hat effects
+            wornHat.RemoveHatEffects(self);
+
+            // remove worn hat
+            HatAbstract heldHat = new HatAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID(), physicalWornHat.GetType());
+            physicalWornHat = null;
+            wornHat.Destroy();
+            self.room.RemoveObject(wornHat);
+
+            // add held hat
+            self.room.abstractRoom.AddEntity(heldHat);
+            heldHat.RealizeInRoom();
+            self.SlugcatGrab(heldHat.realizedObject, 0);
         }
  
-        /*
-         * Add/remove special effects of hat being worn.
-         */
-        public void addHatEffects(Player self)
-        {
-            if (physicalWornHat != null)
-            {
-                Type hatType = physicalWornHat.GetType();
-                if (hatType.Equals(typeof(WingPhysical)))
-                {
-                    self.gravity = 0.7f;
-                } else
-                {
-                    self.gravity = 0.9f;
-                }
-
-                if (hatType.Equals(typeof(FountainPhysical)))
-                {
-                    self.swimForce = 0.7f;
-                }
-            }        
-        }
-
         public static Type GetType(string typeName)
         {
             foreach(Type t in hatTypes)
@@ -221,6 +218,21 @@ namespace HatWorld
         public static void addType(Type type)
         {
             hatTypes.Add(type); 
+        }
+
+        private void RainWorldGame_ExitGame(On.RainWorldGame.orig_ExitGame orig, RainWorldGame self, bool asDeath, bool asQuit)
+        {
+            wornHat = null;
+            physicalWornHat = null;
+
+            orig.Invoke(self, asDeath, asQuit);
+        }
+        private void RainWorldGame_GoToDeathScreen(On.RainWorldGame.orig_GoToDeathScreen orig, RainWorldGame self)
+        {
+            wornHat = null;
+            physicalWornHat = null;
+
+            orig.Invoke(self);
         }
     }
 }

@@ -16,7 +16,7 @@ namespace HatWorld
         public const int beltIndex = 2;
         public const int botIndex = 3;
 
-        public override HatWearing getWornHat(GraphicsModule graphicsModule)
+        public override HatWearing GetWornHat(GraphicsModule graphicsModule)
         {
             return new WizardWearing(graphicsModule);
         }

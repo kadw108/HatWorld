@@ -10,7 +10,7 @@ namespace HatWorld
         public const int neckIndex = 1;
         public const int edgeIndex = 2;
 
-        public override HatWearing getWornHat(GraphicsModule graphicsModule)
+        public override HatWearing GetWornHat(GraphicsModule graphicsModule)
         {
             return new BubbleWearing(graphicsModule);
         }

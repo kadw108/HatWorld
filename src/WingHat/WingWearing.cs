@@ -103,8 +103,17 @@ namespace HatWorld
             sLeaser.sprites[circleRight].color = sLeaser.sprites[circleLeft].color;
 		}
 
-		/* From CentipedeGraphics */
-		public override void ChildUpdate(bool eu)
+        public override void AddHatEffects(Creature wearer)
+        {
+			wearer.gravity = 0.6f;
+        }
+        public override void RemoveHatEffects(Creature wearer)
+        {
+			wearer.gravity = 0.9f;
+        }
+
+        /* From CentipedeGraphics */
+        public override void ChildUpdate(bool eu)
 		{
 			this.lastWingFlapCycle = this.wingFlapCycle;
 			this.wingFlapCycle += Mathf.Pow(this.wingsStartedUp, 3f);

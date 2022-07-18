@@ -14,7 +14,7 @@ namespace HatWorld
         public const int circleLeft = 2;
         public const int circleRight = 3;
 
-        public override HatWearing getWornHat(GraphicsModule graphicsModule)
+        public override HatWearing GetWornHat(GraphicsModule graphicsModule)
         {
             return new WingWearing(graphicsModule);
         }
@@ -92,6 +92,7 @@ namespace HatWorld
             this.wingFlapCycle += 0.4f + 0.5f * Random.value;
             this.wingFlapShift = Mathf.Sin(this.wingFlapCycle);
         }
+
     }
 }
 

@@ -38,7 +38,7 @@ namespace HatWorld
 
 		public abstract void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette);
 
-		public virtual void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+		public void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
         {
 			if (this.initialized)
             {
@@ -105,5 +105,7 @@ namespace HatWorld
 			}
 		}
 
+		public virtual void AddHatEffects(Creature wearer) { }
+		public virtual void RemoveHatEffects(Creature wearer) { }
 	}
 }

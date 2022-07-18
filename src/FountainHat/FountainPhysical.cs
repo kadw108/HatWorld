@@ -18,7 +18,7 @@ namespace HatWorld
 
         public JetWaterEmitter[] waterJets = new JetWaterEmitter[2];
 
-        public override HatWearing getWornHat(GraphicsModule graphicsModule)
+        public override HatWearing GetWornHat(GraphicsModule graphicsModule)
         {
             return new FountainWearing(graphicsModule);
         }
@@ -37,7 +37,7 @@ namespace HatWorld
             sLeaser.sprites[pole] = new FSprite("LizardScaleA1", true) { scaleY = 0.85f, scaleX = 0.5f };
             for (int i = petal1; i <= petal4; i++)
             {
-                sLeaser.sprites[i] = new FSprite("KarmaPetal", true) { scaleY = 0.4f, scaleX = 0.34f };
+                sLeaser.sprites[i] = new FSprite("KarmaPetal", true) { scaleY = 0.5f, scaleX = 0.2f };
             }
             this.AddToContainer(sLeaser, rCam, null);
         }

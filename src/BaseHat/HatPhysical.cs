@@ -130,6 +130,6 @@ namespace HatWorld
             }
         }
 
-        public abstract HatWearing getWornHat(GraphicsModule graphicsModule);
+        public abstract HatWearing GetWornHat(GraphicsModule graphicsModule);
     }
 }

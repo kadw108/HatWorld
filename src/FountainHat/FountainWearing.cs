@@ -114,6 +114,14 @@ namespace HatWorld
                 this.soundLoop.Update();
             }
         }
+
+        public override void AddHatEffects(Creature wearer)
+        {
+            if (wearer is Player)
+            {
+                (wearer as Player).swimForce = 0.7f;
+            }
+        }
     }
 }
 

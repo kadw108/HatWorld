@@ -61,9 +61,9 @@ namespace HatWorld
             }
         }
 
-        public static void OnEnable()
+        public static void AddHooks()
         {
-            // writeData doesn't work here for some reason so use writeData instead
+            // Debug.Log doesn't work here for some reason so use writeData instead
             On.Room.Loaded += Room_Loaded;
             On.RainWorldGame.ShutDownProcess += RainWorldGame_ShutDownProcess;
         }

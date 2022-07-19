@@ -110,7 +110,7 @@ namespace HatWorld
             }
             this.flicker[2] = Mathf.Lerp(this.flicker[2], 1f, 0.01f);
 
-			if (parent.owner.firstChunk.submersion > 0.9f || parent.owner.room.roomRain.intensity > 0.4)
+			if (parent.owner.firstChunk.submersion > 0.9f || (parent.owner.room.roomRain != null && parent.owner.room.roomRain.intensity > 0.4))
             {
 				this.inWater = true;	
             }

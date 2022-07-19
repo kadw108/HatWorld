@@ -43,7 +43,7 @@ namespace HatWorld
             /* Set positions */
             sLeaser.sprites[gemIndex].SetPosition(drawPos + upDir * 2f);
 
-            bool inWater = (this.firstChunk.submersion > 0.9 || (this.room != null && this.room.roomRain.intensity > 0.4));
+            bool inWater = (this.firstChunk.submersion > 0.9 || (this.room != null && this.room.roomRain != null && this.room.roomRain.intensity > 0.4));
             if (slatedForDeletetion || room != rCam.room || inWater)
             {
                 if (this.lightSource != null && this.room != null)

@@ -21,6 +21,9 @@
     <Reference Include="BepInEx">
       <HintPath>..\referencefolder\BepInEx.dll</HintPath>
     </Reference>
+    <Reference Include="ConfigMachine">
+      <HintPath>..\referencefolder\Config Machine\ConfigMachine.dll</HintPath>
+    </Reference>
     <Reference Include="EnumExtender">
       <HintPath>..\referencefolder\EnumExtender.dll</HintPath>
     </Reference>

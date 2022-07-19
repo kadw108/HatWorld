@@ -26,7 +26,7 @@ namespace HatWorld
         {
             if (realizedObject == null)
             {
-                Type type = HatWorldPlugin.GetType(hatType);
+                Type type = HatWorldMain.GetType(hatType);
 
                 if (type != null)
                 {

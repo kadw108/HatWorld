@@ -8,6 +8,7 @@ using Fisobs;
 using System.Collections.Generic;
 using System.Reflection;
 using OptionalUI;
+using HatWorld.src.HatManager;
 
 namespace HatWorld
 {
@@ -18,9 +19,6 @@ namespace HatWorld
             typeof(SantaPhysical), typeof(WizardPhysical), typeof(BubblePhysical), typeof(FlowerPhysical),
             typeof(TorchPhysical), typeof(WingPhysical), typeof(FountainPhysical), typeof(AntennaPhysical)
         };
-
-        public static List<PlayerHatManager> hatManagers = new List<PlayerHatManager>() { };
-
 
         public void OnEnable()
         {
@@ -42,7 +40,12 @@ namespace HatWorld
             {
                 PlayerHatManager n = new PlayerHatManager(self as Player);
                 n.AddHooks();
-                hatManagers.Add(n);
+            }
+            else if (self is Scavenger)
+            {
+                ScavHatManager n = new ScavHatManager(self as Scavenger);
+                Debug.Log("hatworld scavhatmanager " + n + " " + self);
+                n.AddHooks();
             }
         }
 
@@ -63,6 +66,9 @@ namespace HatWorld
             hatTypes.Add(type); 
         }
 
+        /*
+         * For ConfigMachine config menu
+         */
         public OptionInterface LoadOI()
         {
             return new HatWorldConfig(this);

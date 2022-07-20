@@ -105,11 +105,25 @@ namespace HatWorld
 
         public override void AddHatEffects(Creature wearer)
         {
-			wearer.gravity = 0.6f;
+			if (wearer is Player)
+            {
+				wearer.gravity *= 0.75f;
+            }
+			else
+            {
+                wearer.gravity *= 0.5f;
+            }
         }
         public override void RemoveHatEffects(Creature wearer)
         {
-			wearer.gravity = 0.9f;
+			if (wearer is Player)
+            {
+				wearer.gravity *= (1 / 0.75f);
+            }
+			else
+            {
+                wearer.gravity *= (1 / 0.5f);
+            }
         }
 
         /* From CentipedeGraphics */

@@ -1,4 +1,6 @@
-﻿using OptionalUI;
+﻿using System.Linq;
+using HatWorld.src.HatManager;
+using OptionalUI;
 using UnityEngine;
 
 namespace HatWorld
@@ -142,19 +144,19 @@ namespace HatWorld
 
 			if (config.ContainsKey("hatworld_spawnKey1"))
 			{
-				PlayerHatManager.wearHatKeys[0] = OpKeyBinder.StringToKeyCode(config["hatworld_spawnKey1"]);
+				PlayerHatManager.createHatKeys[0] = OpKeyBinder.StringToKeyCode(config["hatworld_spawnKey1"]);
 			}
 			if (config.ContainsKey("hatworld_spawnKey2"))
 			{
-				PlayerHatManager.wearHatKeys[1] = OpKeyBinder.StringToKeyCode(config["hatworld_spawnKey2"]);
+				PlayerHatManager.createHatKeys[1] = OpKeyBinder.StringToKeyCode(config["hatworld_spawnKey2"]);
 			}
 			if (config.ContainsKey("hatworld_spawnKey3"))
 			{
-				PlayerHatManager.wearHatKeys[2] = OpKeyBinder.StringToKeyCode(config["hatworld_spawnKey3"]);
+				PlayerHatManager.createHatKeys[2] = OpKeyBinder.StringToKeyCode(config["hatworld_spawnKey3"]);
 			}
 			if (config.ContainsKey("hatworld_spawnKey4"))
 			{
-				PlayerHatManager.wearHatKeys[3] = OpKeyBinder.StringToKeyCode(config["hatworld_spawnKey4"]);
+				PlayerHatManager.createHatKeys[3] = OpKeyBinder.StringToKeyCode(config["hatworld_spawnKey4"]);
 			}
 
 			if (config.ContainsKey("hatworld_effectsOn"))

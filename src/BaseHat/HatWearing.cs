@@ -9,9 +9,9 @@ namespace HatWorld
 	{
 		public GraphicsModule parent { get; }
 
-		public int anchorSprite = 3;
+		public int anchorSprite;
 		public float rotation;
-		public float headRadius = 5f;
+		public float headRadius;
 
 		// for ParentDrawSprites
 		public Vector2 basePos;
@@ -29,7 +29,22 @@ namespace HatWorld
 		public HatWearing(GraphicsModule parent)
 		{
 			this.parent = parent;
-			this.rotation = -90f;
+
+			switch (parent)
+            {
+				case PlayerGraphics:
+					this.anchorSprite = 3;
+					this.rotation = -90f;
+					this.headRadius = 5f;
+					break;
+
+				case ScavengerGraphics:
+					this.anchorSprite = (parent as ScavengerGraphics).HeadSprite;
+					this.rotation = 90f;
+					this.headRadius = 7f;
+					break;
+            }
+			
 			this.initialized = false; // ParentDrawSprites must run to set basePos and drawPos
 			parent.owner.room.AddObject(this);
 		}
@@ -54,6 +69,10 @@ namespace HatWorld
                 {
                     sLeaser.CleanSpritesAndRemove();
                 }
+				if (parent.culled && !parent.lastCulled)
+				{
+					foreach (var sprite in sLeaser.sprites) sprite.isVisible = !parent.culled || (parent is VultureGraphics vult && vult.shadowMode);
+				}
 
 				ChildDrawSprites(sLeaser, rCam, timeStacker, camPos);
             }

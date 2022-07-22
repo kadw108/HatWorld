@@ -47,10 +47,10 @@ namespace HatWorld
             sLeaser.sprites[leaf1] = new FSprite("haloGlyph4", true) { scale = 0.8f };
             sLeaser.sprites[leaf2] = new FSprite("haloGlyph5", true) { scale = 0.8f };
 
-            sLeaser.sprites[petal1] = new FSprite("Cicada7eyes1", true) { scale = 0.8f };
+            sLeaser.sprites[petal1] = new FSprite("FaceA1", true) { scale = 0.8f };
             sLeaser.sprites[petal2] = new FSprite("Pebble5", true) { scale = 0.6f };
-            sLeaser.sprites[petal3] = new FSprite("Cicada7eyes1", true) { scale = 0.8f };
-            sLeaser.sprites[petal4] = new FSprite("Cicada7eyes1", true) { scale = 0.8f };
+            sLeaser.sprites[petal3] = new FSprite("FaceA1", true) { scale = 0.8f };
+            sLeaser.sprites[petal4] = new FSprite("FaceA1", true) { scale = 0.8f };
 
 
             // vines
@@ -84,14 +84,13 @@ namespace HatWorld
             sLeaser.sprites[leaf2].rotation += 90f;
 
             /* flowers */
-            Vector2 flowerPos = drawPos + rightDir * 7f;
-            sLeaser.sprites[petal1].SetPosition(flowerPos + upDir * 13f + rightDir * 8f);
+            sLeaser.sprites[petal1].SetPosition(drawPos + upDir * 3f + rightDir * 2f);
             sLeaser.sprites[petal1].rotation -= 20f;
 
-            sLeaser.sprites[petal4].SetPosition(flowerPos);
+            sLeaser.sprites[petal4].SetPosition(drawPos);
             sLeaser.sprites[petal4].rotation += 30f;
 
-            sLeaser.sprites[petal3].SetPosition(flowerPos - upDir * 10f + rightDir * 4f);
+            sLeaser.sprites[petal3].SetPosition(drawPos - upDir * 1f - rightDir * 2f);
             sLeaser.sprites[petal3].rotation += 90f;
 
             /* vines */

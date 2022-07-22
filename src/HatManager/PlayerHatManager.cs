@@ -43,7 +43,7 @@ namespace HatWorld.src.HatManager
                 // get new inputs
                 if (self.stun == 0 && !self.dead)
                 {
-                    /* no controller support yet
+                    /* controller support? configmachine
                     if (self.controller != null)
                     {
                         this.input[0] = this.controller.GetInput();
@@ -91,11 +91,9 @@ namespace HatWorld.src.HatManager
                     if (hatFlag)
                     {
                         // generate random hat type out of all existing hat types
-                        /*
                         Type newHatType = HatWorldMain.hatTypes[(int)(UnityEngine.Random.value * HatWorldMain.hatTypes.Count)];
                         Debug.Log("hatworld new hat generated " + newHatType);
-                        */
-                        string newHatType = "HatWorld.WingPhysical";
+                        // string newHatType = "HatWorld.FountainPhysical";
 
                         HatAbstract newHat = new HatAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID(), newHatType);
                         self.room.abstractRoom.AddEntity(newHat);
@@ -114,7 +112,14 @@ namespace HatWorld.src.HatManager
                         else
                         {
                             HatPhysical heldHat = TakeOffHat(self);
-                            self.SlugcatGrab(heldHat, 0);
+                            if (self.grasps[0] != null && self.grasps[1] == null)
+                            {
+                                self.SlugcatGrab(heldHat, 1);
+                            }
+                            else
+                            {
+                                self.SlugcatGrab(heldHat, 0);
+                            }
                         }
                     }
                 }

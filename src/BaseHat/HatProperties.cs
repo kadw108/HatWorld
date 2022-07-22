@@ -15,7 +15,7 @@ namespace HatWorld
         public override void Grabability(Player player, ref Player.ObjectGrabability grabability)
         {
             // can hold 2 at once
-            grabability = Player.ObjectGrabability.TwoHands;
+            grabability = Player.ObjectGrabability.OneHand;
         }
     }
 }

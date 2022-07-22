@@ -23,7 +23,7 @@ namespace HatWorld
 		{
 			sLeaser.sprites = new FSprite[4];
 			sLeaser.sprites[botDisk] = new FSprite("QuarterPips2", true) { scaleX = 0.6f };
-            sLeaser.sprites[pole] = new FSprite("LizardScaleA1", true) { scaleY = 1.1f, scaleX = 0.2f };
+            sLeaser.sprites[pole] = new FSprite("LizardScaleA1", true) { scaleY = 1.1f, scaleX = 0.3f };
             sLeaser.sprites[topDisk] = new FSprite("QuarterPips2", true) { scaleY = 0.5f, scaleX = 0.4f };
             sLeaser.sprites[topCircle] = new FSprite("Circle4", true) { scale = 0.7f };
 			this.AddToContainer(sLeaser, rCam, null);
@@ -80,6 +80,23 @@ namespace HatWorld
                 this.soundLoop.Update();
             }
         }
+
+        public override void AddHatEffects(Creature wearer)
+        {
+            if (wearer is Player)
+            {
+                (wearer as Player).slugcatStats.runspeedFac *= 1.15f;
+            }
+        }
+
+        public override void RemoveHatEffects(Creature wearer)
+        {
+            if (wearer is Player)
+            {
+                (wearer as Player).slugcatStats.runspeedFac *= (1 / 1.15f);
+            }
+        }
+
     }
 }
 

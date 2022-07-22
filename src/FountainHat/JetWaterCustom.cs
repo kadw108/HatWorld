@@ -82,7 +82,7 @@ namespace HatWorld
 			if (this.room.PointSubmerged(this.pos))
 			{
 				this.life -= 0.02f;
-				this.room.waterObject.WaterfallHitSurface(this.pos.x - 5f, this.pos.x + 5f, 0.01f); // Mathf.InverseLerp(-17f, -20f, this.vel.y));
+				// this.room.waterObject.WaterfallHitSurface(this.pos.x - 5f, this.pos.x + 5f, 0.01f); // Mathf.InverseLerp(-17f, -20f, this.vel.y));
 				this.vel.y = Mathf.Abs(this.vel.y) * 0.4f;
 				this.rad = (this.rad + 2f) * 1.5f;
 				/*

@@ -106,7 +106,10 @@ namespace HatWorld.src.HatManager
                     wornHat = physicalWornHat.GetWornHat(self.graphicsModule);
 
                     // hat effects
-                    wornHat.AddHatEffects(self);
+                    if (effectsOn)
+                    {
+                        wornHat.AddHatEffects(self);
+                    }
 
                     // remove held hat
                     physicalWornHat.Destroy();
@@ -120,19 +123,26 @@ namespace HatWorld.src.HatManager
     
         public HatPhysical TakeOffHat(Creature self)
         {
-            // remove hat effects
-            wornHat.RemoveHatEffects(self);
+            if (wornHat != null)
+            {
+                // remove hat effects
+                if (effectsOn)
+                {
+                    wornHat.RemoveHatEffects(self);
+                }
 
-            // remove worn hat
-            HatAbstract heldHat = new HatAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID(), physicalWornHat.GetType());
-            physicalWornHat = null;
-            wornHat.Destroy();
-            self.room.RemoveObject(wornHat);
+                // remove worn hat
+                HatAbstract heldHat = new HatAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID(), physicalWornHat.GetType());
+                physicalWornHat = null;
+                wornHat.Destroy();
+                self.room.RemoveObject(wornHat);
 
-            // add held hat
-            self.room.abstractRoom.AddEntity(heldHat);
-            heldHat.RealizeInRoom();
-            return (HatPhysical) heldHat.realizedObject;
+                // add held hat
+                self.room.abstractRoom.AddEntity(heldHat);
+                heldHat.RealizeInRoom();
+                return (HatPhysical) heldHat.realizedObject;
+            }
+            return null;
         }
     }
 }

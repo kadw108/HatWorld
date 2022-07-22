@@ -21,13 +21,14 @@ namespace HatWorld
 
         public JetWaterEmitter[] waterJets = new JetWaterEmitter[2];
 
+
         public FountainWearing(GraphicsModule parent) : base(parent) {
 			this.soundLoop = new ChunkDynamicSoundLoop(parent.owner.firstChunk);
             this.soundLoop.sound = SoundID.Water_Surface_Calm_LOOP;
             this.soundLoop.Pitch = 1.6f;
         }
 
-		public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
+        public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
 		{
 			sLeaser.sprites = new FSprite[5];
             sLeaser.sprites[pole] = new FSprite("LizardScaleA1", true) { scaleY = 0.35f, scaleX = 0.5f };
@@ -52,8 +53,8 @@ namespace HatWorld
 
             for (int i = petal1; i <= petal4; i++)
             {
-                float rotShift = -46 + (i - petal1) * 39 + this.baseRot; // -34, -7, 32, 71
-                sLeaser.sprites[i].rotation = rotShift + this.baseRot/5;
+                float rotShift = this.rotation + 45 + (i - petal1) * 39 + this.baseRot;
+                sLeaser.sprites[i].rotation = rotShift;
                 sLeaser.sprites[i].SetPosition(drawPos + upDir * 6 + Custom.DegToVec(rotShift) * 4);
             }
 
@@ -93,7 +94,7 @@ namespace HatWorld
             }
             else
             {
-                this.soundLoop.Volume = 0.4f;
+                this.soundLoop.Volume = 0.3f;
             }
         }
 
@@ -119,7 +120,25 @@ namespace HatWorld
         {
             if (wearer is Player)
             {
-                (wearer as Player).swimForce = 0.7f;
+                On.Player.Update += Player_Update;
+            }
+        }
+
+        public override void RemoveHatEffects(Creature wearer)
+        {
+            if (wearer is Player)
+            {
+                On.Player.Update -= Player_Update;
+            }
+        }
+
+        private void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
+        {
+            orig(self, eu);
+
+            if (parent.owner == self)
+            {
+                (parent.owner as Player).swimForce = 0.7f;
             }
         }
     }

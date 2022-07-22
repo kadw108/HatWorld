@@ -54,10 +54,10 @@ namespace HatWorld
             sLeaser.sprites[leaf1] = new FSprite("haloGlyph4", true) { scale = 0.8f };
             sLeaser.sprites[leaf2] = new FSprite("haloGlyph5", true) { scale = 0.8f };
 
-            sLeaser.sprites[petal1] = new FSprite("Cicada7eyes1", true) { scale = 0.8f };
+            sLeaser.sprites[petal1] = new FSprite("FaceA1", true) { scale = 0.8f };
             sLeaser.sprites[petal2] = new FSprite("Pebble5", true) { scale = 0.6f };
-            sLeaser.sprites[petal3] = new FSprite("Cicada7eyes1", true) { scale = 0.8f };
-            sLeaser.sprites[petal4] = new FSprite("Cicada7eyes1", true) { scale = 0.8f };
+            sLeaser.sprites[petal3] = new FSprite("FaceA1", true) { scale = 0.8f };
+            sLeaser.sprites[petal4] = new FSprite("FaceA1", true) { scale = 0.8f };
 
             // vines
             for (int i = 0; i < this.vines.Length; i++)
@@ -101,15 +101,15 @@ namespace HatWorld
             sLeaser.sprites[leaf2].rotation += 90f;
 
             /* flowers */
-            Vector2 flowerPos = drawPos + rightDir * 7f;
-            sLeaser.sprites[petal1].SetPosition(flowerPos + upDir * 13f + rightDir * 8f);
+            sLeaser.sprites[petal1].SetPosition(drawPos + upDir * 1f + rightDir * 3f);
             sLeaser.sprites[petal1].rotation -= 20f;
 
-            sLeaser.sprites[petal4].SetPosition(flowerPos);
+            sLeaser.sprites[petal4].SetPosition(drawPos);
             sLeaser.sprites[petal4].rotation += 30f;
 
-            sLeaser.sprites[petal3].SetPosition(flowerPos - upDir * 10f + rightDir * 4f);
+            sLeaser.sprites[petal3].SetPosition(drawPos - upDir * 1f - rightDir * 2f);
             sLeaser.sprites[petal3].rotation += 90f;
+
 
             /* vines */
             for (int j = 0; j < this.vines.Length; j++)
@@ -270,6 +270,32 @@ namespace HatWorld
                     this.vines[i][j, 1] = this.vines[i][j, 0];
                     this.vines[i][j, 2] *= 0f;
                 }
+            }
+        }
+
+        public override void AddHatEffects(Creature wearer)
+        {
+            if (wearer is Player)
+            {
+                float change = 10f;
+                wearer.abstractCreature.world.game.session.creatureCommunities.InfluenceLikeOfPlayer(
+                    CreatureCommunities.CommunityID.Scavengers,
+                    wearer.abstractCreature.world.RegionNumber,
+                    (wearer.State as PlayerState).playerNumber,
+                    change * 0.1f, 0.75f, 0.25f);
+            }
+        }
+
+        public override void RemoveHatEffects(Creature wearer)
+        {
+            if (wearer is Player)
+            {
+                float change = -10f;
+                wearer.abstractCreature.world.game.session.creatureCommunities.InfluenceLikeOfPlayer(
+                    CreatureCommunities.CommunityID.Scavengers,
+                    wearer.abstractCreature.world.RegionNumber,
+                    (wearer.State as PlayerState).playerNumber,
+                    change * 0.1f, 0.75f, 0.25f);
             }
         }
     }

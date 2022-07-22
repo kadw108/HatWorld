@@ -43,6 +43,31 @@ namespace HatWorld
 			sLeaser.sprites[edgeIndex].color = new Color(0.57f, 0.79f, 0.94f);
 			sLeaser.sprites[glassIndex].color = new Color(0.94f, 0.91f, 1f, 0.5f);
 		}
+		public override void AddHatEffects(Creature wearer)
+		{
+			if (wearer is Player)
+            {
+                On.Player.Update += Player_Update;
+            }
+		}
+
+		public override void RemoveHatEffects(Creature wearer)
+		{
+			if (wearer is Player)
+            {
+                On.Player.Update -= Player_Update;
+            }
+		}
+
+		private void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
+		{
+            orig(self, eu);
+
+			if (parent.owner == self)
+			{
+				(parent.owner as Player).airInLungs = 1f;
+			}
+		}
 	}
 }
 

@@ -12,7 +12,7 @@ namespace HatWorld
         public const int crownIndex = 0;
         public const int gemIndex = 1;
 
-        public override HatWearing GetWornHat(GraphicsModule graphicsModule)
+        public static new HatWearing GetWornHat(GraphicsModule graphicsModule)
         {
             return new TorchWearing(graphicsModule);
         }

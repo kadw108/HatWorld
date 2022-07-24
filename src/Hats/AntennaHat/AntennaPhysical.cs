@@ -11,7 +11,7 @@ namespace HatWorld
         public const int topDisk = 2;
         public const int topCircle = 3;
 
-        public override HatWearing GetWornHat(GraphicsModule graphicsModule)
+        public static new HatWearing GetWornHat(GraphicsModule graphicsModule)
         {
             return new AntennaWearing(graphicsModule);
         }

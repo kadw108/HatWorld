@@ -14,7 +14,7 @@ namespace HatWorld
         public const int circleLeft = 2;
         public const int circleRight = 3;
 
-        public override HatWearing GetWornHat(GraphicsModule graphicsModule)
+        public static new HatWearing GetWornHat(GraphicsModule graphicsModule)
         {
             return new WingWearing(graphicsModule);
         }

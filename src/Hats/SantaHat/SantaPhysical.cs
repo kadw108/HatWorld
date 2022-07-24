@@ -20,7 +20,7 @@ namespace HatWorld
         public int tuftIndex = 1;
         public int botIndex = 2;
 
-        public override HatWearing GetWornHat(GraphicsModule graphicsModule)
+        public static new HatWearing GetWornHat(GraphicsModule graphicsModule)
         {
             return new SantaWearing(graphicsModule);
         }

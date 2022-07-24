@@ -47,9 +47,10 @@ namespace HatWorld
 			
 			this.initialized = false; // ParentDrawSprites must run to set basePos and drawPos
 			parent.owner.room.AddObject(this);
+
 		}
 
-		public abstract void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam);
+        public abstract void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam);
 
 		public abstract void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette);
 
@@ -65,16 +66,23 @@ namespace HatWorld
                 if (flipX) rightDir *= -1;
                 drawPos += upDir * headRadius;
 
-                if (base.slatedForDeletetion || rCam.room != this.room || this.room != this.parent.owner.room)
-                {
-                    sLeaser.CleanSpritesAndRemove();
-                }
+				ChildDrawSprites(sLeaser, rCam, timeStacker, camPos);
+
+				/*
+				Debug.Log("hatworld hatwearing drawsprites " + (parent.culled) + (parent.lastCulled) +
+					(base.slatedForDeletetion) + (rCam.room != this.room) + (this.room != this.parent.owner.room) + (parent.ShouldBeCulled) +
+					rCam.room.abstractRoom.name + " " + this.room.abstractRoom.name + " " + parent.owner.room.abstractRoom.name + " " + 
+					(parent == null) + (parent.culled));
+				*/
+
 				if (parent.culled && !parent.lastCulled)
 				{
 					foreach (var sprite in sLeaser.sprites) sprite.isVisible = !parent.culled || (parent is VultureGraphics vult && vult.shadowMode);
 				}
-
-				ChildDrawSprites(sLeaser, rCam, timeStacker, camPos);
+                if (base.slatedForDeletetion || rCam.room != this.room || this.room != this.parent.owner.room)
+                {
+                    sLeaser.CleanSpritesAndRemove();
+                }
             }
         }
 		public abstract void ChildDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos);
@@ -83,8 +91,7 @@ namespace HatWorld
         {
 			base.Update(eu);
 
-			GraphicsModule graphicsModule = this.parent;
-			if (((graphicsModule != null) ? graphicsModule.owner : null) == null || this.parent.owner.slatedForDeletetion || base.slatedForDeletetion)
+			if ((this.parent.owner) == null || this.parent.owner.slatedForDeletetion || base.slatedForDeletetion)
 			{
 				this.Destroy();
 			}

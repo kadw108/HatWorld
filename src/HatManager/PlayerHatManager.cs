@@ -98,7 +98,8 @@ namespace HatWorld.src.HatManager
                         HatAbstract newHat = new HatAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID(), newHatType);
                         self.room.abstractRoom.AddEntity(newHat);
                         newHat.RealizeInRoom();
-                        self.SlugcatGrab(newHat.realizedObject, 0);
+
+                        self.SlugcatGrab(newHat.realizedObject, self.FreeHand());
                     }
 
                     // wear hat flag
@@ -112,14 +113,7 @@ namespace HatWorld.src.HatManager
                         else
                         {
                             HatPhysical heldHat = TakeOffHat(self);
-                            if (self.grasps[0] != null && self.grasps[1] == null)
-                            {
-                                self.SlugcatGrab(heldHat, 1);
-                            }
-                            else
-                            {
-                                self.SlugcatGrab(heldHat, 0);
-                            }
+                            self.SlugcatGrab(heldHat, self.FreeHand());
                         }
                     }
                 }

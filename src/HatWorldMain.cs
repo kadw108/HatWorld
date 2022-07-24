@@ -30,6 +30,9 @@ namespace HatWorld
             // Put hats in their respective rooms where they can be found
             HatPlacer.AddHooks();
             HatPlacer.AddSpawns(Assembly.GetExecutingAssembly().GetManifestResourceStream("HatWorld.src.HatPlacer.spawns.txt"));
+
+            // For saving/loading data about which creatures are wearing which hats (used for scavengers)
+            HatSaveManager.AddHooks();
         }
 
         private void Creature_ctor(On.Creature.orig_ctor orig, Creature self, AbstractCreature abstractCreature, World world)
@@ -44,7 +47,6 @@ namespace HatWorld
             else if (self is Scavenger)
             {
                 ScavHatManager n = new ScavHatManager(self as Scavenger);
-                Debug.Log("hatworld scavhatmanager " + n + " " + self);
                 n.AddHooks();
             }
         }

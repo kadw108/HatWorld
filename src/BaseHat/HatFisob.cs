@@ -15,8 +15,8 @@ namespace HatWorld
             // If you want a simple grayscale icon, you can omit the following line.
             Icon = new CentiShieldIcon();
 
-            RegisterUnlock(EnumExt_CentiShields.OrangeCentiShield, parent: MultiplayerUnlocks.SandboxUnlockID.BigCentipede, data: 70);
-            RegisterUnlock(EnumExt_CentiShields.RedCentiShield, parent: MultiplayerUnlocks.SandboxUnlockID.RedCentipede, data: 0);
+            RegisterUnlock(EnumExt_CentiShields.OrangeCentiShield, parent: MultiplayerUnlocks.SandboxUnlockID.BigCentipede, hats: 70);
+            RegisterUnlock(EnumExt_CentiShields.RedCentiShield, parent: MultiplayerUnlocks.SandboxUnlockID.RedCentipede, hats: 0);
             */
         }
 
@@ -33,7 +33,7 @@ namespace HatWorld
 
             /*
              * Add sandbox later
-            // If this is coming from a sandbox unlock, the hue and size should depend on the data value (see CentiShieldIcon).
+            // If this is coming from a sandbox unlock, the hue and size should depend on the hats value (see CentiShieldIcon).
             if (unlock is SandboxUnlock u)
             {
                 result.hue = u.Data / 1000f;

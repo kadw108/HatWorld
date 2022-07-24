@@ -13,7 +13,7 @@ namespace HatWorld.src.HatManager
         public Creature wearer;
 
         public HatWearing? wornHat = null; // actually worn hat - destroyed and recreated when the sprite disappears/appears (eg. between rooms)
-        public HatPhysical? physicalWornHat = null; // physical object version of currently worn hat, persists between rooms
+        public Type? physicalWornHat = null; // physical hat type of currently worn hat, persists between rooms
 
         public CreatureHatManager(Creature wearer)
         {
@@ -24,6 +24,8 @@ namespace HatWorld.src.HatManager
             // Ensure hat appears when worn
             On.GraphicsModule.InitiateSprites += GraphicsModule_InitiateSprites;
             On.GraphicsModule.DrawSprites += GraphicsModule_DrawSprites;
+
+			On.RoomCamera.SpriteLeaser.CleanSpritesAndRemove += SpriteLeaser_CleanSpritesAndRemove;
 
             // Remove worn hats when wearer dies
             On.Creature.Die += Creature_Die;
@@ -44,7 +46,7 @@ namespace HatWorld.src.HatManager
             {
                 if (self != null && physicalWornHat != null)
                 {
-                    wornHat = physicalWornHat.GetWornHat(self);
+                    wornHat = (HatWearing) physicalWornHat.GetMethod("GetWornHat").Invoke(null, new object[] { self });
                     self.owner.room.AddObject(wornHat);
                     return;
                 }
@@ -66,6 +68,17 @@ namespace HatWorld.src.HatManager
                 }
             }
         }
+
+		// Remove hats when a creature's sprites are removed
+		private void SpriteLeaser_CleanSpritesAndRemove(On.RoomCamera.SpriteLeaser.orig_CleanSpritesAndRemove orig, RoomCamera.SpriteLeaser self)
+		{
+			orig(self);
+
+			if (wornHat != null && wornHat.parent == self.drawableObject)
+			{
+				wornHat.Destroy();
+			}
+		}
 
         public void Creature_Die(On.Creature.orig_Die orig, Creature self)
         {
@@ -93,17 +106,18 @@ namespace HatWorld.src.HatManager
             orig.Invoke(self);
         }
 
-        public void PutOnHat(Creature self)
+        public virtual void PutOnHat(Creature self)
         {
             // if holding hat, remove held hat and add wear hat
             for (int i = 0; i < self.grasps.Length; i++)
             {
                 if (self.grasps[i] != null && self.grasps[i].grabbed is HatPhysical)
                 {
-                    physicalWornHat = (HatPhysical)self.grasps[i].grabbed;
+                    HatPhysical physicalHat = (HatPhysical)self.grasps[i].grabbed;
+                    physicalWornHat = physicalHat.GetType();
 
                     // add worn hat
-                    wornHat = physicalWornHat.GetWornHat(self.graphicsModule);
+                    wornHat = (HatWearing) physicalWornHat.GetMethod("GetWornHat").Invoke(null, new object[] { self.graphicsModule });
 
                     // hat effects
                     if (effectsOn)
@@ -112,18 +126,18 @@ namespace HatWorld.src.HatManager
                     }
 
                     // remove held hat
-                    physicalWornHat.Destroy();
-                    self.room.RemoveObject(physicalWornHat);
-                    self.room.abstractRoom.RemoveEntity(physicalWornHat.abstractPhysicalObject);
+                    physicalHat.Destroy();
+                    self.room.RemoveObject(physicalHat);
+                    self.room.abstractRoom.RemoveEntity(physicalHat.abstractPhysicalObject);
                     self.ReleaseGrasp(i);
                     break;
                 }
             }
         }
     
-        public HatPhysical TakeOffHat(Creature self)
+        public virtual HatPhysical TakeOffHat(Creature self)
         {
-            if (wornHat != null)
+            if (physicalWornHat != null && wornHat != null)
             {
                 // remove hat effects
                 if (effectsOn)
@@ -132,7 +146,7 @@ namespace HatWorld.src.HatManager
                 }
 
                 // remove worn hat
-                HatAbstract heldHat = new HatAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID(), physicalWornHat.GetType());
+                HatAbstract heldHat = new HatAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID(), physicalWornHat);
                 physicalWornHat = null;
                 wornHat.Destroy();
                 self.room.RemoveObject(wornHat);

@@ -277,7 +277,7 @@ namespace HatWorld
         {
             if (wearer is Player)
             {
-                float change = 10f;
+                float change = 2f;
                 wearer.abstractCreature.world.game.session.creatureCommunities.InfluenceLikeOfPlayer(
                     CreatureCommunities.CommunityID.Scavengers,
                     wearer.abstractCreature.world.RegionNumber,
@@ -290,7 +290,7 @@ namespace HatWorld
         {
             if (wearer is Player)
             {
-                float change = -10f;
+                float change = 2f;
                 wearer.abstractCreature.world.game.session.creatureCommunities.InfluenceLikeOfPlayer(
                     CreatureCommunities.CommunityID.Scavengers,
                     wearer.abstractCreature.world.RegionNumber,

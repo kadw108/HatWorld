@@ -1,18 +1,16 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace HatWorld.src.HatManager
 {
     public class ScavHatManager : CreatureHatManager
     {
-        // make public static hashmap of scav id : wearing hat type to keep track of hats
-
         public ScavHatManager(Scavenger wearer) : base(wearer) { }
 
         public override void AddHooks()
         {
             base.AddHooks();
 
+            On.ScavengerGraphics.ctor += ScavengerGraphics_ctor;
             On.Scavenger.Stun += Scavenger_Stun;
             On.Scavenger.PickUpAndPlaceInInventory += Scavenger_PickUpAndPlaceInInventory;
             On.ScavengerAI.RecognizeCreatureAcceptingGift += ScavengerAI_RecognizeCreatureAcceptingGift;
@@ -20,6 +18,21 @@ namespace HatWorld.src.HatManager
             // On.Scavenger.Update += Scavenger_Update; // doesn't work
         }
 
+        private void ScavengerGraphics_ctor(On.ScavengerGraphics.orig_ctor orig, ScavengerGraphics self, PhysicalObject ow)
+        {
+            orig(self, ow);
+
+            if (physicalWornHat == null)
+            {
+                string physicalHatType;
+                if (HatSaveManager.hats.TryGetValue(self.scavenger.abstractCreature.ID, out physicalHatType))
+                {
+                    Debug.Log("Hatworld scav hat detected " + self.scavenger.abstractCreature.ID + " " + physicalHatType);
+                    physicalWornHat = HatWorldMain.GetType(physicalHatType);
+                    wornHat = (HatWearing) physicalWornHat.GetMethod("GetWornHat").Invoke(null, new object[] { self });
+                }
+            }
+        }
 
         public void ScavengerAI_RecognizeCreatureAcceptingGift(On.ScavengerAI.orig_RecognizeCreatureAcceptingGift orig, ScavengerAI self, Tracker.CreatureRepresentation subRep, Tracker.CreatureRepresentation objRep, bool objIsMe, PhysicalObject item)
         {
@@ -35,8 +48,9 @@ namespace HatWorld.src.HatManager
         {
             orig(self, st);
 
-            if (self == wearer)
+            if (self == wearer && physicalWornHat != null)
             {
+                Debug.Log("Hatworld scav stun " + self.abstractCreature.ID + " " + (self.graphicsModule == null));
                 TakeOffHat(self);
             }
         }
@@ -49,6 +63,19 @@ namespace HatWorld.src.HatManager
             {
                 PutOnHat(self);
             }
+        }
+
+        public override void PutOnHat(Creature self)
+        {
+            base.PutOnHat(self);
+
+            HatSaveManager.hats[self.abstractCreature.ID] = this.physicalWornHat.Namespace + "." + this.physicalWornHat.Name;
+        }
+
+        public override HatPhysical TakeOffHat(Creature self)
+        {
+            HatSaveManager.hats.Remove(self.abstractCreature.ID);
+            return base.TakeOffHat(self);
         }
     }
 }

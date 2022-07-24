@@ -19,7 +19,7 @@ namespace HatWorld
         public Vector2[][,] vines;
         public float vinesWithdrawn;
 
-        public override HatWearing GetWornHat(GraphicsModule graphicsModule)
+        public static new HatWearing GetWornHat(GraphicsModule graphicsModule)
         {
             return new FlowerWearing(graphicsModule);
         }

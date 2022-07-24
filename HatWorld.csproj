@@ -27,11 +27,17 @@
     <Reference Include="EnumExtender">
       <HintPath>..\referencefolder\EnumExtender.dll</HintPath>
     </Reference>
+    <Reference Include="FancySlugcats">
+      <HintPath>..\referencefolder\FancySlugcats.dll</HintPath>
+    </Reference>
     <Reference Include="Fisobs">
       <HintPath>Fisobs.dll</HintPath>
     </Reference>
     <Reference Include="HOOKS-Assembly-CSharp">
       <HintPath>..\referencefolder\HOOKS-Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoMod.RuntimeDetour">
+      <HintPath>..\referencefolder\MonoMod-22.05.01.01-net35\MonoMod.RuntimeDetour.dll</HintPath>
     </Reference>
     <Reference Include="Partiality">
       <HintPath>..\referencefolder\Partiality.dll</HintPath>

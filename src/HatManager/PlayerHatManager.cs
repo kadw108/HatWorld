@@ -1,6 +1,10 @@
 ﻿using System;
 using UnityEngine;
 
+// for mod integration (hooking mod methods)
+using System.Reflection;
+using MonoMod.RuntimeDetour; // if you get 'instance object was created as immutable' error, edit the .csproj manually
+
 namespace HatWorld.src.HatManager
 {
     public class PlayerHatManager : CreatureHatManager
@@ -19,9 +23,64 @@ namespace HatWorld.src.HatManager
         {
             base.AddHooks();
 
+            if (HatWorldMain.fancyGraphicsRef != null)
+            {
+                // equivalent: On.FancySlugcats.FancyPlayerGraphics.InitiateSprites += FancyPlayerGraphics_InitiateSprites
+                new Hook(HatWorldMain.fancyGraphicsRef.GetMethod("InitiateSprites",
+                        BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance),
+                    typeof(PlayerHatManager).GetMethod("FancyPlayerGraphics_InitiateSprites",
+                        BindingFlags.Public | BindingFlags.Instance),
+                    this);
+
+                // equivalent: On.FancySlugcats.FancyPlayerGraphics.DrawSprites += FancyPlayerGraphics_DrawSprites
+                new Hook(HatWorldMain.fancyGraphicsRef.GetMethod("DrawSprites",
+                        BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance),
+                    typeof(PlayerHatManager).GetMethod("FancyPlayerGraphics_DrawSprites",
+                        BindingFlags.Public | BindingFlags.Instance),
+                    this);
+            }
+
             // add new button response to player controls
             On.Player.checkInput += Player_CheckInput;
             On.Player.Update += Player_Update;
+        }
+
+        /*
+         * Hook method for FancySlugcats.FancyPlayerGraphics.InitiateSprites
+         */
+        public delegate void InitiateSprites_signature(
+            PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam);
+        public void FancyPlayerGraphics_InitiateSprites(InitiateSprites_signature orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
+        {
+            orig.Invoke(self, sLeaser, rCam);
+
+            if (self.owner == wearer)
+            {
+                if (self != null && physicalWornHat != null)
+                {
+                    wornHat = (HatWearing) physicalWornHat.GetMethod("GetWornHat").Invoke(null, new object[] { self });
+                    self.owner.room.AddObject(wornHat);
+                    return;
+                }
+            }
+        }
+
+        /*
+         * Hook method for FancySlugcats.FancyPlayerGraphics.DrawSprites
+         */
+        public delegate void DrawSprites_signature(
+            PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos);
+        public void FancyPlayerGraphics_DrawSprites(DrawSprites_signature orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+        {
+            orig.Invoke(self, sLeaser, rCam, timeStacker, camPos);
+
+            if (self.owner == wearer)
+            {
+                if (physicalWornHat != null && wornHat != null)
+                {
+                    wornHat.ParentDrawSprites(sLeaser, rCam, timeStacker, camPos);
+                }
+            }
         }
 
         /*

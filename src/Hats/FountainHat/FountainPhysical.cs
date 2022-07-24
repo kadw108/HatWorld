@@ -18,7 +18,7 @@ namespace HatWorld
 
         public JetWaterEmitter[] waterJets = new JetWaterEmitter[2];
 
-        public static HatWearing GetWornHat(GraphicsModule graphicsModule)
+        public static new HatWearing GetWornHat(GraphicsModule graphicsModule)
         {
             return new FountainWearing(graphicsModule);
         }

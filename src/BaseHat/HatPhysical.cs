@@ -130,6 +130,7 @@ namespace HatWorld
             }
         }
 
+        // equivalent of a static abstract method but those don't exist in C# and I am too lazy to find a better option
         public static HatWearing GetWornHat(GraphicsModule graphicsModule)
         {
             return null;

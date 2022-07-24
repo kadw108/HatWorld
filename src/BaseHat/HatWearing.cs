@@ -33,9 +33,18 @@ namespace HatWorld
 			switch (parent)
             {
 				case PlayerGraphics:
-					this.anchorSprite = 3;
-					this.rotation = -90f;
-					this.headRadius = 5f;
+                    this.rotation = -90f;
+                    this.headRadius = 5f;
+
+					// if FancySlugcats is active, the head sprite has a different index
+					if (HatWorldMain.fancyGraphicsRef == null)
+                    {
+                        this.anchorSprite = 3;
+                    }
+					else
+                    {
+						this.anchorSprite = 8;
+                    }
 					break;
 
 				case ScavengerGraphics:
@@ -67,13 +76,6 @@ namespace HatWorld
                 drawPos += upDir * headRadius;
 
 				ChildDrawSprites(sLeaser, rCam, timeStacker, camPos);
-
-				/*
-				Debug.Log("hatworld hatwearing drawsprites " + (parent.culled) + (parent.lastCulled) +
-					(base.slatedForDeletetion) + (rCam.room != this.room) + (this.room != this.parent.owner.room) + (parent.ShouldBeCulled) +
-					rCam.room.abstractRoom.name + " " + this.room.abstractRoom.name + " " + parent.owner.room.abstractRoom.name + " " + 
-					(parent == null) + (parent.culled));
-				*/
 
 				if (parent.culled && !parent.lastCulled)
 				{
@@ -119,6 +121,13 @@ namespace HatWorld
 		}
 		public void ParentDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
 		{
+			/*
+			for (int i = 0; i < sLeaser.sprites.Length; i++)
+            {
+				Debug.Log("hatworld hatwearing " + i + " " + sLeaser.sprites[i].GetPosition());
+            }
+			*/
+
 			if (sLeaser.sprites.Length > anchorSprite)
 			{
 				this.basePos = sLeaser.sprites[anchorSprite].GetPosition();

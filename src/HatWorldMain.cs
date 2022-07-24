@@ -1,10 +1,7 @@
-﻿// default imports
-using System;
+﻿using System;
 using BepInEx;
 using UnityEngine;
 
-// physical objects library
-using Fisobs;
 using System.Collections.Generic;
 using System.Reflection;
 using OptionalUI;
@@ -20,6 +17,9 @@ namespace HatWorld
             typeof(TorchPhysical), typeof(WingPhysical), typeof(FountainPhysical), typeof(AntennaPhysical)
         };
 
+        public static Type? fancyGraphicsRef = null;
+        public static Type? slugBaseRef = null;
+
         public void OnEnable()
         {
             On.Creature.ctor += Creature_ctor;
@@ -33,7 +33,38 @@ namespace HatWorld
 
             // For saving/loading data about which creatures are wearing which hats (used for scavengers)
             HatSaveManager.AddHooks();
+
+            // For compatability with other mods
+            On.RainWorld.Start += RainWorld_Start;
+            Debug.Log("Hatworld mod running (version 1.0.0)");
         }
+
+        private void RainWorld_Start(On.RainWorld.orig_Start orig, RainWorld self)
+        {
+            orig(self);
+
+            foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                if (asm.GetName().Name == "SlugBase")
+                {
+                    // slugBaseRef = asm.GetType("FancySlugcats.FancyPlayerGraphics");
+                    Debug.Log("Hatworld: SlugBase found.");
+                }
+                else if (asm.GetName().Name == "FancySlugcats")
+                {
+                    fancyGraphicsRef = asm.GetType("FancySlugcats.FancyPlayerGraphics");
+                    Debug.Log("Hatworld: FancySlugcats found.");
+                }
+            }
+
+            if (slugBaseRef == null)
+                Debug.Log("Hatworld: SlugBase not found.");
+
+            if (fancyGraphicsRef == null)
+                Debug.Log("Hatworld: FancySlugcats not found.");
+
+        }
+
 
         private void Creature_ctor(On.Creature.orig_ctor orig, Creature self, AbstractCreature abstractCreature, World world)
         {

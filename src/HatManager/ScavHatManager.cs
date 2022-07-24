@@ -30,6 +30,11 @@ namespace HatWorld.src.HatManager
                     Debug.Log("Hatworld scav hat detected " + self.scavenger.abstractCreature.ID + " " + physicalHatType);
                     physicalWornHat = HatWorldMain.GetType(physicalHatType);
                     wornHat = (HatWearing) physicalWornHat.GetMethod("GetWornHat").Invoke(null, new object[] { self });
+
+                    if (effectsOn)
+                    {
+                        wornHat.AddHatEffects(wearer);
+                    }
                 }
             }
         }

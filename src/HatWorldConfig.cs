@@ -23,7 +23,7 @@ namespace HatWorld
 		public void CreateMainAndWear()
         {
 			OpLabel title = new OpLabel(30f, 550f, "HatWorld", true);
-			OpLabel author = new OpLabel(30f, 520f, $"Author: kadw | Version 1.0.0", false);
+			OpLabel author = new OpLabel(30f, 520f, $"Author: kadw (based on code from Dual-Iron and Slime_Cubed) | Version 1.0.0", false);
 
 			OpRect wearRect = new OpRect(new Vector2(15f, 320f), new Vector2(220f, 185f));
 

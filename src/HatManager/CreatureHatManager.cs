@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace HatWorld.src.HatManager
@@ -21,10 +18,6 @@ namespace HatWorld.src.HatManager
         }
         public virtual void AddHooks()
         {
-            // Ensure hat appears when worn
-            On.GraphicsModule.InitiateSprites += GraphicsModule_InitiateSprites;
-            On.GraphicsModule.DrawSprites += GraphicsModule_DrawSprites;
-
 			On.RoomCamera.SpriteLeaser.CleanSpritesAndRemove += SpriteLeaser_CleanSpritesAndRemove;
 
             // Remove worn hats when wearer dies
@@ -33,6 +26,13 @@ namespace HatWorld.src.HatManager
             // Remove worn hats when player dies/quits game
             On.RainWorldGame.ExitGame += RainWorldGame_ExitGame;
             On.RainWorldGame.GoToDeathScreen += RainWorldGame_GoToDeathScreen;
+
+            // Ensure hat appears when worn - leaves FancySlugcats integration to PlayerHatManager
+            if (!(this is PlayerHatManager) || HatWorldMain.fancyGraphicsRef == null)
+            {
+                On.GraphicsModule.InitiateSprites += GraphicsModule_InitiateSprites;
+                On.GraphicsModule.DrawSprites += GraphicsModule_DrawSprites;
+            }
         }
 
         /*

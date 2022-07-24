@@ -18,8 +18,8 @@ namespace HatWorld
 		/* Vines from Jellyfish.tentacles
 		 * Array of 2D arrays of vectors
 		 * Each 2D array is one vine, each row is 1 vertice
-		 * columns are start pos [j, 0] / end pos [j, 1] / length [j, 2]
-		 * vines[j][i, 0] is jth vine, ith vertice, start pos
+		 * columns are start pos [i, 0] (column 0) / end pos [i, 1] (column 1) / length [i, 2] (column 2)
+		 * eg. vines[j][i, 0] is the jth vine, ith vertice, start pos
 		 */
 		public Vector2[][,] vines;
 
@@ -39,6 +39,7 @@ namespace HatWorld
             this.vines = new Vector2[vineNumber][,]; // must be in InitiateSprites, not constructor, or FlowerWearing doesn't appear
             for (int i = 0; i < this.vines.Length; i++)
             {
+                // one long vine (length 5) and short vine (length 4) per side
                 if (i % 2 == 0)
                 {
                     this.vines[i] = new Vector2[5, 3];
@@ -226,8 +227,9 @@ namespace HatWorld
             }
 		}
 
-        /* Methods from JellyFish */
+        /* Methods from JellyFish (based on tentacle code) */
 
+        /* Returns Vector2 representing position where vine j "attaches" to the hat */
         public Vector2 AttachPos(int j, float timeStacker, Vector2 camPos)
         {
             // Requires camPos since the vine/tentacle code relies on this method returning "real" position, not camera-adjusted
@@ -235,6 +237,7 @@ namespace HatWorld
             // Thus re-add camPos to a, to subtract it later in DrawSprites
             Vector2 a = (basePos + camPos) - new Vector2(0, 3);
             a += upDir * this.headRadius;
+            a += new Vector2(0, 3);
 
             switch (j) // 0, 1 - right side of hat, 2, 3 - left side of hat
             {
@@ -277,6 +280,7 @@ namespace HatWorld
         {
             if (wearer is Player)
             {
+                // Increase scav rep by 20
                 float change = 2f;
                 wearer.abstractCreature.world.game.session.creatureCommunities.InfluenceLikeOfPlayer(
                     CreatureCommunities.CommunityID.Scavengers,
@@ -290,6 +294,7 @@ namespace HatWorld
         {
             if (wearer is Player)
             {
+                // Decrease scav rep by 20
                 float change = 2f;
                 wearer.abstractCreature.world.game.session.creatureCommunities.InfluenceLikeOfPlayer(
                     CreatureCommunities.CommunityID.Scavengers,

@@ -295,7 +295,7 @@ namespace HatWorld
             if (wearer is Player)
             {
                 // Decrease scav rep by 20
-                float change = 2f;
+                float change = -2f;
                 wearer.abstractCreature.world.game.session.creatureCommunities.InfluenceLikeOfPlayer(
                     CreatureCommunities.CommunityID.Scavengers,
                     wearer.abstractCreature.world.RegionNumber,

@@ -17,7 +17,7 @@ namespace HatWorld
 			sLeaser.sprites = new FSprite[3];
 			sLeaser.sprites[neckIndex] = new FSprite("SpearFragment2", true) { scale = 1.4f }; // neck collar
 			sLeaser.sprites[edgeIndex] = new FSprite("LizardBubble7", true) { scale = 1.3f}; // edge of bubble
-			sLeaser.sprites[glassIndex] = new FSprite("Circle20", true) { scale = 1.1f}; // inside of bubble
+			sLeaser.sprites[glassIndex] = new FSprite("Circle20", true) { scale = 1f}; // inside of bubble
 
 			this.AddToContainer(sLeaser, rCam, null);
 		}

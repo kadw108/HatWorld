@@ -1,6 +1,7 @@
 ﻿/*
  * Responsible for putting the hats in the world.
  * Making sure they appear in certain rooms.
+ * Uses spawns.txt file, which is added in HatWorldMain.OnEnable()
  * Based on GrappleWorld mod
  * 
  * Interfaces with HatPhysical.Update()
@@ -27,14 +28,6 @@ namespace HatWorld
 
         public const int placedObjectIndex = 1821433636;
 
-        public static void writeData(String data)
-        {
-            using (StreamWriter writer = new StreamWriter("C:\\Users\\account\\Apps\\Steam\\steamapps\\common\\Rain World\\hatworlddebug.txt"))
-            {
-                writer.WriteLine(data);
-            }
-        }
-
         public static void AddSpawns(Stream stream)
         {
             StreamReader streamReader = new StreamReader(stream);
@@ -57,13 +50,12 @@ namespace HatWorld
                 float y = float.Parse(array[2].Trim());
                 string hatType = array[3].Trim();
                 room_list.Add(new object[] { x, y, hatType });
-                writeData("hatworld room_list " + key + " " + room_list);
+                Debug.Log("Hatworld room_list " + key + " " + room_list);
             }
         }
 
         public static void AddHooks()
         {
-            // Debug.Log doesn't work here for some reason so use writeData instead
             On.Room.Loaded += Room_Loaded;
             On.RainWorldGame.ShutDownProcess += RainWorldGame_ShutDownProcess;
         }
@@ -97,7 +89,7 @@ namespace HatWorld
                             maxRegen = 10
                         };
                         HatPlacer.infos[abstractHat] = value;
-                        Debug.Log("hatworld place hat " + self.abstractRoom.name + " " + (string)list[i][2]);
+                        Debug.Log("Hatworld place hat " + self.abstractRoom.name + " " + (string)list[i][2]);
                         self.abstractRoom.AddEntity(abstractHat);
                     }
                 }

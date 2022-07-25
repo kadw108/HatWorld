@@ -99,12 +99,12 @@ namespace HatWorld
 
         public override void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
         {
-            sLeaser.sprites[botDisk].color = new Color(0.52f, 0.53f, 0.7f); // blue-gray
-            sLeaser.sprites[pole].color = new Color(0.72f, 0.73f, 1f); // bluish white
+            sLeaser.sprites[botDisk].color = new Color(0.46f, 0.46f, 0.85f); // blue-gray
+            sLeaser.sprites[pole].color = new Color(0.62f, 0.63f, 1f); // bluish white
 
             for (int i = petal1; i <= petal4; i++)
             {
-                sLeaser.sprites[i].color = new Color(.85f, .95f, 1f); 
+                sLeaser.sprites[i].color = new Color(.75f, .85f, 1f); 
             }
         }
 

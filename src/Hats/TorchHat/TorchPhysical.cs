@@ -66,8 +66,8 @@ namespace HatWorld
                     this.lightSource = new LightSource(firePos, false, new Color(1f, 0.8f, 0.4f), this);
                     this.lightSource.affectedByPaletteDarkness = 0.5f;
                     float flicker = 1 + Mathf.Pow(Random.value, 3f) * 0.1f * ((Random.value >= 0.5f) ? 1f : -1f);
-                    this.lightSource.setRad = new float?(40f * flicker);
-                    this.lightSource.setAlpha = new float?(0.8f);
+                    this.lightSource.setRad = new float?(45f * flicker);
+                    this.lightSource.setAlpha = new float?(0.9f);
                     this.room.AddObject(this.lightSource);
                 }
                 else

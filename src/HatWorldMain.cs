@@ -47,7 +47,7 @@ namespace HatWorld
             {
                 if (asm.GetName().Name == "SlugBase")
                 {
-                    // slugBaseRef = asm.GetType("FancySlugcats.FancyPlayerGraphics");
+                    slugBaseRef = asm.GetType("SlugBase.");
                     Debug.Log("Hatworld: SlugBase found.");
                 }
                 else if (asm.GetName().Name == "FancySlugcats")

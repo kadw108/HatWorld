@@ -18,8 +18,6 @@ namespace HatWorld
         };
 
         public static Type? fancyGraphicsRef = null;
-        public static Type? slugBaseRef = null;
-
         public void OnEnable()
         {
             On.Creature.ctor += Creature_ctor;
@@ -34,6 +32,9 @@ namespace HatWorld
             // For saving/loading data about which creatures are wearing which hats (used for scavengers)
             HatSaveManager.AddHooks();
 
+            // For adding Moon dialogue for hats
+            MoonDialogueManager.AddHooks();
+
             // For compatability with other mods
             On.RainWorld.Start += RainWorld_Start;
             Debug.Log("Hatworld mod running (version 1.0.0)");
@@ -45,20 +46,13 @@ namespace HatWorld
 
             foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies())
             {
-                if (asm.GetName().Name == "SlugBase")
-                {
-                    slugBaseRef = asm.GetType("SlugBase.");
-                    Debug.Log("Hatworld: SlugBase found.");
-                }
-                else if (asm.GetName().Name == "FancySlugcats")
+                if (asm.GetName().Name == "FancySlugcats")
                 {
                     fancyGraphicsRef = asm.GetType("FancySlugcats.FancyPlayerGraphics");
                     Debug.Log("Hatworld: FancySlugcats found.");
+                    break;
                 }
             }
-
-            if (slugBaseRef == null)
-                Debug.Log("Hatworld: SlugBase not found.");
 
             if (fancyGraphicsRef == null)
                 Debug.Log("Hatworld: FancySlugcats not found.");
@@ -97,6 +91,15 @@ namespace HatWorld
         public static void addType(Type type)
         {
             hatTypes.Add(type); 
+            SLOracleBehaviorHasMark.MiscItemType test = (SLOracleBehaviorHasMark.MiscItemType) 10;
+        }
+
+        public static void addType(Type[] types)
+        {
+            for (int i = 0; i < types.Length; i++)
+            {
+                addType(types[i]);
+            }
         }
 
         /*

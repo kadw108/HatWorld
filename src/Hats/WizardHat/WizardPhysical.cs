@@ -132,14 +132,13 @@ namespace HatWorld
 
         }
 
+        public static Color blue = new(0.35f, 0.4f, 0.8f);
+        public static Color orangeYellow = new(1f, 0.80f, 0.49f);
+
         public override void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
         {
-            //blackColor = palette.blackColor;
-            //earthColor = Color.Lerp(palette.fogColor, palette.blackColor, 0.5f);
-
-			sLeaser.sprites[coneIndex].color = new Color(0.35f, 0.4f, 0.8f); // blue
-
-			sLeaser.sprites[tuftIndex].color = new Color(1f, 0.80f, 0.49f); // orange yellow
+            sLeaser.sprites[coneIndex].color = blue;
+            sLeaser.sprites[tuftIndex].color = orangeYellow;
             // sLeaser.sprites[tuftIndex].color = new Color(0.8f, 0.8f, 0.9f); // silver blue
 			// sLeaser.sprites[tuftIndex].color = new Color(1f, 0.96f, 0.55f); // light yellow
 

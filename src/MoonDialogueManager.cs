@@ -21,7 +21,7 @@ namespace HatWorld
          * Add all HatPhysical to SLOracleBehaviorHasMark.MiscItemType
          * Instead of adding hats directly to the MiscItemType enum, we hook the TypeOfMiscItem method that converts physical object to enum
          */
-        public static SLOracleBehaviorHasMark.MiscItemType SLOracleBehaviorHasMark_TypeOfMiscItem(On.SLOracleBehaviorHasMark.orig_TypeOfMiscItem orig, SLOracleBehaviorHasMark self, PhysicalObject testItem)
+        private static SLOracleBehaviorHasMark.MiscItemType SLOracleBehaviorHasMark_TypeOfMiscItem(On.SLOracleBehaviorHasMark.orig_TypeOfMiscItem orig, SLOracleBehaviorHasMark self, PhysicalObject testItem)
         {
             SLOracleBehaviorHasMark.MiscItemType result = orig(self, testItem);
             if (result == SLOracleBehaviorHasMark.MiscItemType.NA && testItem is HatPhysical)
@@ -47,7 +47,7 @@ namespace HatWorld
                         Debug.Log("Hatworld: moon found " + t.Name + " " + (int)(SLOracleBehaviorHasMark.MiscItemType)Enum.Parse(typeof(SLOracleBehaviorHasMark.MiscItemType), t.Name));
                         foundHat = true;
 
-                        LoadHatEventsFromFile(t.Namespace + "." + t.Name, self);
+                        LoadHatEventsFromFile(t.ToString(), self); // t.Namespace + "." + t.Name, self);
                         break;
                     }
                 }
@@ -60,8 +60,8 @@ namespace HatWorld
         // based on CustomRegions.CustomPearls.SLOracleBehaviorHasMarkHook.LoadCustomEventsFromFile
         private static void LoadHatEventsFromFile(string fileName, Conversation self)
         {
-            // Dialogue files are normally named with a number for encryption.
-            // To allow dialogue files to be titled after the hat they're for, we just use 1 for all files
+            // Dialogue files are normally named with an arbitrary number for encryption.
+            // But to allow dialogue files to be titled after the hat they're for, we just use 1 as default encryption number for all files
             int number = 1;
 
             Debug.Log("Hatworld: ~~~LOAD CONVO " + fileName);
@@ -72,11 +72,11 @@ namespace HatWorld
                 Path.DirectorySeparatorChar + "HatWorldText";
             string convoPath = convoFolder + Path.DirectorySeparatorChar + file;
 
-            Debug.Log("Hatworld: convoPath " + convoPath + " root dir " + Custom.RootFolderDirectory());
+            Debug.Log("Hatworld: search convoPath " + convoPath + " root dir " + Custom.RootFolderDirectory());
 
             if (!File.Exists(convoPath))
             {
-                Debug.Log("Hatworld: NOT FOUND " + convoPath);
+                Debug.Log("Hatworld: convoPath NOT FOUND " + convoPath);
                 return;
             }
 

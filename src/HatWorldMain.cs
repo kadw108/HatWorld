@@ -17,13 +17,24 @@ namespace HatWorld
             typeof(TorchPhysical), typeof(WingPhysical), typeof(FountainPhysical), typeof(AntennaPhysical)
         };
 
+        public static HatFisob hatFisob = null;
+
         public static Type? fancyGraphicsRef = null;
         public void OnEnable()
         {
             On.Creature.ctor += Creature_ctor;
 
-            // Make hat exist
-            Fisobs.Core.Content.Register(new HatFisob());
+            // Make hat exist in main game + create hat icons and sandbox unlocks
+            hatFisob = new HatFisob();
+            Fisobs.Core.Content.Register(hatFisob);
+            hatFisob.AddIconAndSandbox("HatWorld.AntennaPhysical", EnumExt_HatWorld.AntennaUnlockID, new Color(0.4f, 0.4f, 1f));
+            hatFisob.AddIconAndSandbox("HatWorld.BubblePhysical", EnumExt_HatWorld.BubbleUnlockID, new Color(0.57f, 0.79f, 0.94f));
+            hatFisob.AddIconAndSandbox("HatWorld.FlowerPhysical", EnumExt_HatWorld.FlowerUnlockID, new Color(0.50f, 0.84f, 0.22f)); // green
+            hatFisob.AddIconAndSandbox("HatWorld.FountainPhysical", EnumExt_HatWorld.FountainUnlockID, new Color(0.46f, 0.46f, 0.85f)); // blue-gray;
+            hatFisob.AddIconAndSandbox("HatWorld.SantaPhysical", EnumExt_HatWorld.SantaUnlockID, Color.red);
+            hatFisob.AddIconAndSandbox("HatWorld.TorchPhysical", EnumExt_HatWorld.TorchUnlockID, new Color(0.82f, 0.62f, 0f)); // gold
+            hatFisob.AddIconAndSandbox("HatWorld.WingPhysical", EnumExt_HatWorld.WingUnlockID, WingPhysical.lightRed);
+            hatFisob.AddIconAndSandbox("HatWorld.WizardPhysical", EnumExt_HatWorld.WizardUnlockID, WizardPhysical.blue);
 
             // Put hats in their respective rooms where they can be found
             HatPlacer.AddHooks();
@@ -37,7 +48,6 @@ namespace HatWorld
 
             // For compatability with other mods
             On.RainWorld.Start += RainWorld_Start;
-            Debug.Log("Hatworld mod running (version 1.0.0)");
         }
 
         private void RainWorld_Start(On.RainWorld.orig_Start orig, RainWorld self)
@@ -88,17 +98,16 @@ namespace HatWorld
             return null;
         }
 
-        public static void addType(Type type)
+        public static void AddType(Type type)
         {
             hatTypes.Add(type); 
-            SLOracleBehaviorHasMark.MiscItemType test = (SLOracleBehaviorHasMark.MiscItemType) 10;
         }
 
-        public static void addType(Type[] types)
+        public static void AddType(Type[] types)
         {
             for (int i = 0; i < types.Length; i++)
             {
-                addType(types[i]);
+                AddType(types[i]);
             }
         }
 

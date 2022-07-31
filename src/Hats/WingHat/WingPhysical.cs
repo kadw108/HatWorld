@@ -70,21 +70,6 @@ namespace HatWorld
 			}
         }
 
-        public override void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
-        {
-			for (int k = 0; k < 2; k++) {
-                for (int i = 0; i < 4; i++)
-                {
-					(sLeaser.sprites[k] as CustomFSprite).verticeColors[0] = new Color(1f, 0.7f, 0.53f); // lighter red-orange
-					(sLeaser.sprites[k] as CustomFSprite).verticeColors[1] = new Color(1f, 0.7f, 0.53f); 
-					(sLeaser.sprites[k] as CustomFSprite).verticeColors[2] = Color.white;
-					(sLeaser.sprites[k] as CustomFSprite).verticeColors[3] = Color.white; 
-                }
-            }
-            sLeaser.sprites[circleLeft].color = new Color(0.92f, 0.43f, 0.36f);
-            sLeaser.sprites[circleRight].color = sLeaser.sprites[circleLeft].color;
-        }
-
         public override void Update(bool eu)
         {
             base.Update(eu);
@@ -93,6 +78,23 @@ namespace HatWorld
             this.wingFlapShift = Mathf.Sin(this.wingFlapCycle);
         }
 
+        public static Color lightRed = new Color(1f, 0.7f, 0.53f); // lighter red-orange
+        public static Color darkRed = new Color(0.92f, 0.43f, 0.36f);
+
+        public override void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
+        {
+			for (int k = 0; k < 2; k++) {
+                for (int i = 0; i < 4; i++)
+                {
+                    (sLeaser.sprites[k] as CustomFSprite).verticeColors[0] = lightRed;
+                    (sLeaser.sprites[k] as CustomFSprite).verticeColors[1] = lightRed;
+					(sLeaser.sprites[k] as CustomFSprite).verticeColors[2] = Color.white;
+					(sLeaser.sprites[k] as CustomFSprite).verticeColors[3] = Color.white; 
+                }
+            }
+            sLeaser.sprites[circleLeft].color = darkRed;
+            sLeaser.sprites[circleRight].color = sLeaser.sprites[circleLeft].color;
+        }
     }
 }
 

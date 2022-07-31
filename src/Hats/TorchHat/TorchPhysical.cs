@@ -79,7 +79,7 @@ namespace HatWorld
 
         public override void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
         {
-            sLeaser.sprites[crownIndex].color = new Color(0.82f, 0.62f, 0f); // gold 2
+            sLeaser.sprites[crownIndex].color = new Color(0.82f, 0.62f, 0f); // gold
         }
     }
 }

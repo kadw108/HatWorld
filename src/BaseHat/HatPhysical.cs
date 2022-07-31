@@ -40,7 +40,7 @@ namespace HatWorld
             this.buoyancy = 0.75f;
             this.firstChunk.loudness = 3f;
 
-            this.hatType = this.GetType().Namespace + "." + this.GetType().Name;
+            this.hatType = this.GetType().ToString(); //  Namespace + "." + this.GetType().Name;
         }
 
         public override float ThrowPowerFactor

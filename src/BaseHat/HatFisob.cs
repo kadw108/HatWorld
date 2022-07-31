@@ -1,52 +1,92 @@
 ﻿// Finished for now.
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+
 namespace HatWorld
 {
-    sealed class HatFisob : Fisobs.Items.Fisob
+    public class HatFisob : Fisobs.Items.Fisob
     {
-        public static readonly HatFisob Instance = new HatFisob();
         private static readonly HatProperties properties = new();
 
-        public HatFisob() : base(EnumExt_HatWorld.HatAbstract)
-        {
-            /*
-            // Fisobs auto-loads the `icon_CentiShield` embedded resource as a texture.
-            // See `CentiShields.csproj` for how you can add embedded resources to your project.
+        /* Since we only have one int field to store custom data, we map the int field to the string of an existing hat type and a color for the sandbox icon
+        (new types/colors are added with AddIconAndSandbox) 
+        There may be a better way to do this than two dictionaries?
+        */
+        public static Dictionary<int, string> hatIntMapping = new();
+        public static Dictionary<int, Color> colorIntMapping = new();
 
-            // If you want a simple grayscale icon, you can omit the following line.
-            Icon = new CentiShieldIcon();
-
-            RegisterUnlock(EnumExt_CentiShields.OrangeCentiShield, parent: MultiplayerUnlocks.SandboxUnlockID.BigCentipede, hats: 70);
-            RegisterUnlock(EnumExt_CentiShields.RedCentiShield, parent: MultiplayerUnlocks.SandboxUnlockID.RedCentipede, hats: 0);
-            */
+        public HatFisob() : base(EnumExt_HatWorld.HatAbstract) {
+            Icon = new AllHatIcon();
         }
 
         public override Fisobs.Properties.ItemProperties Properties(PhysicalObject forObject)
         {
-            // You could create a new instance of your ItemProperties class each time here like in the Mosquitoes example,
-            // but we don't need to, so we just return a static instance.
             return properties;
         }
 
         public override AbstractPhysicalObject Parse(World world, Fisobs.Core.EntitySaveData saveData, Fisobs.Sandbox.SandboxUnlock? unlock)
         {
-            return new HatAbstract(world, saveData.Pos, saveData.ID, saveData.CustomData);
-
-            /*
-             * Add sandbox later
-            // If this is coming from a sandbox unlock, the hue and size should depend on the hats value (see CentiShieldIcon).
-            if (unlock is SandboxUnlock u)
+            if (unlock is Fisobs.Sandbox.SandboxUnlock u)
             {
-                result.hue = u.Data / 1000f;
-
-                if (u.Data == 0)
-                {
-                    result.scaleX += 0.2f;
-                    result.scaleY += 0.2f;
-                }
+                Debug.Log("hatworld " + u.Data + " " + hatIntMapping[u.Data]);
+                return new HatAbstract(world, saveData.Pos, saveData.ID, hatIntMapping[u.Data]);
             }
 
-            return result;
-            */
+            Debug.Log("hatworld hat fisob parse " + (unlock == null ? "null" : (unlock.ToString() + unlock.Value)) + " custom " + saveData.CustomData);
+            HatAbstract results = new HatAbstract(world, saveData.Pos, saveData.ID, saveData.CustomData);
+
+            return results;
+        }
+
+        public void AddIconAndSandbox(string hatType, MultiplayerUnlocks.SandboxUnlockID id, Color iconColor,
+            MultiplayerUnlocks.SandboxUnlockID parent = MultiplayerUnlocks.SandboxUnlockID.Slugcat)
+        {
+            int nextInt = NextAvailableInt();
+            hatIntMapping[nextInt] = hatType;
+            colorIntMapping[nextInt] = iconColor;
+            RegisterUnlock(id, parent, data: nextInt);
+        }
+
+        public static int NextAvailableInt(int startIndex = 0, int maxIndex = Int32.MaxValue)
+        {
+            for (int i = startIndex; i < maxIndex; i++)
+            {
+                if (!hatIntMapping.ContainsKey(i))
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+    }
+
+    sealed class AllHatIcon : Fisobs.Core.Icon
+    {
+        // Vanilla only gives you one int field to store all your custom data.
+        // In this case, that int field is used to store an int corresponding to the physical hat type
+        public override int Data(AbstractPhysicalObject apo)
+        {
+            string hatType = (apo as HatAbstract).hatType;
+
+            // Reverse lookup dictionary to get corresponding int for string representing type of hat
+            int hatDataInt = HatFisob.hatIntMapping.FirstOrDefault(x => x.Value == hatType).Key;
+            return hatDataInt;
+        }
+
+        public override Color SpriteColor(int data)
+        {
+            return HatFisob.colorIntMapping[data]; // Use colors from the actual sprites, applying colors per hat is too complicated
+        }
+
+        public override string SpriteName(int data)
+        {
+            // Fisobs autoloads the embedded resource named `icon_{Type}` automatically
+            // For HatFisob, this is icon_HatAbstract, which only allows using that one icon for every hat
+            // Thus to use different icons for different hats we load sprites with CustomSpritesLoader mod instead
+
+            return "icon_" + HatFisob.hatIntMapping[data]; // expects icon_[namespace].[physical type name].png eg. icon_HatWorld.WizardPhysical.png
         }
     }
 }

@@ -119,11 +119,8 @@ namespace HatWorld
 
 		public override void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
 		{
-			sLeaser.sprites[coneIndex].color = new Color(0.35f, 0.4f, 0.8f); // blue
-
-			sLeaser.sprites[tuftIndex].color = new Color(1f, 0.80f, 0.49f); // orange yellow
-            // sLeaser.sprites[tuftIndex].color = new Color(0.8f, 0.8f, 0.9f); // silver blue
-			// sLeaser.sprites[tuftIndex].color = new Color(1f, 0.96f, 0.55f); // light yellow
+			sLeaser.sprites[coneIndex].color = WizardPhysical.blue;
+			sLeaser.sprites[tuftIndex].color = WizardPhysical.orangeYellow;
 
 			sLeaser.sprites[beltIndex].color = sLeaser.sprites[tuftIndex].color;
             sLeaser.sprites[botIndex].color = sLeaser.sprites[coneIndex].color;

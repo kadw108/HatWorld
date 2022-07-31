@@ -10,11 +10,11 @@ namespace HatWorld
     {
         public string hatType;
         
-        public HatAbstract(World world, WorldCoordinate pos, EntityID ID, string hatType) : base(world, HatFisob.Instance.Type, null, pos, ID) {
+        public HatAbstract(World world, WorldCoordinate pos, EntityID ID, string hatType) : base(world, EnumExt_HatWorld.HatAbstract, null, pos, ID) {
             this.hatType = hatType;
         }
-        public HatAbstract(World world, WorldCoordinate pos, EntityID ID, Type hatType) : base(world, HatFisob.Instance.Type, null, pos, ID) {
-            this.hatType = hatType.Namespace + "." + hatType.Name;
+        public HatAbstract(World world, WorldCoordinate pos, EntityID ID, Type hatType) : base(world, EnumExt_HatWorld.HatAbstract, null, pos, ID) {
+            this.hatType = hatType.ToString();
         }
 
         public override string ToString()

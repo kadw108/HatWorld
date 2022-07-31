@@ -74,7 +74,11 @@ namespace HatWorld.src.HatManager
         {
             base.PutOnHat(self);
 
-            HatSaveManager.hats[self.abstractCreature.ID] = this.physicalWornHat.Namespace + "." + this.physicalWornHat.Name;
+            Debug.Log("hatworld scav putonhat " + this.physicalWornHat == null);
+            if (this.physicalWornHat != null)
+            {
+                HatSaveManager.hats[self.abstractCreature.ID] = this.physicalWornHat.ToString(); // this.physicalWornHat.Namespace + "." + this.physicalWornHat.Name;
+            }
         }
 
         public override HatPhysical TakeOffHat(Creature self)

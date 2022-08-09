@@ -139,8 +139,6 @@ namespace HatWorld
         {
             sLeaser.sprites[coneIndex].color = blue;
             sLeaser.sprites[tuftIndex].color = orangeYellow;
-            // sLeaser.sprites[tuftIndex].color = new Color(0.8f, 0.8f, 0.9f); // silver blue
-			// sLeaser.sprites[tuftIndex].color = new Color(1f, 0.96f, 0.55f); // light yellow
 
             sLeaser.sprites[beltIndex].color = sLeaser.sprites[tuftIndex].color;
             sLeaser.sprites[botIndex].color = sLeaser.sprites[coneIndex].color;

@@ -27,14 +27,14 @@ namespace HatWorld
             // Make hat exist in main game + create hat icons and sandbox unlocks
             hatFisob = new HatFisob();
             Fisobs.Core.Content.Register(hatFisob);
-            hatFisob.AddIconAndSandbox("HatWorld.AntennaPhysical", EnumExt_HatWorld.AntennaUnlockID, new Color(0.4f, 0.4f, 1f));
+            hatFisob.AddIconAndSandbox("HatWorld.AntennaPhysical", EnumExt_HatWorld.AntennaUnlockID, new Color(0.3f, 1f, 0.3f));
             hatFisob.AddIconAndSandbox("HatWorld.BubblePhysical", EnumExt_HatWorld.BubbleUnlockID, new Color(0.57f, 0.79f, 0.94f));
-            hatFisob.AddIconAndSandbox("HatWorld.FlowerPhysical", EnumExt_HatWorld.FlowerUnlockID, new Color(0.50f, 0.84f, 0.22f)); // green
-            hatFisob.AddIconAndSandbox("HatWorld.FountainPhysical", EnumExt_HatWorld.FountainUnlockID, new Color(0.46f, 0.46f, 0.85f)); // blue-gray;
-            hatFisob.AddIconAndSandbox("HatWorld.SantaPhysical", EnumExt_HatWorld.SantaUnlockID, Color.red);
-            hatFisob.AddIconAndSandbox("HatWorld.TorchPhysical", EnumExt_HatWorld.TorchUnlockID, new Color(0.82f, 0.62f, 0f)); // gold
+            hatFisob.AddIconAndSandbox("HatWorld.FlowerPhysical", EnumExt_HatWorld.FlowerUnlockID, new Color(0.5f, 0.7f, 0.4f));
+            hatFisob.AddIconAndSandbox("HatWorld.FountainPhysical", EnumExt_HatWorld.FountainUnlockID, new Color(0.26f, 0.26f, 0.65f));
+            hatFisob.AddIconAndSandbox("HatWorld.SantaPhysical", EnumExt_HatWorld.SantaUnlockID, new Color(0.9f, 0.3f, 0.3f));
+            hatFisob.AddIconAndSandbox("HatWorld.TorchPhysical", EnumExt_HatWorld.TorchUnlockID, new Color(0.92f, 0.72f, 0f));
             hatFisob.AddIconAndSandbox("HatWorld.WingPhysical", EnumExt_HatWorld.WingUnlockID, WingPhysical.lightRed);
-            hatFisob.AddIconAndSandbox("HatWorld.WizardPhysical", EnumExt_HatWorld.WizardUnlockID, WizardPhysical.blue);
+            hatFisob.AddIconAndSandbox("HatWorld.WizardPhysical", EnumExt_HatWorld.WizardUnlockID, new Color(0.6f, 0.6f, 0.8f));
 
             // Put hats in their respective rooms where they can be found
             HatPlacer.AddHooks();
@@ -83,6 +83,7 @@ namespace HatWorld
             {
                 ScavHatManager n = new ScavHatManager(self as Scavenger);
                 n.AddHooks();
+                Debug.Log("hatworld new scav " + n.wearer.abstractCreature.ID + " " + ((n.physicalWornHat == null) ? "nothing" : n.physicalWornHat.ToString()));
             }
         }
 

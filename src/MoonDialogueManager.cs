@@ -24,13 +24,14 @@ namespace HatWorld
         private static SLOracleBehaviorHasMark.MiscItemType SLOracleBehaviorHasMark_TypeOfMiscItem(On.SLOracleBehaviorHasMark.orig_TypeOfMiscItem orig, SLOracleBehaviorHasMark self, PhysicalObject testItem)
         {
             SLOracleBehaviorHasMark.MiscItemType result = orig(self, testItem);
-            if (result == SLOracleBehaviorHasMark.MiscItemType.NA && testItem is HatPhysical)
+
+            if (testItem is HatPhysical && result == SLOracleBehaviorHasMark.MiscItemType.NA)
             {
-                SLOracleBehaviorHasMark.MiscItemType newEnumValue = (SLOracleBehaviorHasMark.MiscItemType) Enum.Parse(typeof(SLOracleBehaviorHasMark.MiscItemType), testItem.GetType().Name);
-                Debug.Log("hatworld try add to enum " + newEnumValue);
+                SLOracleBehaviorHasMark.MiscItemType newEnumValue = (SLOracleBehaviorHasMark.MiscItemType) Enum.Parse(typeof(SLOracleBehaviorHasMark.MiscItemType), (testItem.GetType().Namespace + "_" + testItem.GetType().Name));
+                // Debug.Log("hatworld try add to enum " + newEnumValue);
                 return newEnumValue;
             }
-            Debug.Log("hatworld item not hatphysical?");
+            // Debug.Log("hatworld item not hatphysical?");
             return result;
         }
 
@@ -42,17 +43,19 @@ namespace HatWorld
             {
                 foreach (Type t in HatWorldMain.hatTypes)
                 {
-                    if (self.describeItem == (SLOracleBehaviorHasMark.MiscItemType)Enum.Parse(typeof(SLOracleBehaviorHasMark.MiscItemType), t.Name))
+                    Debug.Log("Hatworld: searching " + self.describeItem + t.ToString() + " " + t.Name + " " + (int)(SLOracleBehaviorHasMark.MiscItemType)Enum.Parse(typeof(SLOracleBehaviorHasMark.MiscItemType), (t.Namespace + "_" + t.Name)));
+                    if (self.describeItem == (SLOracleBehaviorHasMark.MiscItemType)Enum.Parse(typeof(SLOracleBehaviorHasMark.MiscItemType), (t.Namespace + "_" + t.Name)))
                     {
-                        Debug.Log("Hatworld: moon found " + t.Name + " " + (int)(SLOracleBehaviorHasMark.MiscItemType)Enum.Parse(typeof(SLOracleBehaviorHasMark.MiscItemType), t.Name));
+                        Debug.Log("Hatworld: moon found " + t.Name + " " + (int)(SLOracleBehaviorHasMark.MiscItemType)Enum.Parse(typeof(SLOracleBehaviorHasMark.MiscItemType), (t.Namespace + "_" + t.Name)));
                         foundHat = true;
 
-                        LoadHatEventsFromFile(t.ToString(), self); // t.Namespace + "." + t.Name, self);
+                        Debug.Log("try load convo " + t.ToString());
+                        LoadHatEventsFromFile(t.ToString(), self); 
                         break;
                     }
                 }
             }
-            Debug.Log("Hatworld: moon conv add events " + foundHat);
+            Debug.Log("Hatworld: moon conv add events " + foundHat + " " + self.describeItem);
 
             orig(self);
         }

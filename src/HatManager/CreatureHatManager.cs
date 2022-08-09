@@ -9,12 +9,14 @@ namespace HatWorld.src.HatManager
 
         public Creature wearer;
 
-        public HatWearing? wornHat = null; // actually worn hat - destroyed and recreated when the sprite disappears/appears (eg. between rooms)
-        public Type? physicalWornHat = null; // physical hat type of currently worn hat, persists between rooms
+        public HatWearing? wornHat; // actually worn hat - destroyed and recreated when the sprite disappears/appears (eg. between rooms)
+        public Type? physicalWornHat; // physical hat type of currently worn hat, persists between rooms
 
         public CreatureHatManager(Creature wearer)
         {
             this.wearer = wearer;
+            this.wornHat = null;
+            this.physicalWornHat = null;
         }
         public virtual void AddHooks()
         {
@@ -137,7 +139,7 @@ namespace HatWorld.src.HatManager
     
         public virtual HatPhysical TakeOffHat(Creature self)
         {
-            if (physicalWornHat != null && wornHat != null)
+            if (physicalWornHat != null && wornHat != null && self.room != null)
             {
                 // remove hat effects
                 if (effectsOn)

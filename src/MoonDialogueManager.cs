@@ -28,10 +28,8 @@ namespace HatWorld
             if (testItem is HatPhysical && result == SLOracleBehaviorHasMark.MiscItemType.NA)
             {
                 SLOracleBehaviorHasMark.MiscItemType newEnumValue = (SLOracleBehaviorHasMark.MiscItemType) Enum.Parse(typeof(SLOracleBehaviorHasMark.MiscItemType), (testItem.GetType().Namespace + "_" + testItem.GetType().Name));
-                // Debug.Log("hatworld try add to enum " + newEnumValue);
                 return newEnumValue;
             }
-            // Debug.Log("hatworld item not hatphysical?");
             return result;
         }
 
@@ -49,8 +47,8 @@ namespace HatWorld
                         Debug.Log("Hatworld: moon found " + t.Name + " " + (int)(SLOracleBehaviorHasMark.MiscItemType)Enum.Parse(typeof(SLOracleBehaviorHasMark.MiscItemType), (t.Namespace + "_" + t.Name)));
                         foundHat = true;
 
-                        Debug.Log("try load convo " + t.ToString());
-                        LoadHatEventsFromFile(t.ToString(), self); 
+                        self.events.Add(new Conversation.TextEvent(self, -1, "", -1)); // Begin every convo with an empty dialogue box that instantly disappears - fixes issue where first dialogue box sometimes has wrong size
+                        LoadHatEventsFromFile(t.ToString(), self);
                         break;
                     }
                 }
@@ -88,17 +86,22 @@ namespace HatWorld
             // if convoFolder is encrypted, decrypt convoFolder
             if (text2[0] != '0')
             {
+                Debug.Log("Hatworld: encrypted file detected, decrypting");
                 text2 = Custom.xorEncrypt(text2, (int)(54 + number + (int)self.interfaceOwner.rainWorld.inGameTranslator.currentLanguage * 7));
             }
             else // if convoFolder not encrypted, encrypt convoFolder file (use number = 1)
             {
+                Debug.Log("Hatworld: unencrypted file detected");
                 EncryptHatDialogue(convoFolder);
             }
 
             string[] array = Regex.Split(text2, Environment.NewLine);
             if (array.Length < 2)
             {
-                Debug.Log($"Hatworld: Corrupted conversation [{array}]");
+                Debug.Log($"Hatworld: Corrupted conversation");
+                foreach (String x in array) {
+                    Debug.Log("Hatworld array contents: " + x);
+                }
             }
             try
             {

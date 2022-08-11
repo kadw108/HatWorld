@@ -284,7 +284,8 @@ namespace HatWorld
                 float change = 2f;
                 wearer.abstractCreature.world.game.session.creatureCommunities.InfluenceLikeOfPlayer(
                     CreatureCommunities.CommunityID.Scavengers,
-                    wearer.abstractCreature.world.RegionNumber,
+                    // wearer.abstractCreature.world.RegionNumber,
+                    -1,
                     (wearer.State as PlayerState).playerNumber,
                     change * 0.1f, 0.75f, 0.25f);
             }
@@ -298,7 +299,8 @@ namespace HatWorld
                 float change = -2f;
                 wearer.abstractCreature.world.game.session.creatureCommunities.InfluenceLikeOfPlayer(
                     CreatureCommunities.CommunityID.Scavengers,
-                    wearer.abstractCreature.world.RegionNumber,
+                    // wearer.abstractCreature.world.RegionNumber,
+                    -1,
                     (wearer.State as PlayerState).playerNumber,
                     change * 0.1f, 0.75f, 0.25f);
             }

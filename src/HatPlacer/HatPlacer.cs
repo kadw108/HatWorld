@@ -85,8 +85,8 @@ namespace HatWorld
                         {
                             origRoom = self.abstractRoom.index,
                             placedObjectIndex = 1821433636 + i,
-                            minRegen = 7,
-                            maxRegen = 10
+                            minRegen = 108,
+                            maxRegen = 108
                         };
                         HatPlacer.infos[abstractHat] = value;
                         Debug.Log("Hatworld place hat " + self.abstractRoom.name + " " + (string)list[i][2]);

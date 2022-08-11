@@ -77,11 +77,11 @@ namespace HatWorld
                 }
                 else
                 {
-                    if (i != 2)
+                    if (i != 2) // side water jets
                     {
-                        this.waterJets[i].NewParticle(drawPos + upDir * 7 + camPos, parent.owner.firstChunk.vel + new Vector2(2 + (-4 * i), 0) + upDir * 4, 2f, 0.3f);
+                        this.waterJets[i].NewParticle(drawPos + upDir * 7 + camPos, parent.owner.firstChunk.vel + new Vector2(2 + (-4 * i), 0) + upDir * 4, 1.4f, 0.3f);
                     }
-                    else
+                    else // center water jet (removed for now)
                     {
                         this.waterJets[i].NewParticle(drawPos + upDir * 7 + camPos, parent.owner.firstChunk.vel + upDir * 8, 1f, 0f);
                     }

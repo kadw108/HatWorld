@@ -1,0 +1,1 @@
+These are meant to go in Rain World\ModConfigs\CustomSpritesLoader\Load. The mod loads these icons as sandbox and shelter icons. Relevant code is at HatWorldMain.cs and BaseHat\HatFisob.cs.

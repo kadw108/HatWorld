@@ -28,10 +28,10 @@ namespace HatWorld
             hatFisob = new HatFisob();
             Fisobs.Core.Content.Register(hatFisob);
             hatFisob.AddIconAndSandbox("HatWorld.AntennaPhysical", EnumExt_HatWorld.AntennaUnlockID, new Color(0.3f, 1f, 0.3f));
-            hatFisob.AddIconAndSandbox("HatWorld.BubblePhysical", EnumExt_HatWorld.BubbleUnlockID, new Color(0.57f, 0.79f, 0.94f));
+            hatFisob.AddIconAndSandbox("HatWorld.BubblePhysical", EnumExt_HatWorld.BubbleUnlockID, new Color(0.77f, 0.89f, 0.94f));
             hatFisob.AddIconAndSandbox("HatWorld.FlowerPhysical", EnumExt_HatWorld.FlowerUnlockID, new Color(0.5f, 0.7f, 0.4f));
-            hatFisob.AddIconAndSandbox("HatWorld.FountainPhysical", EnumExt_HatWorld.FountainUnlockID, new Color(0.26f, 0.26f, 0.65f));
-            hatFisob.AddIconAndSandbox("HatWorld.SantaPhysical", EnumExt_HatWorld.SantaUnlockID, new Color(0.9f, 0.3f, 0.3f));
+            hatFisob.AddIconAndSandbox("HatWorld.FountainPhysical", EnumExt_HatWorld.FountainUnlockID, new Color(0.36f, 0.66f, 0.75f));
+            hatFisob.AddIconAndSandbox("HatWorld.SantaPhysical", EnumExt_HatWorld.SantaUnlockID, new Color(0.8f, 0.6f, 0.6f));
             hatFisob.AddIconAndSandbox("HatWorld.TorchPhysical", EnumExt_HatWorld.TorchUnlockID, new Color(0.92f, 0.72f, 0f));
             hatFisob.AddIconAndSandbox("HatWorld.WingPhysical", EnumExt_HatWorld.WingUnlockID, WingPhysical.lightRed);
             hatFisob.AddIconAndSandbox("HatWorld.WizardPhysical", EnumExt_HatWorld.WizardUnlockID, new Color(0.6f, 0.6f, 0.8f));

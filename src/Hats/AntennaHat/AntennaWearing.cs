@@ -115,7 +115,9 @@ namespace HatWorld
         {
             if (wearer is Player)
             {
-                (wearer as Player).slugcatStats.runspeedFac *= 1.25f;
+                (wearer as Player).slugcatStats.runspeedFac *= 1.15f;
+                (wearer as Player).slugcatStats.poleClimbSpeedFac *= 1.15f;
+                (wearer as Player).slugcatStats.corridorClimbSpeedFac *= 1.15f;
             }
         }
 
@@ -123,7 +125,9 @@ namespace HatWorld
         {
             if (wearer is Player)
             {
-                (wearer as Player).slugcatStats.runspeedFac *= (1 / 1.25f);
+                (wearer as Player).slugcatStats.runspeedFac *= (1 / 1.15f);
+                (wearer as Player).slugcatStats.poleClimbSpeedFac *= (1 / 1.15f);
+                (wearer as Player).slugcatStats.corridorClimbSpeedFac *= (1 / 1.15f);
             }
         }
 

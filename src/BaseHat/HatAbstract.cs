@@ -31,7 +31,6 @@ namespace HatWorld
                 if (type != null)
                 {
                     realizedObject = (PhysicalObject) Activator.CreateInstance(type, this, this.world);
-                    Debug.Log("Hatworld Realize() success: " + realizedObject);
                     base.Realize();
                 }
                 else

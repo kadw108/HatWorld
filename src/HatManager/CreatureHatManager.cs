@@ -1,18 +1,40 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace HatWorld.src.HatManager
 {
     public abstract class CreatureHatManager
     {
+        public static Dictionary<EntityID, CreatureHatManager> HatManagers = new();
         public static bool effectsOn = true;
 
-        public Creature wearer;
+        public EntityID wearer;
 
         public HatWearing? wornHat; // actually worn hat - destroyed and recreated when the sprite disappears/appears (eg. between rooms)
         public Type? physicalWornHat; // physical hat type of currently worn hat, persists between rooms
 
-        public CreatureHatManager(Creature wearer)
+        public static void CreateHatManager(Creature crea, EntityID wearer)
+        {
+            if (!HatManagers.ContainsKey(wearer))
+            {
+                if (crea is Scavenger)
+                {
+                    HatManagers[wearer] = new ScavHatManager(wearer);
+                    HatManagers[wearer].AddHooks();
+                }
+
+                if (crea is Player)
+                {
+                    HatManagers[wearer] = new PlayerHatManager(wearer);
+                    HatManagers[wearer].AddHooks();
+                }
+
+                Debug.Log("hatworld new hat manager" + wearer);
+            }
+        }
+
+        public CreatureHatManager(EntityID wearer)
         {
             this.wearer = wearer;
             this.wornHat = null;
@@ -25,11 +47,10 @@ namespace HatWorld.src.HatManager
             // Remove worn hats when wearer dies
             On.Creature.Die += Creature_Die;
 
-            // Remove worn hats when player dies/quits game
-            On.RainWorldGame.ExitGame += RainWorldGame_ExitGame;
-            On.RainWorldGame.GoToDeathScreen += RainWorldGame_GoToDeathScreen;
+            // Remove all worn hats when game session ends (player dies/quits game/sleeps successfully)
+            On.RainWorldGame.ShutDownProcess += RainWorldGame_ShutDownProcess;
 
-            // Ensure hat appears when worn - leaves FancySlugcats integration to PlayerHatManager
+            // Ensure hat appears when worn - leave FancySlugcats integration to PlayerHatManager
             if (!(this is PlayerHatManager) || HatWorldMain.fancyGraphicsRef == null)
             {
                 On.GraphicsModule.InitiateSprites += GraphicsModule_InitiateSprites;
@@ -44,9 +65,10 @@ namespace HatWorld.src.HatManager
         {
             orig.Invoke(self, sLeaser, rCam);
 
-            if (self.owner == wearer)
+            if ((self.owner as Creature).abstractCreature.ID == wearer)
             {
-                if (self != null && physicalWornHat != null)
+                Debug.Log("hatworld " + wearer + "check initiate hat " + (physicalWornHat != null));
+                if (physicalWornHat != null)
                 {
                     wornHat = (HatWearing) physicalWornHat.GetMethod("GetWornHat").Invoke(null, new object[] { self });
                     self.owner.room.AddObject(wornHat);
@@ -62,7 +84,7 @@ namespace HatWorld.src.HatManager
         {
             orig.Invoke(self, sLeaser, rCam, timeStacker, camPos);
 
-            if (self.owner == wearer)
+            if ((self.owner as Creature).abstractCreature.ID == wearer)
             {
                 if (physicalWornHat != null && wornHat != null)
                 {
@@ -86,26 +108,18 @@ namespace HatWorld.src.HatManager
         {
             orig(self);
 
-            if (self == wearer)
+            if (self.abstractCreature.ID == wearer && (self is Player)) // dying takes off hat unless you are player
             {
                 TakeOffHat(self);
             }
         }
 
-        private void RainWorldGame_ExitGame(On.RainWorldGame.orig_ExitGame orig, RainWorldGame self, bool asDeath, bool asQuit)
+        private void RainWorldGame_ShutDownProcess(On.RainWorldGame.orig_ShutDownProcess orig, RainWorldGame self)
         {
             wornHat = null;
             physicalWornHat = null;
 
-            orig.Invoke(self, asDeath, asQuit);
-        }
-
-        private void RainWorldGame_GoToDeathScreen(On.RainWorldGame.orig_GoToDeathScreen orig, RainWorldGame self)
-        {
-            wornHat = null;
-            physicalWornHat = null;
-
-            orig.Invoke(self);
+            orig(self);
         }
 
         public virtual void PutOnHat(Creature self)
@@ -131,6 +145,7 @@ namespace HatWorld.src.HatManager
                     physicalHat.Destroy();
                     self.room.RemoveObject(physicalHat);
                     self.room.abstractRoom.RemoveEntity(physicalHat.abstractPhysicalObject);
+                    self.room.abstractRoom.RemoveEntity(physicalHat.abstractPhysicalObject.ID);
                     self.ReleaseGrasp(i);
                     break;
                 }

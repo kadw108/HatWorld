@@ -17,7 +17,7 @@ namespace HatWorld.src.HatManager
         public static KeyCode[] createHatKeys = new KeyCode[maxPlayerNum] { KeyCode.A, KeyCode.A, KeyCode.A, KeyCode.A };
         public static KeyCode[] wearHatKeys = new KeyCode[maxPlayerNum] { KeyCode.S, KeyCode.S, KeyCode.S, KeyCode.S };
 
-        public PlayerHatManager(Player wearer) : base(wearer) { }
+        public PlayerHatManager(EntityID wearer) : base(wearer) { }
 
         public override void AddHooks()
         {
@@ -54,7 +54,7 @@ namespace HatWorld.src.HatManager
         {
             orig.Invoke(self, sLeaser, rCam);
 
-            if (self.owner == wearer)
+            if ((self.owner as Creature).abstractCreature.ID == wearer)
             {
                 if (self != null && physicalWornHat != null)
                 {
@@ -74,7 +74,7 @@ namespace HatWorld.src.HatManager
         {
             orig.Invoke(self, sLeaser, rCam, timeStacker, camPos);
 
-            if (self.owner == wearer)
+            if ((self.owner as Creature).abstractCreature.ID == wearer)
             {
                 if (physicalWornHat != null && wornHat != null)
                 {
@@ -90,7 +90,7 @@ namespace HatWorld.src.HatManager
         {
             orig(self);
 
-            if (self == wearer)
+            if (self.abstractCreature.ID == wearer)
             {
                 // move inputs back
                 for (int i = self.input.Length - 1; i > 0; i--)
@@ -136,7 +136,7 @@ namespace HatWorld.src.HatManager
         {
             orig.Invoke(self, eu);
 
-            if (self == wearer)
+            if (self.abstractCreature.ID == wearer)
             {
                 // Remove hats when player sleeps in shelter, so hats can be saved as shelter items
                 if (self.sleepCounter <= -6 && physicalWornHat != null) 
@@ -151,8 +151,6 @@ namespace HatWorld.src.HatManager
                     {
                         // generate random hat type out of all existing hat types
                         Type newHatType = HatWorldMain.hatTypes[(int)(UnityEngine.Random.value * HatWorldMain.hatTypes.Count)];
-                        Debug.Log("hatworld new hat generated " + newHatType);
-                        // string newHatType = "HatWorld.FountainPhysical";
 
                         HatAbstract newHat = new HatAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID(), newHatType);
                         self.room.abstractRoom.AddEntity(newHat);

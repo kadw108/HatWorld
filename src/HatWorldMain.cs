@@ -74,17 +74,8 @@ namespace HatWorld
         {
             orig(self, abstractCreature, world);
 
-            if (self is Player)
-            {
-                PlayerHatManager n = new PlayerHatManager(self as Player);
-                n.AddHooks();
-            }
-            else if (self is Scavenger)
-            {
-                ScavHatManager n = new ScavHatManager(self as Scavenger);
-                n.AddHooks();
-                Debug.Log("hatworld new scav " + n.wearer.abstractCreature.ID + " " + ((n.physicalWornHat == null) ? "nothing" : n.physicalWornHat.ToString()));
-            }
+            CreatureHatManager.CreateHatManager(self, abstractCreature.ID);
+            Debug.Log("hatworld new creature constructed " + self.abstractCreature.ID + " " + CreatureHatManager.HatManagers.ContainsKey(self.abstractCreature.ID));
         }
 
         public static Type GetType(string typeName)

@@ -7,7 +7,6 @@ namespace HatWorld.src.HatManager
     public abstract class CreatureHatManager
     {
         public static Dictionary<EntityID, CreatureHatManager> HatManagers = new();
-        public static bool effectsOn = true;
 
         public EntityID wearer;
 
@@ -135,12 +134,6 @@ namespace HatWorld.src.HatManager
                     // add worn hat
                     wornHat = (HatWearing) physicalWornHat.GetMethod("GetWornHat").Invoke(null, new object[] { self.graphicsModule });
 
-                    // hat effects
-                    if (effectsOn)
-                    {
-                        wornHat.AddHatEffects(self);
-                    }
-
                     // remove held hat
                     physicalHat.Destroy();
                     self.room.RemoveObject(physicalHat);
@@ -156,12 +149,6 @@ namespace HatWorld.src.HatManager
         {
             if (physicalWornHat != null && wornHat != null && self.room != null)
             {
-                // remove hat effects
-                if (effectsOn)
-                {
-                    wornHat.RemoveHatEffects(self);
-                }
-
                 // remove worn hat
                 HatAbstract heldHat = new HatAbstract(self.room.world, self.abstractCreature.pos, self.room.game.GetNewID(), physicalWornHat);
                 physicalWornHat = null;

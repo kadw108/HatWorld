@@ -83,7 +83,7 @@ namespace HatWorld
                 }
                 else
                 {
-                    this.waterJets[i].NewParticle(drawPos + upDir * 7 + camPos, firstChunk.vel + new Vector2(2 + i * -4, 0) + upDir * 7, 1f, 0.9f);
+                    this.waterJets[i].NewParticle(drawPos + upDir * 7 + camPos, firstChunk.vel + new Vector2(2 + i * -4, 0) + upDir * 7, 1.3f, 0.9f);
                 }
             }
 
@@ -114,6 +114,17 @@ namespace HatWorld
             if (this.soundLoop.Volume > 0f)
             {
                 this.soundLoop.Update();
+            }
+        }
+
+        // prevent water jets from disappearing when entering new room
+        public override void NewRoom(Room newRoom)
+        {
+            base.NewRoom(newRoom);
+
+            for (int i = 0; i < waterJets.Length; i++)
+            {
+                this.waterJets[i] = new JetWaterEmitter(this.room);
             }
         }
     }

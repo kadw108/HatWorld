@@ -44,11 +44,6 @@ namespace HatWorld.src.HatManager
                     if (physicalWornHat != null)
                     {
                         wornHat = (HatWearing) physicalWornHat.GetMethod("GetWornHat").Invoke(null, new object[] { self });
-
-                        if (effectsOn)
-                        {
-                            wornHat.AddHatEffects(self.scavenger);
-                        }
                     }
                 }
             }

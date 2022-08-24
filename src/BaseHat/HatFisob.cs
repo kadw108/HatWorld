@@ -41,12 +41,16 @@ namespace HatWorld
         }
 
         public void AddIconAndSandbox(string hatType, MultiplayerUnlocks.SandboxUnlockID id, Color iconColor,
-            MultiplayerUnlocks.SandboxUnlockID parent = MultiplayerUnlocks.SandboxUnlockID.Slugcat)
+            MultiplayerUnlocks.SandboxUnlockID? parent = MultiplayerUnlocks.SandboxUnlockID.Slugcat)
         {
             int nextInt = NextAvailableInt();
             hatIntMapping[nextInt] = hatType;
             colorIntMapping[nextInt] = iconColor;
-            RegisterUnlock(id, parent, data: nextInt);
+            if (parent != null) // hat will not be available in sandbox if parent is null
+            {
+                RegisterUnlock(id, parent, data: nextInt);
+
+            }
         }
 
         public static int NextAvailableInt(int startIndex = 0, int maxIndex = Int32.MaxValue)
@@ -77,7 +81,7 @@ namespace HatWorld
 
         public override Color SpriteColor(int data)
         {
-            return HatFisob.colorIntMapping[data]; // Use colors from the actual sprites, applying colors per hat is too complicated
+            return HatFisob.colorIntMapping[data];
         }
 
         public override string SpriteName(int data)

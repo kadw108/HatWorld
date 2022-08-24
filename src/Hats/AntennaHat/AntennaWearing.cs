@@ -19,7 +19,7 @@ namespace HatWorld
         public AntennaWearing(GraphicsModule parent) : base(parent) {
 			this.soundLoop = new ChunkDynamicSoundLoop(parent.owner.firstChunk);
             this.soundLoop.sound = SoundID.Zapper_LOOP;
-            this.soundLoop.Pitch = 0.7f;
+            this.soundLoop.Pitch = 1.3f;
         }
 
 		public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
@@ -63,7 +63,7 @@ namespace HatWorld
             }
             else
             {
-                this.soundLoop.Volume = 0.45f;
+                this.soundLoop.Volume = 0.3f;
 
                 if (this.room != null) {
                     // from ElectricCat (add sparks)

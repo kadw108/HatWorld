@@ -75,7 +75,7 @@ namespace HatWorld
             orig(self, abstractCreature, world);
 
             CreatureHatManager.CreateHatManager(self, abstractCreature.ID);
-            Debug.Log("hatworld new creature constructed " + self.abstractCreature.ID + " " + CreatureHatManager.HatManagers.ContainsKey(self.abstractCreature.ID));
+            // Debug.Log("Hatworld: new creature constructed " + self.abstractCreature.ID + " " + CreatureHatManager.HatManagers.ContainsKey(self.abstractCreature.ID));
         }
 
         public static Type GetType(string typeName)

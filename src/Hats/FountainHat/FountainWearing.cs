@@ -132,6 +132,11 @@ namespace HatWorld
             }
         }
 
+        public override void Destroy()
+        {
+            base.Destroy();
+        }
+
         private void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
         {
             orig(self, eu);

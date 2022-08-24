@@ -161,7 +161,7 @@ namespace HatWorld
 
 			if (config.ContainsKey("hatworld_effectsOn"))
             {
-				bool.TryParse(config["hatworld_effectsOn"], out CreatureHatManager.effectsOn);
+				bool.TryParse(config["hatworld_effectsOn"], out HatWearing.effectsOn);
             }
 		}
 	}

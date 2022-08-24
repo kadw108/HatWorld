@@ -69,8 +69,8 @@ namespace HatWorld
 
             // Expects format ...\Mods\HatWorldText\[namespace of hat].[name of hat]_[language].txt
             string file = fileName + "_" + LocalizationTranslator.LangShort(self.interfaceOwner.rainWorld.inGameTranslator.currentLanguage) + ".txt";
-            string convoFolder = Custom.RootFolderDirectory() + "Mods" +
-                Path.DirectorySeparatorChar + "HatWorldText";
+            string convoFolder = Custom.RootFolderDirectory() + "ModConfigs" +
+                Path.DirectorySeparatorChar + "HatWorld" + Path.DirectorySeparatorChar + "HatWorldText";
             string convoPath = convoFolder + Path.DirectorySeparatorChar + file;
 
             Debug.Log("Hatworld: search convoPath " + convoPath + " root dir " + Custom.RootFolderDirectory());

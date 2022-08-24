@@ -7,6 +7,8 @@ namespace HatWorld
 	// Uses code from FestiveWorld mod
 	public abstract class HatWearing : UpdatableAndDeletable, IDrawable
 	{
+		public static bool effectsOn = true;
+
 		public GraphicsModule parent { get; }
 
 		public int anchorSprite;
@@ -57,6 +59,10 @@ namespace HatWorld
 			this.initialized = false; // ParentDrawSprites must run to set basePos and drawPos
 			parent.owner.room.AddObject(this);
 
+			if (effectsOn)
+            {
+                AddHatEffects(parent.owner as Creature);
+            }
 		}
 
         public abstract void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam);
@@ -140,7 +146,16 @@ namespace HatWorld
 			}
 		}
 
-		public virtual void AddHatEffects(Creature wearer) { }
+        public override void Destroy()
+        {
+			if (effectsOn && parent.owner != null)
+            {
+				RemoveHatEffects(parent.owner as Creature);
+            }
+            base.Destroy();
+        }
+
+        public virtual void AddHatEffects(Creature wearer) { }
 		public virtual void RemoveHatEffects(Creature wearer) { }
 	}
 }

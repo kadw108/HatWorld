@@ -25,6 +25,9 @@ namespace HatWorld
 		public float defaultRotat;
 		public Vector2[,] bodyRotations;
 
+		// keeps track of creature's default gravity for hat effects
+		private float defaultGrav;
+
 		public ChunkDynamicSoundLoop soundLoop;
 
 		public WingWearing(GraphicsModule parent) : base(parent) {
@@ -105,9 +108,10 @@ namespace HatWorld
 
         public override void AddHatEffects(Creature wearer)
         {
+			defaultGrav = wearer.gravity;
 			if (wearer is Player)
             {
-				wearer.gravity *= 0.75f;
+				wearer.gravity *= 0.85f;
             }
 			else
             {
@@ -116,13 +120,11 @@ namespace HatWorld
         }
         public override void RemoveHatEffects(Creature wearer)
         {
-			if (wearer is Player)
+			if (wearer != null)
             {
-				wearer.gravity *= (1 / 0.75f);
-            }
-			else
-            {
-                wearer.gravity *= (1 / 0.5f);
+				wearer.gravity = defaultGrav;
+				// defaultGrav must be used since just dividing by the multiplier in AddHatEffects
+				// causes a NullReferenceException because wearer.gravity isn't initialized
             }
         }
 
@@ -135,7 +137,7 @@ namespace HatWorld
 			this.wingsFolded = 1f - this.wingsStartedUp;
 
 			/*
-			// doesn't have intended effect
+			// doesn't have intended effect (only flap wings while flying)
 			if (Math.Abs(this.parent.owner.firstChunk.vel.y) > 1 && (this.parent.owner.gravity > 0))
             {
 				this.wingsStartedUp = 1f;

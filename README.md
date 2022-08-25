@@ -2,9 +2,9 @@
 
 by kadw (kadw#4425)
 
-A mod for Rain World 1.5. Adds several hats to the game that you can find and wear. You can also give them to scavengers.
+Mod for Rain World 1.5. Adds several hats to the game that you can find and wear. You can also give them to scavs.
 
-<img src="demo_gifs/wing_hat.gif" alt="Wing Hat GIF" height=170><img src="demo_gifs/scav_torch.gif" alt="Scav Torch GIF" height=170><img src="demo_gifs/spawn_hats.gif" alt="Spawn Hats GIF" height=170>
+<img src="demo_gifs/wing_hat.gif" alt="Wing Hat GIF" height=150><img src="demo_gifs/scav_torch.gif" alt="Scav Torch GIF" height=150><img src="demo_gifs/spawn_hats.gif" alt="Spawn Hats GIF" height=150>
 
 ---
 

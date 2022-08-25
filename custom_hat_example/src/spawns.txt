@@ -1,0 +1,3 @@
+﻿SU_A13, 485, 515, HatWorldCustomExample.RedBubblePhysical
+SU_C04, 300, 300, HatWorldCustomExample.RedBubblePhysical
+SU_C01, 485, 434, HatWorldCustomExample.RedBubblePhysical

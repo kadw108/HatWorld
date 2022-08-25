@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net35</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>preview</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="src\spawns.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="src\spawns.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\referencefolder\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="BepInEx">
+      <HintPath>..\..\referencefolder\BepInEx.dll</HintPath>
+    </Reference>
+    <Reference Include="EnumExtender">
+      <HintPath>..\..\referencefolder\EnumExtender.dll</HintPath>
+    </Reference>
+    <Reference Include="Fisobs">
+      <HintPath>..\Fisobs.dll</HintPath>
+    </Reference>
+    <Reference Include="HatWorld">
+      <HintPath>..\..\referencefolder\HatWorld.dll</HintPath>
+    </Reference>
+    <Reference Include="HOOKS-Assembly-CSharp">
+      <HintPath>..\..\referencefolder\HOOKS-Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\referencefolder\UnityEngine.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Copy SourceFiles="$(TargetDir)$(TargetName)$(TargetExt)" DestinationFolder="C:\Users\account\Apps\Steam\steamapps\common\Rain World\BepInEx\plugins" />
+	</Target>
+
+</Project>

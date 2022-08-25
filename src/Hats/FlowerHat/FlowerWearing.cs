@@ -3,37 +3,38 @@ using UnityEngine;
 
 namespace HatWorld
 {
-	sealed class FlowerWearing : HatWearing
-	{
-		// Constants for sLeaser sprite index (higher index appears over lower)
-		public const int vineIndex = 0;
-		public const int vineNumber = 4;
-		public const int petal3 = vineIndex + vineNumber + 0;
-		public const int leaf1 = vineIndex + vineNumber + 1;
-		public const int leaf2 = vineIndex + vineNumber + 2;
-		public const int petal1 = vineIndex + vineNumber + 3;
-		public const int petal2 = vineIndex + vineNumber + 4;
-		public const int petal4 = vineIndex + vineNumber + 5;
+    sealed class FlowerWearing : HatWearing
+    {
+        // Constants for sLeaser sprite index (higher index appears over lower)
+        public const int vineIndex = 0;
+        public const int vineNumber = 4;
+        public const int petal3 = vineIndex + vineNumber + 0;
+        public const int leaf1 = vineIndex + vineNumber + 1;
+        public const int leaf2 = vineIndex + vineNumber + 2;
+        public const int petal1 = vineIndex + vineNumber + 3;
+        public const int petal2 = vineIndex + vineNumber + 4;
+        public const int petal4 = vineIndex + vineNumber + 5;
 
-		/* Vines from Jellyfish.tentacles
+        /* Vines from Jellyfish.tentacles
 		 * Array of 2D arrays of vectors
 		 * Each 2D array is one vine, each row is 1 vertice
 		 * columns are start pos [i, 0] (column 0) / end pos [i, 1] (column 1) / length [i, 2] (column 2)
 		 * eg. vines[j][i, 0] is the jth vine, ith vertice, start pos
 		 */
-		public Vector2[][,] vines;
+        public Vector2[][,] vines;
 
-		public float vinesWithdrawn;
+        public float vinesWithdrawn;
         public Vector2 lastCamPos; // for AttachPos and ResetVines
 
         public bool initializeVines;
 
-		public FlowerWearing(GraphicsModule parent) : base(parent) {
+        public FlowerWearing(GraphicsModule parent) : base(parent)
+        {
             initializeVines = false;
-		}
+        }
 
-		public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
-		{
+        public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
+        {
             // initialization
             this.lastCamPos = rCam.pos;
             this.vines = new Vector2[vineNumber][,]; // must be in InitiateSprites, not constructor, or FlowerWearing doesn't appear
@@ -68,10 +69,10 @@ namespace HatWorld
             }
 
             this.AddToContainer(sLeaser, rCam, null);
-		}
+        }
 
-		protected override void ChildDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
-		{
+        protected override void ChildDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+        {
             lastCamPos = camPos;
 
             if (this.initialized && !this.initializeVines)
@@ -141,10 +142,10 @@ namespace HatWorld
                     num = num2;
                 }
             }
-		}
+        }
 
-		protected override void ChildUpdate(bool eu)
-		{
+        protected override void ChildUpdate(bool eu)
+        {
             this.vinesWithdrawn = Custom.LerpAndTick(this.vinesWithdrawn, 0.5f, 0.1f, 0.016666668f); // first 0.5f could be 0f, 1f
             float num = Mathf.Lerp(10f, 1f, this.vinesWithdrawn);
             for (int i = 0; i < this.vines.Length; i++)
@@ -156,7 +157,7 @@ namespace HatWorld
                     this.vines[i][j, 0] += this.vines[i][j, 2];
 
                     // this.vines[i][j, 2] -= this.rotation * Mathf.InverseLerp(4f, 0f, (float)j) * 0.8f;
-                   // Cannot do since WearingHat stores rotation as float, not Vector2
+                    // Cannot do since WearingHat stores rotation as float, not Vector2
 
                     this.vines[i][j, 2] *= Custom.LerpMap(this.vines[i][j, 2].magnitude, 1f, 10f, 1f, 0.5f, Mathf.Lerp(1.4f, 0.4f, t));
                     this.vines[i][j, 2] += Custom.RNV() * 0.2f;
@@ -171,7 +172,7 @@ namespace HatWorld
                     this.vines[i][j, 0] = terrainCollisionData.pos;
                     this.vines[i][j, 2] = terrainCollisionData.vel;
                     */
-            }
+                }
                 for (int k = 0; k < this.vines[i].GetLength(0); k++)
                 {
                     if (k > 0)
@@ -198,8 +199,8 @@ namespace HatWorld
             }
         }
 
-		public override void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
-		{
+        public override void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
+        {
             sLeaser.sprites[leaf1].color = new Color(0.53f, 0.81f, 0.4f); // lighter olive
             sLeaser.sprites[leaf2].color = sLeaser.sprites[leaf1].color;
 
@@ -225,7 +226,7 @@ namespace HatWorld
                     (sLeaser.sprites[vineIndex + i] as TriangleMesh).verticeColors[j] = vineColor;
                 }
             }
-		}
+        }
 
         /* Methods from JellyFish (based on tentacle code) */
 

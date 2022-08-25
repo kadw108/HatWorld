@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using RWCustom;
+﻿using RWCustom;
+using UnityEngine;
 
 namespace HatWorld
 {
@@ -24,7 +24,8 @@ namespace HatWorld
             return new FlowerWearing(graphicsModule);
         }
 
-        public FlowerPhysical(HatAbstract abstr, World world) : base(abstr, world) {
+        public FlowerPhysical(HatAbstract abstr, World world) : base(abstr, world)
+        {
             this.vines = new Vector2[vineNumber][,];
 
             for (int i = 0; i < this.vines.Length; i++)
@@ -156,7 +157,7 @@ namespace HatWorld
 
         public Vector2 AttachPos(int j, float timeStacker)
         {
-            Vector2 a = Vector2.Lerp(base.firstChunk.lastPos, base.firstChunk.pos, timeStacker) - (Vector2) Vector3.Slerp(this.lastRotation, this.rotation, timeStacker) * 7f;
+            Vector2 a = Vector2.Lerp(base.firstChunk.lastPos, base.firstChunk.pos, timeStacker) - (Vector2)Vector3.Slerp(this.lastRotation, this.rotation, timeStacker) * 7f;
             if (j >= 2) // 0, 1 - right side of hat, 2, 3 - left side of hat
             {
                 a -= rightDir * 16f;
@@ -213,7 +214,7 @@ namespace HatWorld
                     terrainCollisionData = SharedPhysics.SlopesVertically(this.room, terrainCollisionData);
                     this.vines[i][j, 0] = terrainCollisionData.pos;
                     this.vines[i][j, 2] = terrainCollisionData.vel;
-            }
+                }
                 for (int k = 0; k < this.vines[i].GetLength(0); k++)
                 {
                     if (k > 0)

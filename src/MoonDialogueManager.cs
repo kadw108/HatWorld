@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using RWCustom;
@@ -28,7 +26,7 @@ namespace HatWorld
             if (testItem is HatPhysical && result == SLOracleBehaviorHasMark.MiscItemType.NA)
             {
                 // Use "_" instead of "." to connect namespace and name because enum names can't contain "."
-                SLOracleBehaviorHasMark.MiscItemType newEnumValue = (SLOracleBehaviorHasMark.MiscItemType) Enum.Parse(typeof(SLOracleBehaviorHasMark.MiscItemType), (testItem.GetType().Namespace + "_" + testItem.GetType().Name));
+                SLOracleBehaviorHasMark.MiscItemType newEnumValue = (SLOracleBehaviorHasMark.MiscItemType)Enum.Parse(typeof(SLOracleBehaviorHasMark.MiscItemType), (testItem.GetType().Namespace + "_" + testItem.GetType().Name));
                 return newEnumValue;
             }
             return result;
@@ -100,7 +98,8 @@ namespace HatWorld
             if (array.Length < 2)
             {
                 Debug.Log($"Hatworld: Corrupted conversation");
-                foreach (String x in array) {
+                foreach (String x in array)
+                {
                     Debug.Log("Hatworld array contents: " + x);
                 }
             }

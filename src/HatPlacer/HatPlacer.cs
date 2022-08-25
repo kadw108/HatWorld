@@ -75,7 +75,7 @@ namespace HatWorld
                     StoryGameSession getStorySession = self.game.GetStorySession;
                     if (getStorySession == null || !getStorySession.saveState.ItemConsumed(self.world, false, self.abstractRoom.index, 1821433636 + i))
                     {
-                        HatAbstract abstractHat = new HatAbstract(self.world, self.GetWorldCoordinate(new Vector2((float) list[i][0], (float) list[i][1])), self.game.GetNewID(), (string) list[i][2]);
+                        HatAbstract abstractHat = new HatAbstract(self.world, self.GetWorldCoordinate(new Vector2((float)list[i][0], (float)list[i][1])), self.game.GetNewID(), (string)list[i][2]);
                         PlacedObjectInfo value = new PlacedObjectInfo
                         {
                             origRoom = self.abstractRoom.index,

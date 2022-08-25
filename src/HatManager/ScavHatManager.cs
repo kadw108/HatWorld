@@ -4,7 +4,6 @@ namespace HatWorld.src.HatManager
 {
     public class ScavHatManager : CreatureHatManager
     {
-
         public ScavHatManager(EntityID wearer) : base(wearer) { }
 
         public override void AddHooks()
@@ -42,7 +41,7 @@ namespace HatWorld.src.HatManager
 
                     if (physicalWornHat != null)
                     {
-                        wornHat = (HatWearing) physicalWornHat.GetMethod("GetWornHat").Invoke(null, new object[] { self });
+                        wornHat = (HatWearing)physicalWornHat.GetMethod("GetWornHat").Invoke(null, new object[] { self });
                     }
                 }
             }

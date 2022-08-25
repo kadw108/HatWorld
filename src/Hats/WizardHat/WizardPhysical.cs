@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using RWCustom;
+﻿using RWCustom;
+using UnityEngine;
 
 namespace HatWorld
 {
@@ -8,7 +8,7 @@ namespace HatWorld
         // taken from FestiveWorld SantaHat
         public Vector2 tuftPos;
         public Vector2 lastTuftPos;
-		public Vector2 tuftVel;
+        public Vector2 tuftVel;
 
         // Constants for sLeaser sprite index (higher index appears over lower)
         public const int coneIndex = 0;
@@ -41,16 +41,16 @@ namespace HatWorld
 
                 Vector2 tipPos = this.tuftPos;
                 tipPos += upDir * 2f;
-				this.tuftVel.y -= this.gravity;
-				this.tuftVel += rightDir * ((Vector2.Dot(rightDir, this.tuftPos - tipPos) > 0f) ? 1f : -1f);
-				this.tuftVel += (tipPos - this.tuftPos) * 0.2f;
-				this.tuftVel *= 0.8f;
-				this.tuftPos += this.tuftVel;
-				if (!Custom.DistLess(this.tuftPos, tipPos, 6f))
-				{
-					this.tuftPos = tipPos + (this.tuftPos - tipPos).normalized * 6f;
-				}
-			}
+                this.tuftVel.y -= this.gravity;
+                this.tuftVel += rightDir * ((Vector2.Dot(rightDir, this.tuftPos - tipPos) > 0f) ? 1f : -1f);
+                this.tuftVel += (tipPos - this.tuftPos) * 0.2f;
+                this.tuftVel *= 0.8f;
+                this.tuftPos += this.tuftVel;
+                if (!Custom.DistLess(this.tuftPos, tipPos, 6f))
+                {
+                    this.tuftPos = tipPos + (this.tuftPos - tipPos).normalized * 6f;
+                }
+            }
         }
 
         public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
@@ -72,9 +72,9 @@ namespace HatWorld
             sLeaser.sprites[tuftIndex] = new FSprite("mouseEyeA5", true);
             sLeaser.sprites[beltIndex] = new FSprite("LizardScaleA6", true);
             sLeaser.sprites[beltIndex].scaleY = 0.8f;
-			sLeaser.sprites[botIndex] = new FSprite("SpearFragment2", true);
-			sLeaser.sprites[botIndex].scaleY = 1.6f;
-			sLeaser.sprites[botIndex].scaleX = 1.7f;
+            sLeaser.sprites[botIndex] = new FSprite("SpearFragment2", true);
+            sLeaser.sprites[botIndex].scaleY = 1.6f;
+            sLeaser.sprites[botIndex].scaleX = 1.7f;
 
             this.AddToContainer(sLeaser, rCam, null);
         }
@@ -92,20 +92,20 @@ namespace HatWorld
                 }
             }
 
-			/* Tuft */
-			const float TUFTNUM = 20f; // some combination of height and stretch, changing it too much ruins the tuft bobble
-			Vector2 targetTuftPos = drawPos + upDir * (TUFTNUM + 4);
+            /* Tuft */
+            const float TUFTNUM = 20f; // some combination of height and stretch, changing it too much ruins the tuft bobble
+            Vector2 targetTuftPos = drawPos + upDir * (TUFTNUM + 4);
             targetTuftPos += new Vector2(2, 0);
-			if (!Custom.DistLess(this.tuftPos, targetTuftPos, TUFTNUM))
-			{
-				this.tuftPos = targetTuftPos + (this.tuftPos - targetTuftPos).normalized * TUFTNUM;
-				if (!Custom.DistLess(this.lastTuftPos, this.tuftPos, TUFTNUM))
-				{
-					this.lastTuftPos = this.tuftPos + (this.lastTuftPos - this.tuftPos).normalized * TUFTNUM;
-				}
-			}
-			Vector2 tuftLocation = Vector2.Lerp(this.lastTuftPos, this.tuftPos, timeStacker);
-			sLeaser.sprites[tuftIndex].SetPosition(tuftLocation);
+            if (!Custom.DistLess(this.tuftPos, targetTuftPos, TUFTNUM))
+            {
+                this.tuftPos = targetTuftPos + (this.tuftPos - targetTuftPos).normalized * TUFTNUM;
+                if (!Custom.DistLess(this.lastTuftPos, this.tuftPos, TUFTNUM))
+                {
+                    this.lastTuftPos = this.tuftPos + (this.lastTuftPos - this.tuftPos).normalized * TUFTNUM;
+                }
+            }
+            Vector2 tuftLocation = Vector2.Lerp(this.lastTuftPos, this.tuftPos, timeStacker);
+            sLeaser.sprites[tuftIndex].SetPosition(tuftLocation);
 
             /* Belt */
             Vector2 beltLocation = drawPos + upDir * 3;

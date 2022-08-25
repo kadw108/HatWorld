@@ -38,7 +38,7 @@ namespace HatWorld.src.HatManager
         }
         public virtual void AddHooks()
         {
-			On.RoomCamera.SpriteLeaser.CleanSpritesAndRemove += SpriteLeaser_CleanSpritesAndRemove;
+            On.RoomCamera.SpriteLeaser.CleanSpritesAndRemove += SpriteLeaser_CleanSpritesAndRemove;
 
             // Remove worn hats when wearer dies
             On.Creature.Die += Creature_Die;
@@ -65,7 +65,7 @@ namespace HatWorld.src.HatManager
             {
                 if (physicalWornHat != null)
                 {
-                    wornHat = (HatWearing) physicalWornHat.GetMethod("GetWornHat").Invoke(null, new object[] { self });
+                    wornHat = (HatWearing)physicalWornHat.GetMethod("GetWornHat").Invoke(null, new object[] { self });
                     self.owner.room.AddObject(wornHat);
                     return;
                 }
@@ -88,16 +88,16 @@ namespace HatWorld.src.HatManager
             }
         }
 
-		// Remove hats when a creature's sprites are removed
-		private void SpriteLeaser_CleanSpritesAndRemove(On.RoomCamera.SpriteLeaser.orig_CleanSpritesAndRemove orig, RoomCamera.SpriteLeaser self)
-		{
-			orig(self);
+        // Remove hats when a creature's sprites are removed
+        private void SpriteLeaser_CleanSpritesAndRemove(On.RoomCamera.SpriteLeaser.orig_CleanSpritesAndRemove orig, RoomCamera.SpriteLeaser self)
+        {
+            orig(self);
 
-			if (wornHat != null && wornHat.parent == self.drawableObject)
-			{
-				wornHat.Destroy();
-			}
-		}
+            if (wornHat != null && wornHat.parent == self.drawableObject)
+            {
+                wornHat.Destroy();
+            }
+        }
 
         private void Creature_Die(On.Creature.orig_Die orig, Creature self)
         {
@@ -128,7 +128,7 @@ namespace HatWorld.src.HatManager
                     physicalWornHat = physicalHat.GetType();
 
                     // add worn hat
-                    wornHat = (HatWearing) physicalWornHat.GetMethod("GetWornHat").Invoke(null, new object[] { self.graphicsModule });
+                    wornHat = (HatWearing)physicalWornHat.GetMethod("GetWornHat").Invoke(null, new object[] { self.graphicsModule });
 
                     // remove held hat
                     physicalHat.Destroy();
@@ -140,7 +140,7 @@ namespace HatWorld.src.HatManager
                 }
             }
         }
-    
+
         protected virtual HatPhysical TakeOffHat(Creature self)
         {
             if (physicalWornHat != null && wornHat != null && self.room != null)
@@ -154,7 +154,7 @@ namespace HatWorld.src.HatManager
                 // add held hat
                 self.room.abstractRoom.AddEntity(heldHat);
                 heldHat.RealizeInRoom();
-                return (HatPhysical) heldHat.realizedObject;
+                return (HatPhysical)heldHat.realizedObject;
             }
             return null;
         }

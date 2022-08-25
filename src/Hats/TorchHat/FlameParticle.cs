@@ -2,7 +2,8 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace HatWorld {
+namespace HatWorld
+{
     // From HolyFire.FlameParticle in game code
     public class FlameParticle : CosmeticSprite
     {
@@ -20,7 +21,7 @@ namespace HatWorld {
         }
         public FlameParticle(Vector2 pos, float size, Vector2 vel) : this(pos, vel)
         {
-            this.lifeTime = Mathf.Lerp(size/2, size, Random.value);
+            this.lifeTime = Mathf.Lerp(size / 2, size, Random.value);
         }
 
         public override void Update(bool eu)

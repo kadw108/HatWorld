@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using RWCustom;
+﻿using RWCustom;
+using UnityEngine;
 
 namespace HatWorld
 {
@@ -8,7 +8,7 @@ namespace HatWorld
         // taken from FestiveWorld SantaHat
         public Vector2 tuftPos;
         public Vector2 lastTuftPos;
-		public Vector2 tuftVel;
+        public Vector2 tuftVel;
         // -- set in constructor, hardcoded to slugcat values
         public float headRadius = 5f;
 
@@ -25,7 +25,7 @@ namespace HatWorld
             return new SantaWearing(graphicsModule);
         }
 
-        public SantaPhysical(HatAbstract abstr, World world) : base(abstr, world) {}
+        public SantaPhysical(HatAbstract abstr, World world) : base(abstr, world) { }
 
         public override void Update(bool eu)
         {
@@ -35,22 +35,22 @@ namespace HatWorld
             this.lastTuftPos = this.tuftPos;
 
             if (this.room != null)
-			{
+            {
                 float rotationFloat = Custom.VecToDeg(this.rotation);
                 Vector2 upDir = new Vector2(Mathf.Cos((rotationFloat) * -0.017453292f), Mathf.Sin((rotationFloat) * -0.017453292f));
                 Vector2 rightDir = -Custom.PerpendicularVector(upDir);
 
                 Vector2 tipPos = this.tuftPos;
-				this.tuftVel.y -= this.gravity;
-				this.tuftVel += rightDir * ((Vector2.Dot(rightDir, this.tuftPos - tipPos) > 0f) ? 1.5f : -1.5f);
-				this.tuftVel += (tipPos - this.tuftPos) * 0.2f;
-				this.tuftVel *= 0.6f;
-				this.tuftPos += this.tuftVel;
-				if (!Custom.DistLess(this.tuftPos, tipPos, 13f))
-				{
-					this.tuftPos = tipPos + (this.tuftPos - tipPos).normalized * 13f;
-				}
-			}
+                this.tuftVel.y -= this.gravity;
+                this.tuftVel += rightDir * ((Vector2.Dot(rightDir, this.tuftPos - tipPos) > 0f) ? 1.5f : -1.5f);
+                this.tuftVel += (tipPos - this.tuftPos) * 0.2f;
+                this.tuftVel *= 0.6f;
+                this.tuftPos += this.tuftVel;
+                if (!Custom.DistLess(this.tuftPos, tipPos, 13f))
+                {
+                    this.tuftPos = tipPos + (this.tuftPos - tipPos).normalized * 13f;
+                }
+            }
         }
 
         public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)

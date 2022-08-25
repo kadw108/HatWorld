@@ -1,11 +1,10 @@
 ﻿using System;
-using BepInEx;
-using UnityEngine;
-
 using System.Collections.Generic;
 using System.Reflection;
-using OptionalUI;
+using BepInEx;
 using HatWorld.src.HatManager;
+using OptionalUI;
+using UnityEngine;
 
 namespace HatWorld
 {
@@ -80,7 +79,7 @@ namespace HatWorld
 
         public static Type GetType(string typeName)
         {
-            foreach(Type t in hatTypes)
+            foreach (Type t in hatTypes)
             {
                 if (t.ToString().Equals(typeName))
                 {
@@ -93,7 +92,7 @@ namespace HatWorld
 
         public static void AddType(Type type)
         {
-            hatTypes.Add(type); 
+            hatTypes.Add(type);
         }
 
         public static void AddType(Type[] types)

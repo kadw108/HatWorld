@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Linq;
 using RWCustom;
-using System.Linq;
+using UnityEngine;
 
 namespace HatWorld
 {

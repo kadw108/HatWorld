@@ -1,14 +1,14 @@
 ﻿namespace HatWorld
 {
-	public class PlacedObjectInfo
-	{
-		public int origRoom;
+    public class PlacedObjectInfo
+    {
+        public int origRoom;
 
-		public int placedObjectIndex;
+        public int placedObjectIndex;
 
-		public int minRegen;
+        public int minRegen;
 
-		public int maxRegen;
-	}
+        public int maxRegen;
+    }
 }
 

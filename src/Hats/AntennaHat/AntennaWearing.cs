@@ -3,37 +3,38 @@ using UnityEngine;
 
 namespace HatWorld
 {
-	public class AntennaWearing : HatWearing
-	{
+    public class AntennaWearing : HatWearing
+    {
         // For glow
         public LightSource? lightSource;
 
         // Constants for sLeaser sprite index (higher index appears over lower)
         public const int botDisk = 1;
-		public const int pole = 0;
-		public const int topDisk = 2;
+        public const int pole = 0;
+        public const int topDisk = 2;
         public const int topCircle = 3;
 
-		public ChunkDynamicSoundLoop soundLoop;
+        public ChunkDynamicSoundLoop soundLoop;
 
-        public AntennaWearing(GraphicsModule parent) : base(parent) {
-			this.soundLoop = new ChunkDynamicSoundLoop(parent.owner.firstChunk);
+        public AntennaWearing(GraphicsModule parent) : base(parent)
+        {
+            this.soundLoop = new ChunkDynamicSoundLoop(parent.owner.firstChunk);
             this.soundLoop.sound = SoundID.Zapper_LOOP;
             this.soundLoop.Pitch = 1.3f;
         }
 
-		public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
-		{
-			sLeaser.sprites = new FSprite[4];
-			sLeaser.sprites[botDisk] = new FSprite("QuarterPips2", true) { scaleX = 0.6f };
+        public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
+        {
+            sLeaser.sprites = new FSprite[4];
+            sLeaser.sprites[botDisk] = new FSprite("QuarterPips2", true) { scaleX = 0.6f };
             sLeaser.sprites[pole] = new FSprite("LizardScaleA1", true) { scaleY = 1.1f, scaleX = 0.3f };
             sLeaser.sprites[topDisk] = new FSprite("QuarterPips2", true) { scaleY = 0.5f, scaleX = 0.4f };
             sLeaser.sprites[topCircle] = new FSprite("Circle4", true) { scale = 0.7f };
-			this.AddToContainer(sLeaser, rCam, null);
-		}
+            this.AddToContainer(sLeaser, rCam, null);
+        }
 
-		protected override void ChildDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
-		{
+        protected override void ChildDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+        {
             for (int j = 0; j < sLeaser.sprites.Length; j++)
             {
                 sLeaser.sprites[j].rotation = this.rotation + this.baseRot;
@@ -42,7 +43,7 @@ namespace HatWorld
             sLeaser.sprites[botDisk].SetPosition(drawPos + upDir * 1);
             sLeaser.sprites[botDisk].rotation += 180f;
 
-			sLeaser.sprites[pole].SetPosition(drawPos + upDir * 8);
+            sLeaser.sprites[pole].SetPosition(drawPos + upDir * 8);
             sLeaser.sprites[pole].rotation += 90f;
 
             sLeaser.sprites[topDisk].SetPosition(drawPos + upDir * 9);
@@ -65,7 +66,8 @@ namespace HatWorld
             {
                 this.soundLoop.Volume = 0.3f;
 
-                if (this.room != null) {
+                if (this.room != null)
+                {
                     // from ElectricCat (add sparks)
                     for (int j = 0; j < (int)Mathf.Lerp(4f, 5f, 0.15f); j++)
                     {
@@ -95,13 +97,13 @@ namespace HatWorld
             }
         }
 
-		public override void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
-		{
+        public override void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
+        {
             sLeaser.sprites[botDisk].color = new Color(0.23f, 0.25f, 0.34f); // gray
             sLeaser.sprites[pole].color = new Color(0.9f, 1f, 0.9f); // light gray
             sLeaser.sprites[topDisk].color = sLeaser.sprites[botDisk].color;
             sLeaser.sprites[topCircle].color = new Color(0f, 1f, 0.15f); // green
-		}
+        }
 
         protected override void ChildUpdate(bool eu)
         {

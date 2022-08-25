@@ -3,34 +3,34 @@ using UnityEngine;
 
 namespace HatWorld
 {
-	public class FountainWearing : HatWearing
-	{
-		/*
+    public class FountainWearing : HatWearing
+    {
+        /*
 		 * FountainWearing has a JetWaterEmitter (WaterJet) which creates JetWaterCustom which derives from WaterParticleCustom
 		 * This structure allows customizing the WaterParticleCustom methods */
 
-		// Constants for sLeaser sprite index (higher index appears over lower)
-		public const int pole = 0;
+        // Constants for sLeaser sprite index (higher index appears over lower)
+        public const int pole = 0;
 
         public const int petal1 = 1;
         public const int petal2 = 2;
         public const int petal3 = 3;
         public const int petal4 = 4;
 
-		public ChunkDynamicSoundLoop soundLoop;
+        public ChunkDynamicSoundLoop soundLoop;
 
         public JetWaterEmitter[] waterJets = new JetWaterEmitter[2];
 
-
-        public FountainWearing(GraphicsModule parent) : base(parent) {
-			this.soundLoop = new ChunkDynamicSoundLoop(parent.owner.firstChunk);
+        public FountainWearing(GraphicsModule parent) : base(parent)
+        {
+            this.soundLoop = new ChunkDynamicSoundLoop(parent.owner.firstChunk);
             this.soundLoop.sound = SoundID.Water_Surface_Calm_LOOP;
             this.soundLoop.Pitch = 1.6f;
         }
 
         public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
-		{
-			sLeaser.sprites = new FSprite[5];
+        {
+            sLeaser.sprites = new FSprite[5];
             sLeaser.sprites[pole] = new FSprite("LizardScaleA1", true) { scaleY = 0.35f, scaleX = 0.5f };
 
             for (int i = petal1; i <= petal4; i++)
@@ -38,17 +38,17 @@ namespace HatWorld
                 sLeaser.sprites[i] = new FSprite("KarmaPetal", true) { scaleY = 0.55f, scaleX = 0.3f };
             }
 
-			this.AddToContainer(sLeaser, rCam, null);
-		}
+            this.AddToContainer(sLeaser, rCam, null);
+        }
 
-		protected override void ChildDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
-		{
+        protected override void ChildDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+        {
             for (int j = 0; j < petal1; j++)
             {
                 sLeaser.sprites[j].rotation = this.rotation + this.baseRot;
             }
 
-			sLeaser.sprites[pole].SetPosition(drawPos + upDir * 4);
+            sLeaser.sprites[pole].SetPosition(drawPos + upDir * 4);
             sLeaser.sprites[pole].rotation += 90f;
 
             for (int i = petal1; i <= petal4; i++)
@@ -98,15 +98,15 @@ namespace HatWorld
             }
         }
 
-		public override void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
-		{
+        public override void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
+        {
             sLeaser.sprites[pole].color = new Color(0.72f, 0.73f, 1f); // light blue
 
             for (int i = petal1; i <= petal4; i++)
             {
-                sLeaser.sprites[i].color = new Color(.6f + (i-petal1) * .1f, .9f, .9f + (i-petal1) * .3f); // light blue - light red
+                sLeaser.sprites[i].color = new Color(.6f + (i - petal1) * .1f, .9f, .9f + (i - petal1) * .3f); // light blue - light red
             }
-		}
+        }
 
         protected override void ChildUpdate(bool eu)
         {

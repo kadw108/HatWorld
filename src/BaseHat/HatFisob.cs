@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using RWCustom;
 using UnityEngine;
 
 namespace HatWorld
@@ -18,7 +16,8 @@ namespace HatWorld
         internal static Dictionary<int, string> hatIntMapping = new();
         internal static Dictionary<int, Color> colorIntMapping = new();
 
-        public HatFisob() : base(EnumExt_HatWorld.HatAbstract) {
+        public HatFisob() : base(EnumExt_HatWorld.HatAbstract)
+        {
             Icon = new AllHatIcon();
         }
 

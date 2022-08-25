@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace HatWorld
 {
-	// Hat that is being worn by slugcat
-	// Uses code from FestiveWorld mod
-	sealed class WizardWearing : HatWearing
-	{
-		public Vector2 tuftPos;
-		public Vector2 lastTuftPos;
-		public Vector2 tuftVel;
+    // Hat that is being worn by slugcat
+    // Uses code from FestiveWorld mod
+    sealed class WizardWearing : HatWearing
+    {
+        public Vector2 tuftPos;
+        public Vector2 lastTuftPos;
+        public Vector2 tuftVel;
 
         // Constants for sLeaser sprite index (higher index appears over lower)
         public const int coneIndex = 0;
@@ -17,56 +17,56 @@ namespace HatWorld
         public const int beltIndex = 2;
         public const int botIndex = 3;
 
-		public WizardWearing(GraphicsModule parent) : base(parent) {}
+        public WizardWearing(GraphicsModule parent) : base(parent) { }
 
-		public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
-		{
-			sLeaser.sprites = new FSprite[4];
-			TriangleMesh.Triangle[] array = new TriangleMesh.Triangle[]
-			{
-				new TriangleMesh.Triangle(0, 1, 2),
-				new TriangleMesh.Triangle(1, 2, 3),
-				new TriangleMesh.Triangle(2, 3, 4),
-				new TriangleMesh.Triangle(3, 4, 5),
-				new TriangleMesh.Triangle(4, 5, 6),
-				new TriangleMesh.Triangle(5, 6, 7),
-				new TriangleMesh.Triangle(6, 7, 8)
-			};
-			TriangleMesh cone = new TriangleMesh("Futile_White", array, false, false);
-			sLeaser.sprites[coneIndex] = cone;
-			sLeaser.sprites[tuftIndex] = new FSprite("mouseEyeA5", true);
-			sLeaser.sprites[beltIndex] = new FSprite("LizardScaleA6", true) { scaleY = 0.8f };
-			sLeaser.sprites[botIndex] = new FSprite("SpearFragment2", true) { scaleY = 1.6f, scaleX = 1.7f };
-			this.AddToContainer(sLeaser, rCam, null);
-		}
+        public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
+        {
+            sLeaser.sprites = new FSprite[4];
+            TriangleMesh.Triangle[] array = new TriangleMesh.Triangle[]
+            {
+                new TriangleMesh.Triangle(0, 1, 2),
+                new TriangleMesh.Triangle(1, 2, 3),
+                new TriangleMesh.Triangle(2, 3, 4),
+                new TriangleMesh.Triangle(3, 4, 5),
+                new TriangleMesh.Triangle(4, 5, 6),
+                new TriangleMesh.Triangle(5, 6, 7),
+                new TriangleMesh.Triangle(6, 7, 8)
+            };
+            TriangleMesh cone = new TriangleMesh("Futile_White", array, false, false);
+            sLeaser.sprites[coneIndex] = cone;
+            sLeaser.sprites[tuftIndex] = new FSprite("mouseEyeA5", true);
+            sLeaser.sprites[beltIndex] = new FSprite("LizardScaleA6", true) { scaleY = 0.8f };
+            sLeaser.sprites[botIndex] = new FSprite("SpearFragment2", true) { scaleY = 1.6f, scaleX = 1.7f };
+            this.AddToContainer(sLeaser, rCam, null);
+        }
 
-		protected override void ChildDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
-		{
-			drawPos += new Vector2(0, 1); // increase y so hat doesn't go over eyes
+        protected override void ChildDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+        {
+            drawPos += new Vector2(0, 1); // increase y so hat doesn't go over eyes
 
-			/* Brim */
-			sLeaser.sprites[botIndex].SetPosition(drawPos);
-			sLeaser.sprites[botIndex].rotation = this.rotation + this.baseRot;
-			sLeaser.sprites[botIndex].scaleY = (this.flipX ? -1.6f : 1.6f);
+            /* Brim */
+            sLeaser.sprites[botIndex].SetPosition(drawPos);
+            sLeaser.sprites[botIndex].rotation = this.rotation + this.baseRot;
+            sLeaser.sprites[botIndex].scaleY = (this.flipX ? -1.6f : 1.6f);
 
-			/* Tuft */
-			const float TUFTNUM = 25f; // some combination of height and stretch, changing it too much ruins the tuft bobble
-			Vector2 targetTuftPos = drawPos + upDir * (TUFTNUM + 10);
-			if (!Custom.DistLess(this.tuftPos, targetTuftPos, TUFTNUM))
-			{
-				this.tuftPos = targetTuftPos + (this.tuftPos - targetTuftPos).normalized * TUFTNUM;
-				if (!Custom.DistLess(this.lastTuftPos, this.tuftPos, TUFTNUM))
-				{
-					this.lastTuftPos = this.tuftPos + (this.lastTuftPos - this.tuftPos).normalized * TUFTNUM;
-				}
-			}
-			Vector2 tuftLocation = Vector2.Lerp(this.lastTuftPos, this.tuftPos, timeStacker);
-			sLeaser.sprites[tuftIndex].SetPosition(tuftLocation);
+            /* Tuft */
+            const float TUFTNUM = 25f; // some combination of height and stretch, changing it too much ruins the tuft bobble
+            Vector2 targetTuftPos = drawPos + upDir * (TUFTNUM + 10);
+            if (!Custom.DistLess(this.tuftPos, targetTuftPos, TUFTNUM))
+            {
+                this.tuftPos = targetTuftPos + (this.tuftPos - targetTuftPos).normalized * TUFTNUM;
+                if (!Custom.DistLess(this.lastTuftPos, this.tuftPos, TUFTNUM))
+                {
+                    this.lastTuftPos = this.tuftPos + (this.lastTuftPos - this.tuftPos).normalized * TUFTNUM;
+                }
+            }
+            Vector2 tuftLocation = Vector2.Lerp(this.lastTuftPos, this.tuftPos, timeStacker);
+            sLeaser.sprites[tuftIndex].SetPosition(tuftLocation);
 
             /* Belt */
             Vector2 beltLocation = sLeaser.sprites[botIndex].GetPosition() + upDir * 3;
-			sLeaser.sprites[beltIndex].rotation = this.rotation + this.baseRot;
-			sLeaser.sprites[beltIndex].scaleY = (this.flipX ? -0.8f : 0.8f);
+            sLeaser.sprites[beltIndex].rotation = this.rotation + this.baseRot;
+            sLeaser.sprites[beltIndex].scaleY = (this.flipX ? -0.8f : 0.8f);
             sLeaser.sprites[beltIndex].SetPosition(beltLocation);
 
             /* Cone (triangle) */
@@ -87,11 +87,11 @@ namespace HatWorld
                 Vector2 pos = Vector2.Lerp(Vector2.Lerp(coneBase, coneMid, h), Vector2.Lerp(coneMid, coneTip, h), h);
                 cone.MoveVertice(i, pos);
             }
-		}
+        }
 
-		protected override void ChildUpdate(bool eu)
-		{
-			this.lastTuftPos = this.tuftPos;
+        protected override void ChildUpdate(bool eu)
+        {
+            this.lastTuftPos = this.tuftPos;
 
             Vector2 drawPos = this.basePos;
             Vector2 vector2 = new Vector2(Mathf.Cos((this.rotation + this.baseRot) * -0.017453292f), Mathf.Sin((this.rotation + this.baseRot) * -0.017453292f));
@@ -115,16 +115,16 @@ namespace HatWorld
             {
                 this.tuftPos = drawPos + (this.tuftPos - drawPos).normalized * 13f;
             }
-		}
+        }
 
-		public override void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
-		{
-			sLeaser.sprites[coneIndex].color = WizardPhysical.blue;
-			sLeaser.sprites[tuftIndex].color = WizardPhysical.orangeYellow;
+        public override void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
+        {
+            sLeaser.sprites[coneIndex].color = WizardPhysical.blue;
+            sLeaser.sprites[tuftIndex].color = WizardPhysical.orangeYellow;
 
-			sLeaser.sprites[beltIndex].color = sLeaser.sprites[tuftIndex].color;
+            sLeaser.sprites[beltIndex].color = sLeaser.sprites[tuftIndex].color;
             sLeaser.sprites[botIndex].color = sLeaser.sprites[coneIndex].color;
-		}
-	}
+        }
+    }
 }
 

@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using RWCustom;
+﻿using RWCustom;
+using UnityEngine;
 
 namespace HatWorld
 {
@@ -104,7 +104,7 @@ namespace HatWorld
 
             for (int i = petal1; i <= petal4; i++)
             {
-                sLeaser.sprites[i].color = new Color(.75f, .85f, 1f); 
+                sLeaser.sprites[i].color = new Color(.75f, .85f, 1f);
             }
         }
 

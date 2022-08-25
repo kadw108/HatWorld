@@ -1,9 +1,8 @@
 ﻿using System;
-using UnityEngine;
-
 // for mod integration (hooking mod methods)
 using System.Reflection;
 using MonoMod.RuntimeDetour; // if you get 'instance object was created as immutable' error, edit the .csproj manually
+using UnityEngine;
 
 namespace HatWorld.src.HatManager
 {
@@ -58,7 +57,7 @@ namespace HatWorld.src.HatManager
             {
                 if (self != null && physicalWornHat != null)
                 {
-                    wornHat = (HatWearing) physicalWornHat.GetMethod("GetWornHat").Invoke(null, new object[] { self });
+                    wornHat = (HatWearing)physicalWornHat.GetMethod("GetWornHat").Invoke(null, new object[] { self });
                     self.owner.room.AddObject(wornHat);
                     return;
                 }
@@ -139,7 +138,7 @@ namespace HatWorld.src.HatManager
             if (self.abstractCreature.ID == wearer)
             {
                 // Remove hats when player sleeps in shelter, so hats can be saved as shelter items
-                if (self.sleepCounter <= -6 && physicalWornHat != null) 
+                if (self.sleepCounter <= -6 && physicalWornHat != null)
                 {
                     TakeOffHat(self);
                 }

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using RWCustom;
 
 namespace HatWorld
 {
@@ -17,14 +16,14 @@ namespace HatWorld
             return new TorchWearing(graphicsModule);
         }
 
-        public TorchPhysical(HatAbstract abstr, World world) : base(abstr, world) {}
+        public TorchPhysical(HatAbstract abstr, World world) : base(abstr, world) { }
 
         public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
         {
-			sLeaser.sprites = new FSprite[2];
-			sLeaser.sprites[crownIndex] = new FSprite("SpiderLeg3B", true);
+            sLeaser.sprites = new FSprite[2];
+            sLeaser.sprites[crownIndex] = new FSprite("SpiderLeg3B", true);
             sLeaser.sprites[crownIndex].scaleX = 1.5f;
-			sLeaser.sprites[gemIndex] = new FSprite("deerEyeA", true);
+            sLeaser.sprites[gemIndex] = new FSprite("deerEyeA", true);
             sLeaser.sprites[gemIndex].scale = 0.4f;
 
             this.AddToContainer(sLeaser, rCam, null);

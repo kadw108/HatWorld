@@ -1,22 +1,22 @@
 # Creating Custom Hats
 
-If you know how to mod/code, you can use HatWorld to add your own hats into the game. 
+If you know how to mod, you can use HatWorld to add your own hats into the game. 
 
-I didn't code the mod with custom hats as its primary purpose, so it may be a messy process. Perhaps this doc is mainly a guide for myself?
+I didn't code the mod with custom hats as the primary purpose, so it may be a messy process. Perhaps this doc is mainly a guide for myself?
 
 This folder contains files for an example custom hat called RedBubble. It's identical to the Bubble hat from HatWorld, but red. It can be used as a reference for creating your own custom hat.
 
-To enable the custom hat:
+Enabling the custom hat:
 * HatWorld and its dependencies must be enabled.
 * Copy `icon_HatWorldCustomExample.RedBubblePhysical.png` in the `icon` folder to Rain World\ModConfigs\CustomSpritesLoader\Load
-* Copy the text files in `moon_dialogue_files\encrypted` OR `moon_dialogue_files\unencrypted` to Rain World\ModConfigs\HatWorld\HatWorldText. If you use the unencrypted files, giving a RedBubble hat to Moon will create encrypted versions of those text files.
-* Copy `HatWorldCustomExample.dll` in the `FINAL_DLL` folder to Rain World\Mods and then enabled it. Or copy it directly to Rain World\BepInEx\plugins (it won't show up in BOIModManager, but will be enabled).
+* Copy the text files in `moon_dialogue_files\encrypted` OR `moon_dialogue_files\unencrypted` to Rain World\ModConfigs\HatWorld\HatWorldText. If you use the unencrypted files, giving a RedBubblePhysical hat to Moon will create encrypted versions of those text files.
+* Copy `HatWorldCustomExample.dll` in the `FINAL_DLL` folder to Rain World\Mods and then enable it. Or copy it directly to Rain World\BepInEx\plugins (it won't show up in BOIModManager, but will be enabled).
 
 Descriptions of the files in this folder:
-* `FINAL_DLL` contains a .dll file for the custom hat example. It requires the HatWorld mod and its dependencies to be enabled. It also requires the hat's icon and text files to be in the correct folders (see above section).
-* `icon` contains the sandbox/shelter icon for the custom hat. See Icons.
-* `moon_dialogue_files` contains encrypted and unencrypted versions of Moon's dialogue for the RedBubble hat, in different languages. Only the encrypted files are required for the mod to function properly. The unencrypted files are there to show what unencrypted text files look like. These dialogue files don't have translations for different languages, so she will always speak in English no matter what the language setting is. See Adding Moon Dialogue.
-* `src`, along with `HatWorldCustomExample.csproj` and `HatWorldCustomExample.sln` contain the actual code for the RedBubble hat. See Code.
+* `FINAL_DLL\HatWorldCustomExample.dll` is a .dll file for the custom hat example. It requires HatWorld and its dependencies to be enabled. It also requires the custom hat's icon and text files to be in the correct folders (see above section on enabling the custom hat).
+* `icon` contains the sandbox/shelter icon for the custom hat. See [Icons](#icons).
+* `moon_dialogue_files` contains encrypted and unencrypted versions of Moon's dialogue for the RedBubble hat, in different languages. Only the encrypted files are required for the mod to function properly. The unencrypted files are there to show what unencrypted text files look like. These dialogue files don't have translations for different languages, so she will always speak in English no matter what the language setting is. See [Adding Moon Dialogue](#adding-moon-dialogue).
+* `src`, along with `HatWorldCustomExample.csproj` and `HatWorldCustomExample.sln` contain the actual code for the RedBubble hat. See [Code](#code), below.
 
 ---
 
@@ -33,8 +33,9 @@ Every hat needs a few things:
 	* A MultiplayerUnlocks.SandboxUnlockID enum, so the shelter/sandbox icon gets registered (required even if the hat won't be in sandbox)
 	* A SLOracleBehaviorHasMark.MiscItemType [namespace]_[name]Physical enum, so the game doesn't crash when Moon encounters the hat
 
-* You must run:
-	* `HatWorldMain.AddType(typeof(x));` to make the new hat exist, where x is the physical type for your hat [hatname]Physical
+* Several lines of code must be included, e.g. with RedBubble hat:
+	* `HatWorldMain.AddType(typeof(RedBubblePhysical));` to make the new hat exist
+		- use typeof(the physical type for your hat, ie. [hatname]Physical)
 	* `HatWorldMain.hatFisob.AddIconAndSandbox("HatWorldCustomExample_RedBubblePhysical", EnumExt_HatWorldCustom.RedBubbleUnlockID, Color.red);` to create the shelter icon/sandbox icon
 		- first argument is [namespace]_[name]Physical
 		- second argument is MultiplayerUnlocks.SandboxUnlockID for your hat
@@ -44,12 +45,13 @@ Every hat needs a few things:
 
 Optional:
 
-* To make the hat appear somewhere in a room, much like a colored pearl, create a text file somewhere and make it an embedded resource. Then put `HatPlacer.AddSpawns(Assembly.GetExecutingAssembly().GetManifestResourceStream("[text file name]"));` into the code. Names for embedded resources should be [namespace].[enclosing folder(s)].[text file name], see https://stackoverflow.com/questions/44577716/net-get-embedded-resource-file
-* Adding Moon dialogue is optional but still possible. See Adding Moon Dialogue section.
+* To make the hat appear somewhere in a room, much like a colored pearl:
+	* Create a text file somewhere and make it an embedded resource. Then put `HatPlacer.AddSpawns(Assembly.GetExecutingAssembly().GetManifestResourceStream("[text file name]"));` into the code. Names for embedded resources should be [namespace].[enclosing folder(s)].[text file name], see https://stackoverflow.com/questions/44577716/net-get-embedded-resource-file
+* Adding Moon dialogue is optional but still possible. See [Adding Moon Dialogue](#adding-moon-dialogue) section.
 
----
 
-### More Detail on HatWearing and HatPhysical
+
+#### More Detail on HatWearing and HatPhysical
 
 * The derived classes of HatWearing and HatPhysical both need InitiateSprites and ApplyPalette to be defined.
 * HatPhysical classes also requires DrawSprites to be defined (don't forget to put a base.DrawSprites call at the beginning). In HatWearing classes, you should override ChildDrawSprites instead, and don't override DrawSprites -- no base.DrawSprites call is necessary.
@@ -68,7 +70,7 @@ Every custom hat needs an icon image. Recommended size 20x20 pixels or smaller. 
 
 ### Adding Moon Dialogue
 
-See https://rain-world-modding.fandom.com/wiki/Adding_a_Custom_DataPearl
+Code for Moon's hat dialogue was based on https://rain-world-modding.fandom.com/wiki/Adding_a_Custom_DataPearl.
 
 HatWorld expects moon dialogue files in the format: Rain World\Mods\HatWorldText\[namespace of hat].[name of hat]_[language].txt
 
@@ -81,7 +83,7 @@ EXAMPLE: You have a RedBubblePhysical hat in a HatWorldCustomExample namespace. 
 
 All these text files should be located in your Rain World\Mods\HatWorldText folder, corresponding to wherever your Rain World files are.
 
----
+--
 
 The mod can read both encrypted and unencrypted text files. (Rain World provides a way to encrypt text files so people can't just look at the game files and see what Moon is supposed to say.)
 
@@ -91,7 +93,7 @@ For best results, use encrypted text files in your final release, so people can'
 
 To encrypt an unencrypted text file: If HatWorld mod reads an unencrypted moon dialogue file, it will automatically create encrypted versions. The encrypted versions will appear in the HatWorldText folder, inside folder Text_Eng, Text_Fre, Text_Ger, etc. Important: you must use the encrypted text file located inside the correct language folder. Drag it out into the HatWorldText folder.
 
-EXAMPLE:
+#### Moon Dialogue Example
 
 Let's say you have unencrypted versions of AntennaPhysical dialogue in two languages: English and Portuguese. The file names are hatworld.antennaphysical_eng.txt and hatworld.antennaphysical_por.txt. 
 

@@ -87,6 +87,7 @@ namespace HatWorld
                     return t;
                 }
             }
+            Debug.Log("Hatworld ERROR: could not find hat " + typeName);
             return null;
         }
 

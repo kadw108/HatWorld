@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="custom_hat_example\**" />
+    <EmbeddedResource Remove="custom_hat_example\**" />
+    <None Remove="custom_hat_example\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="src\HatPlacer\spawns.txt" />
   </ItemGroup>
 

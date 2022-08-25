@@ -1,7 +1,4 @@
-﻿// Finished for now
-
-using UnityEngine;
-namespace HatWorld
+﻿namespace HatWorld
 {
     sealed class HatProperties : Fisobs.Properties.ItemProperties
     {

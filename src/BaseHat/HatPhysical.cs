@@ -9,20 +9,14 @@ namespace HatWorld
         public HatAbstract Abstr { get; }
 
         // rotation (initial value from SantaHat)
-        public Vector2 rotation;
-        public Vector2 lastRotation;
-
-        // darkness (from Centishields)
-        public float lastDarkness = -1f;
-        public float darkness;
+        protected Vector2 rotation;
+        protected Vector2 lastRotation;
 
         // for DrawSprites
-        public Vector2 drawPos;
-        public float hatRotation;
-        public Vector2 upDir;
-        public Vector2 rightDir;
-
-        public string hatType;
+        protected Vector2 drawPos;
+        protected float hatRotation;
+        protected Vector2 upDir;
+        protected Vector2 rightDir;
 
         public HatPhysical(HatAbstract abstr, World world) : base(abstr)
         {
@@ -39,8 +33,6 @@ namespace HatWorld
             this.waterFriction = 0.92f;
             this.buoyancy = 0.75f;
             this.firstChunk.loudness = 3f;
-
-            this.hatType = this.GetType().ToString(); //  Namespace + "." + this.GetType().Name;
         }
 
         public override float ThrowPowerFactor
@@ -81,8 +73,6 @@ namespace HatWorld
             }
 
             // From Mushroom.Update
-            this.lastDarkness = this.darkness;
-            this.darkness = this.room.Darkness(base.firstChunk.pos);
             this.lastRotation = this.rotation;
             if (this.grabbedBy.Count > 0)
             {

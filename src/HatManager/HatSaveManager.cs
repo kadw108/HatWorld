@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
@@ -23,7 +21,7 @@ namespace HatWorld
             orig(self, str, game);
 
             string results = SearchForSavePair(str, "HATWORLD", "<svB>", "<svA>");
-            Debug.Log("Hatworld load hats " + results);
+            Debug.Log("HatWorld: load hats " + results);
             var persistData = DataFromString(results);
             hats = persistData;
         }
@@ -38,7 +36,7 @@ namespace HatWorld
             sb.Append(customData ?? "");
             sb.Append("<svA>");
 
-            Debug.Log("Hatworld save hats " + customData);
+            Debug.Log("HatWorld: save hats " + customData);
 
             return orig(self) + sb.ToString();
         }

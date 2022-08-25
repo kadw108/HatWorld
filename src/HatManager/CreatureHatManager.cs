@@ -8,10 +8,9 @@ namespace HatWorld.src.HatManager
     {
         public static Dictionary<EntityID, CreatureHatManager> HatManagers = new();
 
-        public EntityID wearer;
-
-        public HatWearing? wornHat; // actually worn hat - destroyed and recreated when the sprite disappears/appears (eg. between rooms)
-        public Type? physicalWornHat; // physical hat type of currently worn hat, persists between rooms
+        protected EntityID wearer;
+        protected HatWearing? wornHat; // actually worn hat - destroyed and recreated when the sprite disappears/appears (eg. between rooms)
+        protected Type? physicalWornHat; // physical hat type of currently worn hat, persists between rooms
 
         public static void CreateHatManager(Creature crea, EntityID wearer)
         {
@@ -28,8 +27,6 @@ namespace HatWorld.src.HatManager
                     HatManagers[wearer] = new PlayerHatManager(wearer);
                     HatManagers[wearer].AddHooks();
                 }
-
-                Debug.Log("hatworld new hat manager" + wearer);
             }
         }
 
@@ -66,7 +63,6 @@ namespace HatWorld.src.HatManager
 
             if ((self.owner as Creature).abstractCreature.ID == wearer)
             {
-                Debug.Log("hatworld " + wearer + "check initiate hat " + (physicalWornHat != null));
                 if (physicalWornHat != null)
                 {
                     wornHat = (HatWearing) physicalWornHat.GetMethod("GetWornHat").Invoke(null, new object[] { self });
@@ -103,7 +99,7 @@ namespace HatWorld.src.HatManager
 			}
 		}
 
-        public void Creature_Die(On.Creature.orig_Die orig, Creature self)
+        private void Creature_Die(On.Creature.orig_Die orig, Creature self)
         {
             orig(self);
 
@@ -121,7 +117,7 @@ namespace HatWorld.src.HatManager
             orig(self);
         }
 
-        public virtual void PutOnHat(Creature self)
+        protected virtual void PutOnHat(Creature self)
         {
             // if holding hat, remove held hat and add wear hat
             for (int i = 0; i < self.grasps.Length; i++)
@@ -145,7 +141,7 @@ namespace HatWorld.src.HatManager
             }
         }
     
-        public virtual HatPhysical TakeOffHat(Creature self)
+        protected virtual HatPhysical TakeOffHat(Creature self)
         {
             if (physicalWornHat != null && wornHat != null && self.room != null)
             {

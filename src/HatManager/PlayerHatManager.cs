@@ -10,8 +10,8 @@ namespace HatWorld.src.HatManager
     public class PlayerHatManager : CreatureHatManager
     {
         // tracks buttonpresses for custom wear-hat button
-        bool[] createHatInput = new bool[10];
-        bool[] wearHatInput = new bool[10];
+        private bool[] createHatInput = new bool[10];
+        private bool[] wearHatInput = new bool[10];
 
         public const int maxPlayerNum = 4;
         public static KeyCode[] createHatKeys = new KeyCode[maxPlayerNum] { KeyCode.A, KeyCode.A, KeyCode.A, KeyCode.A };

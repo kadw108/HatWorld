@@ -131,7 +131,7 @@ namespace HatWorld
         }
 
         // from EncryptUtility by AndrewFM and Garrakx
-        public static void EncryptHatDialogue(string convoFolder)
+        private static void EncryptHatDialogue(string convoFolder)
         {
             if (Directory.Exists(convoFolder))
             {

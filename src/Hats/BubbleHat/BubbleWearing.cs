@@ -17,12 +17,12 @@ namespace HatWorld
 			sLeaser.sprites = new FSprite[3];
 			sLeaser.sprites[neckIndex] = new FSprite("SpearFragment2", true) { scale = 1.4f }; // neck collar
 			sLeaser.sprites[edgeIndex] = new FSprite("LizardBubble7", true) { scale = 1.3f}; // edge of bubble
-			sLeaser.sprites[glassIndex] = new FSprite("Circle20", true) { scale = 1f}; // inside of bubble
+			sLeaser.sprites[glassIndex] = new FSprite("Circle20", true) { scale = 1.05f}; // inside of bubble
 
 			this.AddToContainer(sLeaser, rCam, null);
 		}
 
-		public override void ChildDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+		protected override void ChildDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
 		{
             for (int j = 0; j < sLeaser.sprites.Length; j++)
             {
@@ -43,7 +43,7 @@ namespace HatWorld
 			sLeaser.sprites[edgeIndex].color = new Color(0.57f, 0.79f, 0.94f);
 			sLeaser.sprites[glassIndex].color = new Color(0.94f, 0.91f, 1f, 0.5f);
 		}
-		public override void AddHatEffects(Creature wearer)
+		protected override void AddHatEffects(Creature wearer)
 		{
 			if (wearer is Player)
             {
@@ -51,7 +51,7 @@ namespace HatWorld
             }
 		}
 
-		public override void RemoveHatEffects(Creature wearer)
+		protected override void RemoveHatEffects(Creature wearer)
 		{
 			if (wearer is Player)
             {

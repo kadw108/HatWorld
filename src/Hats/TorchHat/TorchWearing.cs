@@ -39,7 +39,7 @@ namespace HatWorld
 			this.AddToContainer(sLeaser, rCam, null);
 		}
 
-		public override void ChildDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+		protected override void ChildDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
 		{
 			/* Crown */
             sLeaser.sprites[crownIndex].SetPosition(drawPos);
@@ -98,7 +98,7 @@ namespace HatWorld
             }
 		}
 
-		public override void ChildUpdate(bool eu)
+		protected override void ChildUpdate(bool eu)
 		{
             // from Lantern
             this.flicker[1] = this.flicker[0];

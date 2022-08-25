@@ -32,7 +32,7 @@ namespace HatWorld
 			this.AddToContainer(sLeaser, rCam, null);
 		}
 
-		public override void ChildDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+		protected override void ChildDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
 		{
             for (int j = 0; j < sLeaser.sprites.Length; j++)
             {
@@ -103,7 +103,7 @@ namespace HatWorld
             sLeaser.sprites[topCircle].color = new Color(0f, 1f, 0.15f); // green
 		}
 
-        public override void ChildUpdate(bool eu)
+        protected override void ChildUpdate(bool eu)
         {
             if (this.soundLoop.Volume > 0f)
             {
@@ -111,7 +111,7 @@ namespace HatWorld
             }
         }
 
-        public override void AddHatEffects(Creature wearer)
+        protected override void AddHatEffects(Creature wearer)
         {
             if (wearer is Player)
             {
@@ -121,7 +121,7 @@ namespace HatWorld
             }
         }
 
-        public override void RemoveHatEffects(Creature wearer)
+        protected override void RemoveHatEffects(Creature wearer)
         {
             if (wearer is Player)
             {

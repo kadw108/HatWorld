@@ -40,7 +40,7 @@ namespace HatWorld
 			this.AddToContainer(sLeaser, rCam, null);
 		}
 
-		public override void ChildDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+		protected override void ChildDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
 		{
 			drawPos += new Vector2(0, 1); // increase y so hat doesn't go over eyes
 
@@ -89,7 +89,7 @@ namespace HatWorld
             }
 		}
 
-		public override void ChildUpdate(bool eu)
+		protected override void ChildUpdate(bool eu)
 		{
 			this.lastTuftPos = this.tuftPos;
 

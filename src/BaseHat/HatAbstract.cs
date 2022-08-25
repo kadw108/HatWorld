@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using Fisobs;
 using Fisobs.Core;
 using UnityEngine;
 
@@ -35,7 +33,7 @@ namespace HatWorld
                 }
                 else
                 {
-                    Debug.Log("HatWorld Realize() failure: cannot find " + hatType);
+                    Debug.Log("HatWorld ERROR: Realize() failure. Cannot find " + hatType);
                 }
             }
         }

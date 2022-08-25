@@ -7,24 +7,19 @@
  * Interfaces with HatPhysical.Update()
  */
 
-// default imports
-using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-// physical objects library
-using Fisobs;
-
 namespace HatWorld
 {
-    sealed class HatPlacer
+    public class HatPlacer
     {
         public static Dictionary<HatAbstract, PlacedObjectInfo> infos = new();
 
         // key: room id - value: [float x, float y, string hatType]
         // A room can have multiple hats, one object[] per hat
-        public static Dictionary<string, List<object[]>> hatsByRoom = new();
+        private static Dictionary<string, List<object[]>> hatsByRoom = new();
 
         public const int placedObjectIndex = 1821433636;
 
@@ -50,7 +45,7 @@ namespace HatWorld
                 float y = float.Parse(array[2].Trim());
                 string hatType = array[3].Trim();
                 room_list.Add(new object[] { x, y, hatType });
-                Debug.Log("Hatworld room_list " + key + " " + room_list);
+                Debug.Log("HatWorld: room_list " + key + " " + room_list);
             }
         }
 
@@ -60,7 +55,7 @@ namespace HatWorld
             On.RainWorldGame.ShutDownProcess += RainWorldGame_ShutDownProcess;
         }
 
-        public static void Room_Loaded(On.Room.orig_Loaded orig, Room self)
+        private static void Room_Loaded(On.Room.orig_Loaded orig, Room self)
         {
             bool firstTimeRealized = self.abstractRoom.firstTimeRealized;
             orig.Invoke(self);
@@ -89,14 +84,14 @@ namespace HatWorld
                             maxRegen = 108
                         };
                         HatPlacer.infos[abstractHat] = value;
-                        Debug.Log("Hatworld place hat " + self.abstractRoom.name + " " + (string)list[i][2]);
+                        Debug.Log("HatWorld: place hat " + self.abstractRoom.name + " " + (string)list[i][2]);
                         self.abstractRoom.AddEntity(abstractHat);
                     }
                 }
             }
         }
 
-        public static void RainWorldGame_ShutDownProcess(On.RainWorldGame.orig_ShutDownProcess orig, RainWorldGame self)
+        private static void RainWorldGame_ShutDownProcess(On.RainWorldGame.orig_ShutDownProcess orig, RainWorldGame self)
         {
             orig.Invoke(self);
             HatPlacer.infos.Clear();

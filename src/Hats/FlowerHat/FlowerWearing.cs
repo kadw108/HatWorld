@@ -70,7 +70,7 @@ namespace HatWorld
             this.AddToContainer(sLeaser, rCam, null);
 		}
 
-		public override void ChildDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+		protected override void ChildDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
 		{
             lastCamPos = camPos;
 
@@ -143,7 +143,7 @@ namespace HatWorld
             }
 		}
 
-		public override void ChildUpdate(bool eu)
+		protected override void ChildUpdate(bool eu)
 		{
             this.vinesWithdrawn = Custom.LerpAndTick(this.vinesWithdrawn, 0.5f, 0.1f, 0.016666668f); // first 0.5f could be 0f, 1f
             float num = Mathf.Lerp(10f, 1f, this.vinesWithdrawn);
@@ -276,7 +276,7 @@ namespace HatWorld
             }
         }
 
-        public override void AddHatEffects(Creature wearer)
+        protected override void AddHatEffects(Creature wearer)
         {
             if (wearer is Player)
             {
@@ -291,7 +291,7 @@ namespace HatWorld
             }
         }
 
-        public override void RemoveHatEffects(Creature wearer)
+        protected override void RemoveHatEffects(Creature wearer)
         {
             if (wearer is Player)
             {

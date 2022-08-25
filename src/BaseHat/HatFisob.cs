@@ -1,5 +1,4 @@
-﻿// Finished for now.
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -14,8 +13,8 @@ namespace HatWorld
         (new types/colors are added with AddIconAndSandbox) 
         There may be a better way to do this than two dictionaries?
         */
-        public static Dictionary<int, string> hatIntMapping = new();
-        public static Dictionary<int, Color> colorIntMapping = new();
+        internal static Dictionary<int, string> hatIntMapping = new();
+        internal static Dictionary<int, Color> colorIntMapping = new();
 
         public HatFisob() : base(EnumExt_HatWorld.HatAbstract) {
             Icon = new AllHatIcon();
@@ -30,11 +29,11 @@ namespace HatWorld
         {
             if (unlock is Fisobs.Sandbox.SandboxUnlock u)
             {
-                Debug.Log("hatworld " + u.Data + " " + hatIntMapping[u.Data]);
+                Debug.Log("HatWorld: unlock sandbox " + u.Data + " " + hatIntMapping[u.Data]);
                 return new HatAbstract(world, saveData.Pos, saveData.ID, hatIntMapping[u.Data]);
             }
 
-            Debug.Log("hatworld hat fisob parse " + (unlock == null ? "null" : (unlock.ToString() + unlock.Value)) + " custom " + saveData.CustomData);
+            Debug.Log("HatWorld: hat fisob parse " + (unlock == null ? "null" : (unlock.ToString() + unlock.Value)) + " custom " + saveData.CustomData);
             HatAbstract results = new HatAbstract(world, saveData.Pos, saveData.ID, saveData.CustomData);
 
             return results;
@@ -53,7 +52,7 @@ namespace HatWorld
             }
         }
 
-        public static int NextAvailableInt(int startIndex = 0, int maxIndex = Int32.MaxValue)
+        private static int NextAvailableInt(int startIndex = 0, int maxIndex = Int32.MaxValue)
         {
             for (int i = startIndex; i < maxIndex; i++)
             {

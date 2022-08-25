@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using HatWorld.src.HatManager;
+﻿using HatWorld.src.HatManager;
 using OptionalUI;
 using UnityEngine;
 
@@ -20,7 +19,7 @@ namespace HatWorld
 			CreateEffectsBox();
 		}
 
-		public void CreateMainAndWear()
+		private void CreateMainAndWear()
         {
 			OpLabel title = new OpLabel(30f, 550f, "HatWorld", true);
 			OpLabel author = new OpLabel(30f, 520f, $"Author: kadw (based on code from Dual and Slime_Cubed) | Version 1.0.0", false);
@@ -65,7 +64,7 @@ namespace HatWorld
 				title, author);
         }
 
-		public void CreateSpawn()
+		private void CreateSpawn()
         {
 			OpLabel desc = new OpLabel(30f, 100f, "I don't recommend using the spawn hat button if you're using this mod for the first time.\n"+
 				"Go out and discover things! Or not, if you really don't want to...", false);
@@ -110,7 +109,7 @@ namespace HatWorld
 				spawnRect, spawnDesc);
         }
 
-		public void CreateEffectsBox()
+		private void CreateEffectsBox()
         {
             this.Tabs[0].AddItems(new UIelement[]
 {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace HatWorld
+﻿namespace HatWorld
 {
 	public class PlacedObjectInfo
 	{

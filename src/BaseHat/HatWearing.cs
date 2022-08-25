@@ -11,22 +11,22 @@ namespace HatWorld
 
 		public GraphicsModule parent { get; }
 
-		public int anchorSprite;
-		public float rotation;
-		public float headRadius;
+		private int anchorSprite;
+		protected float rotation;
+		protected float headRadius;
 
-		// for ParentDrawSprites
-		public Vector2 basePos;
-		public float baseRot;
-		public bool flipX;
-		public bool flipY;
+		// from ParentDrawSprites
+		protected Vector2 basePos;
+		protected float baseRot;
+		protected bool flipX;
+		protected bool flipY;
 
 		// for DrawSprites
-		public Vector2 drawPos;
-		public Vector2 upDir;
-		public Vector2 rightDir;
+		protected Vector2 drawPos;
+		protected Vector2 upDir;
+		protected Vector2 rightDir;
 
-		public bool initialized;
+		protected bool initialized;
 
 		public HatWearing(GraphicsModule parent)
 		{
@@ -61,7 +61,7 @@ namespace HatWorld
 
 			if (effectsOn)
             {
-                AddHatEffects(parent.owner as Creature);
+                this.AddHatEffects(parent.owner as Creature);
             }
 		}
 
@@ -93,7 +93,7 @@ namespace HatWorld
                 }
             }
         }
-		public abstract void ChildDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos);
+		protected abstract void ChildDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos);
 
 		public override sealed void Update(bool eu)
         {
@@ -108,7 +108,7 @@ namespace HatWorld
 				ChildUpdate(eu);
             }
 		}
-		public virtual void ChildUpdate(bool eu) { }
+		protected virtual void ChildUpdate(bool eu) { }
 
 		public void AddToContainer(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
 		{
@@ -125,15 +125,8 @@ namespace HatWorld
 				newContatiner.AddChild(sLeaser.sprites[j]);
 			}
 		}
-		public void ParentDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+		internal void ParentDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
 		{
-			/*
-			for (int i = 0; i < sLeaser.sprites.Length; i++)
-            {
-				Debug.Log("hatworld hatwearing " + i + " " + sLeaser.sprites[i].GetPosition());
-            }
-			*/
-
 			if (sLeaser.sprites.Length > anchorSprite)
 			{
 				this.basePos = sLeaser.sprites[anchorSprite].GetPosition();
@@ -150,12 +143,12 @@ namespace HatWorld
         {
 			if (effectsOn && parent.owner != null)
             {
-				RemoveHatEffects(parent.owner as Creature);
+				this.RemoveHatEffects(parent.owner as Creature);
             }
             base.Destroy();
         }
 
-        public virtual void AddHatEffects(Creature wearer) { }
-		public virtual void RemoveHatEffects(Creature wearer) { }
+		protected virtual void AddHatEffects(Creature wearer) { }
+		protected virtual void RemoveHatEffects(Creature wearer) { }
 	}
 }

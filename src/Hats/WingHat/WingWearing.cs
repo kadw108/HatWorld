@@ -58,7 +58,7 @@ namespace HatWorld
 			this.AddToContainer(sLeaser, rCam, null);
 		}
 
-		public override void ChildDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+		protected override void ChildDrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
 		{
             this.drawPos.y += 2 * Math.Abs(rightDir.y); // increase hat height based on direction slugcat is facing, needed for different head sprites
 			this.drawPos += 2 * upDir;
@@ -106,7 +106,7 @@ namespace HatWorld
             sLeaser.sprites[circleRight].color = sLeaser.sprites[circleLeft].color;
 		}
 
-        public override void AddHatEffects(Creature wearer)
+        protected override void AddHatEffects(Creature wearer)
         {
 			defaultGrav = wearer.gravity;
 			if (wearer is Player)
@@ -118,18 +118,18 @@ namespace HatWorld
                 wearer.gravity *= 0.5f;
             }
         }
-        public override void RemoveHatEffects(Creature wearer)
+        protected override void RemoveHatEffects(Creature wearer)
         {
 			if (wearer != null)
             {
 				wearer.gravity = defaultGrav;
-				// defaultGrav must be used since just dividing by the multiplier in AddHatEffects
-				// causes a NullReferenceException because wearer.gravity isn't initialized
+				// defaultGrav must be used since just dividing by the multiplier in AddHatEffects causes a NullReferenceException because wearer.gravity isn't initialized
+				// can't hardcode in a default gravity value since it varies among slugcats (eg. nymph)
             }
         }
 
         /* From CentipedeGraphics */
-        public override void ChildUpdate(bool eu)
+        protected override void ChildUpdate(bool eu)
 		{
 			this.lastWingFlapCycle = this.wingFlapCycle;
 			this.wingFlapCycle += Mathf.Pow(this.wingsStartedUp, 3f);
@@ -137,7 +137,7 @@ namespace HatWorld
 			this.wingsFolded = 1f - this.wingsStartedUp;
 
 			/*
-			// doesn't have intended effect (only flap wings while flying)
+			// doesn't have intended effect: only flap wings while flying
 			if (Math.Abs(this.parent.owner.firstChunk.vel.y) > 1 && (this.parent.owner.gravity > 0))
             {
 				this.wingsStartedUp = 1f;

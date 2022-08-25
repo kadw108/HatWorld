@@ -101,6 +101,7 @@ The mod hasn't been fully tested, so there may be bugs. For bugs/questions/comme
 <br />
 <br />
 <br />
-<br />
 
-Still here? Here's your reward for reading the whole doc (or skipping to the end): Put a file named HatWorld_SpawnHat.txt in your Rain World\Mods folder to unlock a new option in the settings.
+Still here?
+
+Here's your reward for reading the whole doc (or skipping to the end): Put a file named HatWorld_SpawnHat.txt in your Rain World\Mods folder to unlock a new option in the settings.

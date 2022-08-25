@@ -37,7 +37,7 @@ Every hat needs a few things:
 	* `HatWorldMain.AddType(typeof(RedBubblePhysical));` to make the new hat exist
 		- use typeof(the physical type for your hat, ie. [hatname]Physical)
 	* `HatWorldMain.hatFisob.AddIconAndSandbox("HatWorldCustomExample.RedBubblePhysical", EnumExt_HatWorldCustom.RedBubbleUnlockID, Color.red);` to create the shelter icon/sandbox icon
-		- first argument is [namespace].[name]Physical --- should match with icon name (icon_[namespace].[name]Physical.png) or icon can't be found
+		- first argument is [namespace].[name]Physical; should match with icon name (icon_[namespace].[name]Physical.png) or icon can't be found
 		- second argument is MultiplayerUnlocks.SandboxUnlockID for your hat
 		- third argument is color of icon
 

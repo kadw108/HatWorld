@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using RWCustom;
 using UnityEngine;
 
 namespace HatWorld
@@ -48,8 +50,15 @@ namespace HatWorld
             if (parent != null) // hat will not be available in sandbox if parent is null
             {
                 RegisterUnlock(id, parent, data: nextInt);
-
             }
+
+            /*
+            using (FileStream aFile = new FileStream(Custom.RootFolderDirectory() + "hatworld_log.txt", FileMode.Append, FileAccess.Write))
+            using (StreamWriter sw = new StreamWriter(aFile))
+            {
+                sw.WriteLine("HatWorld: registered new icon/sandbox - " + hatType + " int: " + nextInt + " color: " + iconColor + " parent: " + parent);
+            }
+            */
         }
 
         private static int NextAvailableInt(int startIndex = 0, int maxIndex = Int32.MaxValue)
@@ -61,6 +70,7 @@ namespace HatWorld
                     return i;
                 }
             }
+            Debug.Log("HatWorld ERROR: HatFisob dictionaries out of keys.");
             return -1;
         }
     }
@@ -88,7 +98,7 @@ namespace HatWorld
             // Fisobs autoloads the embedded resource named `icon_{Type}` automatically
             // For HatFisob, this is icon_HatAbstract, which only allows using that one icon for every hat
             // Thus to use different icons for different hats we load sprites with CustomSpritesLoader mod instead
-
+            Debug.Log("HatWorld: fetch sprite name " + data + " " + HatFisob.hatIntMapping[data]);
             return "icon_" + HatFisob.hatIntMapping[data]; // expects icon_[namespace].[physical type name].png eg. icon_HatWorld.WizardPhysical.png
         }
     }

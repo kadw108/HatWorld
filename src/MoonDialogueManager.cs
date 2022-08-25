@@ -27,6 +27,7 @@ namespace HatWorld
 
             if (testItem is HatPhysical && result == SLOracleBehaviorHasMark.MiscItemType.NA)
             {
+                // Use "_" instead of "." to connect namespace and name because enum names can't contain "."
                 SLOracleBehaviorHasMark.MiscItemType newEnumValue = (SLOracleBehaviorHasMark.MiscItemType) Enum.Parse(typeof(SLOracleBehaviorHasMark.MiscItemType), (testItem.GetType().Namespace + "_" + testItem.GetType().Name));
                 return newEnumValue;
             }

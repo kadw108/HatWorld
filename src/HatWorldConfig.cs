@@ -1,5 +1,7 @@
-﻿using HatWorld.src.HatManager;
+﻿using System.IO;
+using HatWorld.src.HatManager;
 using OptionalUI;
+using RWCustom;
 using UnityEngine;
 
 namespace HatWorld
@@ -15,7 +17,10 @@ namespace HatWorld
 			this.Tabs[0] = new OpTab("");
 
 			CreateMainAndWear();
-			CreateSpawn();
+			if (SpawnHatFileExists())
+            {
+                CreateSpawn();
+            }
 			CreateEffectsBox();
 		}
 
@@ -121,6 +126,12 @@ namespace HatWorld
             });
 		}
 
+		private bool SpawnHatFileExists()
+        {
+			string filePath = Custom.RootFolderDirectory() + "Mods" + Path.DirectorySeparatorChar + "HatWorld_SpawnHat.txt";
+			return File.Exists(filePath);
+		}
+
 		public override void ConfigOnChange()
 		{
 			base.ConfigOnChange();
@@ -141,22 +152,29 @@ namespace HatWorld
 				PlayerHatManager.wearHatKeys[3] = OpKeyBinder.StringToKeyCode(config["hatworld_wearKey4"]);
 			}
 
-			if (config.ContainsKey("hatworld_spawnKey1"))
-			{
-				PlayerHatManager.createHatKeys[0] = OpKeyBinder.StringToKeyCode(config["hatworld_spawnKey1"]);
-			}
-			if (config.ContainsKey("hatworld_spawnKey2"))
-			{
-				PlayerHatManager.createHatKeys[1] = OpKeyBinder.StringToKeyCode(config["hatworld_spawnKey2"]);
-			}
-			if (config.ContainsKey("hatworld_spawnKey3"))
-			{
-				PlayerHatManager.createHatKeys[2] = OpKeyBinder.StringToKeyCode(config["hatworld_spawnKey3"]);
-			}
-			if (config.ContainsKey("hatworld_spawnKey4"))
-			{
-				PlayerHatManager.createHatKeys[3] = OpKeyBinder.StringToKeyCode(config["hatworld_spawnKey4"]);
-			}
+			if (SpawnHatFileExists())
+            {
+                if (config.ContainsKey("hatworld_spawnKey1"))
+                {
+                    PlayerHatManager.createHatKeys[0] = OpKeyBinder.StringToKeyCode(config["hatworld_spawnKey1"]);
+                }
+                if (config.ContainsKey("hatworld_spawnKey2"))
+                {
+                    PlayerHatManager.createHatKeys[1] = OpKeyBinder.StringToKeyCode(config["hatworld_spawnKey2"]);
+                }
+                if (config.ContainsKey("hatworld_spawnKey3"))
+                {
+                    PlayerHatManager.createHatKeys[2] = OpKeyBinder.StringToKeyCode(config["hatworld_spawnKey3"]);
+                }
+                if (config.ContainsKey("hatworld_spawnKey4"))
+                {
+                    PlayerHatManager.createHatKeys[3] = OpKeyBinder.StringToKeyCode(config["hatworld_spawnKey4"]);
+                }
+            }
+			else
+            {
+				PlayerHatManager.createHatKeys = new KeyCode[PlayerHatManager.maxPlayerNum] { KeyCode.None, KeyCode.None, KeyCode.None, KeyCode.None };
+            }
 
 			if (config.ContainsKey("hatworld_effectsOn"))
             {

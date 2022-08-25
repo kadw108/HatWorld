@@ -14,9 +14,9 @@ namespace HatWorldCustomExample
             HatWorldMain.AddType(typeof(RedBubblePhysical));
 
             // Required to create shelter icon/sandbox icon and add hat to sandbox
-            HatWorldMain.hatFisob.AddIconAndSandbox("HatWorldCustomExample_RedBubblePhysical", EnumExt_HatWorldCustom.RedBubbleUnlockID, Color.red);
+            HatWorldMain.hatFisob.AddIconAndSandbox("HatWorldCustomExample.RedBubblePhysical", EnumExt_HatWorldCustom.RedBubbleUnlockID, Color.red);
             // If you don't want the hat to be available in sandbox, use parent=null
-            // eg. HatWorldMain.hatFisob.AddIconAndSandbox("BallWorld_Test.BallPhysical", EnumExt_BallWorld_Test.BallUnlockID, Color.red, null);
+            // eg. HatWorldMain.hatFisob.AddIconAndSandbox("HatWorldCustomExample.RedBubblePhysical", EnumExt_HatWorldCustom.RedBubbleUnlockID, Color.red, null);
 
             // Optional: make the hat spawn in a certain location, like colored pearls
             HatPlacer.AddSpawns(Assembly.GetExecutingAssembly().GetManifestResourceStream("HatWorldCustomExample.src.spawns.txt"));

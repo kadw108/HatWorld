@@ -14,7 +14,7 @@ namespace HatWorld.src.HatManager
 
         public const int maxPlayerNum = 4;
         public static KeyCode[] createHatKeys = new KeyCode[maxPlayerNum] { KeyCode.None, KeyCode.None, KeyCode.None, KeyCode.None };
-        public static KeyCode[] wearHatKeys = new KeyCode[maxPlayerNum] { KeyCode.S, KeyCode.S, KeyCode.S, KeyCode.S };
+        public static KeyCode[] wearHatKeys = new KeyCode[maxPlayerNum] { KeyCode.A, KeyCode.A, KeyCode.A, KeyCode.A };
 
         public PlayerHatManager(EntityID wearer) : base(wearer) { }
 

@@ -42,25 +42,25 @@ namespace HatWorld
                 new Vector2(150f, playerButtonX[0]),
                 new Vector2(70f, 10f),
                 "kadw.hatworld", "hatworld_wearKey1",
-                "S",
+                "A",
                 false);
             OpKeyBinder wear2 = new OpKeyBinder(
                 new Vector2(150f, playerButtonX[1]),
                 new Vector2(70f, 10f),
                 "kadw.hatworld", "hatworld_wearKey2",
-                "S",
+                "A",
                 false);
             OpKeyBinder wear3 = new OpKeyBinder(
                 new Vector2(150f, playerButtonX[2]),
                 new Vector2(70f, 10f),
                 "kadw.hatworld", "hatworld_wearKey3",
-                "S",
+                "A",
                 false);
             OpKeyBinder wear4 = new OpKeyBinder(
                 new Vector2(150f, playerButtonX[3]),
                 new Vector2(70f, 10f),
                 "kadw.hatworld", "hatworld_wearKey4",
-                "S",
+                "A",
                 false);
 
             this.Tabs[0].AddItems(player1, player2, player3, player4,
@@ -87,25 +87,25 @@ namespace HatWorld
                 new Vector2(420f, playerButtonX[0]),
                 new Vector2(70f, 10f),
                 "kadw.hatworld", "hatworld_spawnKey1",
-                "A",
+                "S",
                 false);
             OpKeyBinder spawn2 = new OpKeyBinder(
                 new Vector2(420f, playerButtonX[1]),
                 new Vector2(70f, 10f),
                 "kadw.hatworld", "hatworld_spawnKey2",
-                "A",
+                "S",
                 false);
             OpKeyBinder spawn3 = new OpKeyBinder(
                 new Vector2(420f, playerButtonX[2]),
                 new Vector2(70f, 10f),
                 "kadw.hatworld", "hatworld_spawnKey3",
-                "A",
+                "S",
                 false);
             OpKeyBinder spawn4 = new OpKeyBinder(
                 new Vector2(420f, playerButtonX[3]),
                 new Vector2(70f, 10f),
                 "kadw.hatworld", "hatworld_spawnKey4",
-                "A",
+                "S",
                 false);
 
             this.Tabs[0].AddItems(desc,

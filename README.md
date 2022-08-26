@@ -45,7 +45,10 @@ If the mod still seems to be active, check that HatWorld.dll has been deleted fr
 * Press `A` to wear a hat if you're holding one. The key can be changed in the settings.
 
 * Hats can be found in: Outskirts, Shoreline, Shaded Citadel, Underhang, Sky Islands, Garbage Wastes, Drainage System, and Moonlit Acres (modded region). There is one hat per region. If you don't have Moonlit Acres, you won't be able to find the eighth hat.
+
 * Specific hat locations, if you don't feel like searching around, can be found here: https://docs.google.com/document/d/1KcXkLxrovO6I5cIBBBngGL8cgoMESO3Ev6rNjOvkWm4
+
+* Descriptions of each hat's location and what it does can be found here, if you don't mind spoilers: https://docs.google.com/document/d/1S1LbRIIXQU_kMjR6Af64dq6sfzKZ4B9TG5Y2Pteb5c0
 
 * Like colored pearls, hats don't respawn.
 
@@ -57,9 +60,9 @@ If the mod still seems to be active, check that HatWorld.dll has been deleted fr
 
 * All hats are unlocked by default in sandbox mode.
 
-* Compatible with FancySlugcats and with SlugBase custom characters (except ElectricCat).
+* Compatible (hopefully) with FancySlugcats, Jolly Co-op, and SlugBase custom characters.
 
-* Descriptions of each hat's location and what it does can be found here, if you don't mind spoilers: https://docs.google.com/document/d/1S1LbRIIXQU_kMjR6Af64dq6sfzKZ4B9TG5Y2Pteb5c0
+* Supports AutoUpdate.
 
 ---
 

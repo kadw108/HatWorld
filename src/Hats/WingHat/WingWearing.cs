@@ -114,7 +114,7 @@ namespace HatWorld
             defaultGrav = wearer.gravity;
             if (wearer is Player)
             {
-                wearer.gravity *= 0.85f;
+                wearer.gravity *= 0.75f;
             }
             else
             {

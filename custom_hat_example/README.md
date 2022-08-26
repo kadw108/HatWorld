@@ -12,6 +12,8 @@ Enabling the custom hat:
 * Copy the text files in `moon_dialogue_files\encrypted` OR `moon_dialogue_files\unencrypted` to Rain World\ModConfigs\HatWorld\HatWorldText. If you use the unencrypted files, giving a RedBubblePhysical hat to Moon will create encrypted versions of those text files.
 * Copy `HatWorldCustomExample.dll` in the `FINAL_DLL` folder to Rain World\Mods and then enable it. Or copy it directly to Rain World\BepInEx\plugins (it won't show up in BOIModManager, but will be enabled).
 
+Note that like in vanilla HatWorld, if you disable HatWorldCustomExample.dll but still have a RedBubble hat in any shelter, it will crash the game.
+
 Descriptions of the files in this folder:
 * `FINAL_DLL\HatWorldCustomExample.dll` is a .dll file for the custom hat example. It requires HatWorld and its dependencies to be enabled. It also requires the custom hat's icon and text files to be in the correct folders (see above section on enabling the custom hat).
 * `icon` contains the sandbox/shelter icon for the custom hat. See [Icons](#icons).

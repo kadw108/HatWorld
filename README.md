@@ -2,7 +2,7 @@
 
 by kadw (kadw#4425)
 
-Mod for Rain World 1.5. Adds several hats to the game that you can find and wear. You can also give them to scavs!
+Mod for Rain World 1.5. Adds several hats to the game that you can find and wear. You can also give them to scavs.
 
 <img src="demo_gifs/wing_hat.gif" alt="Wing Hat GIF" height=150><img src="demo_gifs/scav_torch.gif" alt="Scav Torch GIF" height=150><img src="demo_gifs/spawn_hats.gif" alt="Spawn Hats GIF" height=150>
 
@@ -65,7 +65,7 @@ If the mod still seems to be active, check that HatWorld.dll has been deleted fr
 
 * If you disable the mod while having hats saved in ANY shelter, it will crash the game the next time you start it up.
 
-* With ElectricCat mod (and FancySlugcats off?), hats won't show up on the player when worn.
+* With ElectricCat mod (and no FancySlugcats), hats won't show up on the player when worn.
 
 * With FestiveWorld mod, hats will overlap the default santa hat (looks bizarre).
 

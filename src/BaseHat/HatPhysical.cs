@@ -93,8 +93,6 @@ namespace HatWorld
             // From CentiShields
             /* Default DrawSprites code, gets basic values */
             drawPos = Vector2.Lerp(firstChunk.lastPos, firstChunk.pos, timeStacker);
-            float temp = Mathf.InverseLerp(305f, 380f, timeStacker);
-            drawPos -= new Vector2(0, 20f * Mathf.Pow(temp, 3f));
             drawPos -= camPos;
 
             // rotate bottom + tuft

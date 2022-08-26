@@ -61,6 +61,7 @@ namespace HatWorld
 
             if (effectsOn)
             {
+                // Debug.Log("HatWorld: add hat effects " + this.GetType() + " " + parent.owner);
                 this.AddHatEffects(parent.owner as Creature);
             }
         }
@@ -143,6 +144,7 @@ namespace HatWorld
         {
             if (effectsOn && parent.owner != null)
             {
+                // Debug.Log("HatWorld: remove hat effects " + this.GetType() + " " + parent.owner);
                 this.RemoveHatEffects(parent.owner as Creature);
             }
             base.Destroy();

@@ -113,13 +113,17 @@ namespace HatWorld
             }
         }
 
+        /* Adding effects -
+         * in multiplayer, game uses same slugcatStats object for every slugcat if they have same abilities,
+         * so we use a hook and change slugcatStats for Player.Update calculations, then change it back
+         * (otherwise just one slug wearing the hat applies effects to every slug - bad)
+         */
+
         protected override void AddHatEffects(Creature wearer)
         {
             if (wearer is Player)
             {
-                (wearer as Player).slugcatStats.runspeedFac *= 1.15f;
-                (wearer as Player).slugcatStats.poleClimbSpeedFac *= 1.15f;
-                (wearer as Player).slugcatStats.corridorClimbSpeedFac *= 1.15f;
+                On.Player.Update += Player_Update;
             }
         }
 
@@ -127,11 +131,31 @@ namespace HatWorld
         {
             if (wearer is Player)
             {
-                (wearer as Player).slugcatStats.runspeedFac *= (1 / 1.15f);
-                (wearer as Player).slugcatStats.poleClimbSpeedFac *= (1 / 1.15f);
-                (wearer as Player).slugcatStats.corridorClimbSpeedFac *= (1 / 1.15f);
+                On.Player.Update -= Player_Update;
             }
         }
+
+        private void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
+        {
+
+            if (parent.owner == self)
+            {
+                (parent.owner as Player).slugcatStats.runspeedFac *= 1.15f;
+                (parent.owner as Player).slugcatStats.poleClimbSpeedFac *= 1.15f;
+                (parent.owner as Player).slugcatStats.corridorClimbSpeedFac *= 1.15f;
+
+                orig(self, eu);
+
+                (parent.owner as Player).slugcatStats.runspeedFac *= (1 / 1.15f);
+                (parent.owner as Player).slugcatStats.poleClimbSpeedFac *= (1 / 1.15f);
+                (parent.owner as Player).slugcatStats.corridorClimbSpeedFac *= (1 / 1.15f);
+            }
+            else
+            {
+                orig(self, eu);
+            }
+        }
+
 
     }
 }

@@ -36,7 +36,6 @@ namespace HatWorldCustomExample
             {
                 sLeaser.sprites[j].rotation = hatRotation;
             }
-            drawPos -= upDir * 4;
 
             sLeaser.sprites[neckIndex].SetPosition(drawPos + upDir * -10);
             sLeaser.sprites[edgeIndex].SetPosition(drawPos);

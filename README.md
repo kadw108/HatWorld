@@ -68,8 +68,6 @@ If the mod still seems to be active, check that HatWorld.dll has been deleted fr
 
 ### Known issues/incompatibilities
 
-* !!IMPORTANT!! - There is a bug that very rarely makes the game crash at random, usually when entering Pebbles' or Moon's rooms. It doesn't always happen and I'm not sure what causes it, but I will fix it when I can. For now, closing the game with Task Manager and restarting should return things to normal.
-
 * If you disable the mod while having hats saved in ANY shelter, it will crash the game the next time you start it up.
 
 * With ElectricCat mod (and no FancySlugcats), hats won't show up on the player when worn.
@@ -77,6 +75,8 @@ If the mod still seems to be active, check that HatWorld.dll has been deleted fr
 * With FestiveWorld mod, hats will overlap the default santa hat (looks bizarre).
 
 * Hats can't be spawned with Beastmaster.
+
+* ~~There is a bug that very rarely makes the game crash at random, usually when entering Pebbles' or Moon's rooms. It doesn't always happen and I'm not sure what causes it, but I will fix it when I can. For now, closing the game with Task Manager and restarting should return things to normal.~~ Hopefully fixed!
 
 ---
 

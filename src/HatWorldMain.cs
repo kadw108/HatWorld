@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace HatWorld
 {
-    [BepInPlugin("kadw.hatworld", "HatWorld", "1.0.0")]
+    [BepInPlugin("kadw.hatworld", "HatWorld", "1.0.1")]
     public class HatWorldMain : BaseUnityPlugin
     {
         // Code for AutoUpdate support
@@ -22,7 +22,7 @@ namespace HatWorld
         // Version - increase this by 1 when you upload a new version of the mod.
         // The first upload should be with version 0, the next version 1, the next version 2, etc.
         // If you ever lose track of the version you're meant to be using, ask Pastebin.
-        public int version = 0;
+        public int version = 1;
         // Public key in base64 - don't touch!
         public string keyE = "AQAB";
         public string keyN = "sjXGBzj2fVUlV9GFImX4Njxfpuo0uX+XVD4jKofeiTTu2bGh+xzT9K2ShLiV5mLrKHMwCEmRghcQRDUaVNGoDwsegDohuLmqmdngLO6lrv3LhDKt2FCinqy2CxdC8W4Y5ztdgE7ccjv5bEH7j3wblROiJv0FRab3mM/vsS5HubjtjIKwNL8oIyPNt8uEQl952Ch4V7OtojJamuRBmB1i2BcSuvSq0/wEUWpDC3jvXt/n7KCUt8bJM/D26WPDWwnjPjmjdRiMrgzvYlG1c6TM1WGnu6lXrl97Nkdwi59SfepEuoLgwPGWN/ILkrzuP2IoKLyqmrQTGOjEqxAW6hjtuyprMAL57rK7ighVLpr4svgP2vd2PONecL9cqNEd3GGHvlt9dEGI5loNIcqJ9fwcyTa7PMhPRsqH05LWzPlDWYil/AoQvhu/UikINlR5aPBN6BC4/iPgaT2ZroU+/wh0N2YFy44TCFf3jIaD+RMovmfwOzA3m3MXIqhbrAwMgePSFjI897sRaGX6pZsu7sm1t+jO0+a5Ax4JfGDLGGdX9AEScJpLrVpIXqDs+kiacZ2rH/qCxG8OIUyAXml5Zoz9f6RRKYnccfQRzEa6w0dQlC2CWHWvv0WQRyBGttzcSQ1xZAvMI/zMLv/OHiVQ3mym1gA59d3U905GYMw29Ccq4+0=";

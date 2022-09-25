@@ -55,13 +55,13 @@ namespace HatWorld.src.HatManager
         }
 
         /*
-         * Adds worn hat to player when player enters new room, if hat is being worn
+         * Adds worn hat to creature when creature enters new room, if hat is being worn
          */
         private void GraphicsModule_InitiateSprites(On.GraphicsModule.orig_InitiateSprites orig, GraphicsModule self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
         {
             orig.Invoke(self, sLeaser, rCam);
 
-            if ((self.owner as Creature).abstractCreature.ID == wearer)
+            if (((self.owner as Creature) != null) && ((self.owner as Creature).abstractCreature.ID == wearer))
             {
                 if (physicalWornHat != null)
                 {
@@ -79,7 +79,7 @@ namespace HatWorld.src.HatManager
         {
             orig.Invoke(self, sLeaser, rCam, timeStacker, camPos);
 
-            if ((self.owner as Creature).abstractCreature.ID == wearer)
+            if (((self.owner as Creature) != null) && ((self.owner as Creature).abstractCreature.ID == wearer))
             {
                 if (physicalWornHat != null && wornHat != null)
                 {

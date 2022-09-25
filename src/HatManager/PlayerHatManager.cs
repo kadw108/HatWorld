@@ -53,7 +53,7 @@ namespace HatWorld.src.HatManager
         {
             orig.Invoke(self, sLeaser, rCam);
 
-            if ((self.owner as Creature).abstractCreature.ID == wearer)
+            if ((self.owner as Creature != null) && (self.owner as Creature).abstractCreature.ID == wearer)
             {
                 if (self != null && physicalWornHat != null)
                 {
@@ -73,7 +73,7 @@ namespace HatWorld.src.HatManager
         {
             orig.Invoke(self, sLeaser, rCam, timeStacker, camPos);
 
-            if ((self.owner as Creature).abstractCreature.ID == wearer)
+            if ((self.owner as Creature != null) && (self.owner as Creature).abstractCreature.ID == wearer)
             {
                 if (physicalWornHat != null && wornHat != null)
                 {

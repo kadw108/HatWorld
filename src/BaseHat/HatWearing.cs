@@ -142,7 +142,7 @@ namespace HatWorld
 
         public override void Destroy()
         {
-            if (effectsOn && parent.owner != null)
+            if (effectsOn && (parent.owner as Creature) != null)
             {
                 // Debug.Log("HatWorld: remove hat effects " + this.GetType() + " " + parent.owner);
                 this.RemoveHatEffects(parent.owner as Creature);

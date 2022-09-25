@@ -51,6 +51,8 @@ namespace HatWorld.src.HatManager
         {
             orig(self, subRep, objRep, objIsMe, item);
 
+            // Debug.Log("HatWorld: scav pick up and wear hat " + self.scavenger.abstractCreature.ID + " " + physicalWornHat + " " + wornHat);
+
             if (self.scavenger.abstractCreature.ID == wearer && item is HatPhysical && physicalWornHat == null)
             {
                 PutOnHat(self.scavenger);
